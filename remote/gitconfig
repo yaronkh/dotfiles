@@ -1,0 +1,61 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+    name = ykahanovitch
+    email = ykahanovitch@magicleap.com
+[url "https://gerrit.magicleap.com"]
+    insteadOf="ssh://gerrit.magicleap.com:29418"
+    pushInsteadOf="ssh://gerrit.magicleap.com:29418"
+[url "https://chromium.googlesource.com/"]
+    insteadOf="https://gerrit.magicleap.com/external/chromium/"
+    pushInsteadOf="https://gerrit.magicleap.com/external/chromium/"
+[url "https://artifactory.magicleap.com"]
+    insteadOf="ssh://artifactory.magicleap.com:2222"
+[url "https://artifactory.magicleap.com/artifactory/api/lfs/"]
+    insteadOf="ssh://artifactory.magicleap.com:2222/artifactory/"
+    pushInsteadOf="ssh://artifactory.magicleap.com:2222/artifactory/"
+[color]
+    ui = auto
+[lfs]
+    concurrenttransfers = 30
+    locksverify = false       
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge --skip -- %f
+    required = true
+    process = git-lfs filter-process --skip
+# For MagicScript and Chromium.
+
+[url "https://gerrit.magicleap.com/external/mirror/chromium/"]
+     insteadOf="https://boringssl.googlesource.com/"
+
+[url "https://gerrit.magicleap.com/external/mirror/chromium/"]
+     insteadOf="https://chromium.googlesource.com/"
+
+[url "https://gerrit.magicleap.com/external/mirror/chromium/"]
+     insteadOf="https://pdfium.googlesource.com/"
+
+[url "https://gerrit.magicleap.com/external/mirror/chromium/"]
+     insteadOf="https://swiftshader.googlesource.com/"
+
+[url "https://gerrit.magicleap.com/external/mirror/chromium/"]
+     insteadOf="https://skia.googlesource.com/"
+
+[url "https://gerrit.magicleap.com/external/mirror/chromium/"]
+     insteadOf="https://android.googlesource.com/"
+
+[url "https://gerrit.magicleap.com/external/mirror/chromium/"]
+     insteadOf="https://aomedia.googlesource.com/"
+
+[url "https://gerrit.magicleap.com/external/mirror/chromium/"]
+     insteadOf="https://webrtc.googlesource.com/"
+[color]
+	ui = auto
+[log]
+	decorate = auto
+[core]
+	editor = vim
+#[format]
+#    pretty = format:%h %Cblue%ad%Creset %ae %Cgreen%s%Creset
+[merge]
+	tool = kdiff3
