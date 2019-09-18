@@ -9,13 +9,26 @@ case $- in
       *) return;;
 esac
 
-#if [ -z "$TMUX" ] && [ ${UID} != 0 ]
-#then
-#    /usr/local/bin/tmux #new-window -A -s main
-#fi
-#
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
+if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
+    if ! xset b 1 2>&1 > /dev/null; then
+        echo "X DISPLAY not available"
+        sleep 3
+    fi
+    export session=$(tmux list-sessions -F "#{session_id}" | sort -n | tail -1 2>/dev/null)
+    tmux new-session -s "ssh_tmux$session"
+    exit
+fi
+
+function n()
+{
+    m $@ | compup.py
+}
+
+function nn()
+{
+    mm $@ | compup.py
+}
+
 HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
@@ -122,14 +135,14 @@ export PATH=/home/local/MAGICLEAP/ykahanovitch/.cargo/bin:$PATH
 export MLCERT=/ssd1/trees/mlsdk/internal/ml_internal.cert
 export USE_CCACHE=1
 export CCACHE_DIR=/home/local/MAGICLEAP/ykahanovitch/ccache
-MY_ROOT="/ssd2/trees/ml2"
+MY_ROOT="/ssd2/trees/browser"
 alias ccache $MY_ROOT/./prebuilts/misc/linux-x86/ccache/ccache
 cd $MY_ROOT
 source build/envsetup.sh
 
-#L=phaedra_full-userdebug
+L=phaedra_full-userdebug
 #L=phaedra-userdebug
-L=acamas-userdebug
+#L=acamas-userdebug
 lunch $L
 
 #alias rn="mldb shell"
@@ -144,7 +157,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 #echo -en '\033]0;$(hostname) [\$(gettop):$L]\a'
-PS1='\[\033]0;$(hostname) [$ANDROID_BUILD_TOP:$TARGET_PRODUCT-$TARGET_BUILD_VARIANT]\a\033k$(hostname)\033\]'
+PS1='\[\033]0;$(hostname) [$ANDROID_BUILD_TOP:$TARGET_PRODUCT-$TARGET_BUILD_VARIANT]\a\]'
+#PS1=$PS1'\[033k$(hostname)\033\]'
 if [ "$color_prompt" = yes ]; then
     PS1=$PS1'${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
