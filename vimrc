@@ -216,12 +216,7 @@ set noerrorbells visualbell t_vb=
 
 " Extensions
 function! Cscope(option, query, ...)
-  let a:ignorecase = get(a:, 1, 0)
-  if a:ignorecase
-    let realoption = "C" . a:option
-  else
-    let realoption = a:option
-  endif
+  let realoption = a:option
 
   let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[36m%s\033[0m:\033[36m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
   let opts = {
@@ -323,3 +318,7 @@ endfunction
 
 autocmd bufenter * call Panetitle()
 
+let g:airline#extensions#tabline#enabled = 1
+" Tab navigation like Firefox.
+nnoremap <C-S-tab> :bprevious<CR>
+nnoremap <C-tab>   :bnext<CR>
