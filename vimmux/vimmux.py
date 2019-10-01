@@ -8,27 +8,31 @@ import psutil
 import re
 
 class TmuxPane(object):
-    def __init__(self, pane_pid, pane_id, window_index):
+    def __init__(self, session_id, pane_pid, pane_id, window_index):
         self.pid, self.id, self.window = pane_pid, pane_id, window_index
         self.pid = int(self.pid)
+        self.session_id = session_id
 
     def focus(self):
+        #current_session = subprocess.check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
         subprocess.check_call(['tmux', 'selectw', '-t', self.window])
         subprocess.check_call(['tmux', 'selectp', '-Z', '-t', self.id])
 
 class TmuxCom(object):
     panes = {}
     server_pid = -1
+    current_session = ""
 
     @staticmethod
     def Init():
         TmuxCom.panes = {}
-        TmuxCom.server_pid = -1
-        pane_list = subprocess.check_output(['tmux','list-panes','-a','-F',"#{pane_pid} #{pane_id} #{window_id} #{pid}"])[:-1].split('\n')
+        TmuxCom.server_pid = subprocess.check_output(['tmux', 'display-message', '-p', '#{pid}'])
+        TmuxCom.server_pid = int(TmuxCom.server_pid, 10)
+        TmuxCom.current_session = subprocess.check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
+        pane_list = subprocess.check_output(['tmux','list-panes','-a','-F',"#{session_id} #{pane_pid} #{pane_id} #{window_id}"])[:-1].split('\n')
         for p in pane_list:
-            pane_pid, pane_id, window_index, TmuxCom.server_pid = p.split()
-            TmuxCom.server_pid = int(TmuxCom.server_pid)
-            t = TmuxPane(pane_pid, pane_id, window_index)
+            session_id, pane_pid, pane_id, window_index = p.split()
+            t = TmuxPane(session_id, pane_pid, pane_id, window_index)
             TmuxCom.panes[t.pid] = t
 
     @staticmethod
@@ -40,15 +44,19 @@ class TmuxCom(object):
         
 
 class VimFile(object):
-    desc_re = re.compile("^ *([0-9]+) +([^ ]*) +\"(.*)\" +line ([0-9]+)$")
-    def __init__(self, desc):
+    desc_re = re.compile("^ *([0-9]+) +([^ ]*) +([^ ]*) *\"(.*)\" +line ([0-9]+)$")
+    def __init__(self, desc, editor):
 
         desc_match = VimFile.desc_re.match(desc)
         if not desc_match:
             raise RuntimeError("line {0} did not match".format(desc))
-        self.id, self.stat, self.fn, self.line = desc_match.groups()
+        self.id, self.stat, _, self.fn, self.line = desc_match.groups()
         self.line = int(self.line)
         self.id = int(self.id)
+        self.editor = editor
+
+    def show(self):
+        subprocess.check_call(['vim', '--servername', self.editor.name, '--remote-expr', 'execute("buffer! {0}")'.format(self.id)])
 
 class VimInstance(object):
     def __init__(self, name):
@@ -64,10 +72,10 @@ class VimInstance(object):
         files_list = subprocess.check_output(['vim', '--servername', name, '--remote-expr', 'execute("ls")']).split('\n')
         files_list = [ l for l in files_list if len(l) ]
         for l in files_list:
-            vfile = VimFile(l)
+            vfile = VimFile(l, self)
             if vfile.fn == '[No Name]':
                 continue
-            self.files[self.pwd + vfile.fn] = vfile
+            self.files[vfile.fn] = vfile
 
     def cwd(self):
         self.pwd = subprocess.check_output(['vim', '--servername', self.name, '--remote-expr', 'execute("pwd")'])
@@ -79,6 +87,7 @@ class VimInstance(object):
         try:
             pr = psutil.Process(p)
         except:
+            print ("not a Process")
             return
         parent = pr.ppid()
         self.is_tmux_vim = False
@@ -100,6 +109,8 @@ class VimInstance(object):
         if self.tmux_pane == None:
             return
         self.tmux_pane.focus()
+        if name in self.files:
+            self.files[name].show()
 
 
 class VimComm(object):
@@ -129,17 +140,13 @@ class VimComm(object):
             if server in  self.vims:
                 self.vims[server].select(fl)
 
-
-
-
 def FzFSelect(opts):
     p = subprocess.Popen(['fzf', '--layout=reverse-list'] , stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     res = p.communicate(input='\n'.join(opts))[0]
     return res[:-1]
 
-
+time.sleep(0.05)
 TmuxCom.Init()
-
 v = VimComm()
 v.refresh()
 selection = FzFSelect(v.get_selection_list())
