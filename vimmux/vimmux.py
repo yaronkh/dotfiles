@@ -12,6 +12,9 @@ class TmuxPane(object):
         self.pid, self.id, self.window = pane_pid, pane_id, window_index
         self.pid = int(self.pid)
 
+    def focus(self):
+        subprocess.check_call(['tmux', 'selectw', '-t', self.window])
+        subprocess.check_call(['tmux', 'selectp', '-Z', '-t', self.id])
 
 class TmuxCom(object):
     panes = {}
@@ -21,12 +24,20 @@ class TmuxCom(object):
     def Init():
         TmuxCom.panes = {}
         TmuxCom.server_pid = -1
-        pane_list = subprocess.check_output(['tmux','list-panes','-a','-F',"#{pane_pid} #{pane_id} #{window_index} #{pid}"])[:-1].split('\n')
+        pane_list = subprocess.check_output(['tmux','list-panes','-a','-F',"#{pane_pid} #{pane_id} #{window_id} #{pid}"])[:-1].split('\n')
         for p in pane_list:
             pane_pid, pane_id, window_index, TmuxCom.server_pid = p.split()
             TmuxCom.server_pid = int(TmuxCom.server_pid)
             t = TmuxPane(pane_pid, pane_id, window_index)
             TmuxCom.panes[t.pid] = t
+
+    @staticmethod
+    def get_pane(pane_pid):
+        if pane_pid in TmuxCom.panes:
+            return TmuxCom.panes[pane_pid]
+        else:
+            return None
+        
 
 class VimFile(object):
     desc_re = re.compile("^ *([0-9]+) +([^ ]*) +\"(.*)\" +line ([0-9]+)$")
@@ -47,6 +58,7 @@ class VimInstance(object):
         self.files = {}
         self.pid = subprocess.check_output(['vim', '--servername', name, '--remote-expr', 'execute("echo getpid()")'])
         self.pid = int(self.pid.split('\n')[-2])
+        self.tmux_pane = None
         self.pane_pid = -1
         self.check_tmux_vim()
         files_list = subprocess.check_output(['vim', '--servername', name, '--remote-expr', 'execute("ls")']).split('\n')
@@ -77,9 +89,21 @@ class VimInstance(object):
                 break
             p = parent
             parent = psutil.Process(p).ppid()
-        print "found pane_pid {0}".format(self.pane_pid)
+        self.tmux_pane = TmuxCom.get_pane(self.pane_pid)
+        #print "found pane_pid {0}".format(self.pane_pid)
+
+    def append(self, opts):
+        for fn, buf in self.files.items():
+            opts.append("{0}: {1}".format(self.name, buf.fn))
+
+    def select(self, name):  
+        if self.tmux_pane == None:
+            return
+        self.tmux_pane.focus()
+
 
 class VimComm(object):
+    buf_repr_re = re.compile("^(.*): *(.*)$")
     def __init__(self):
         self.vims = {}
 
@@ -92,8 +116,32 @@ class VimComm(object):
             if v.is_tmux_vim:
                 self.vims[server] = v
 
+    def get_selection_list(self):
+        res = []
+        for vim_name, vim in self.vims.items():
+            vim.append(res)
+        return res
+
+    def select(self, s):
+        m = VimComm.buf_repr_re.match(s)
+        if m != None:
+            server, fl = m.groups()
+            if server in  self.vims:
+                self.vims[server].select(fl)
+
+
+
+
+def FzFSelect(opts):
+    p = subprocess.Popen(['fzf', '--layout=reverse-list'] , stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    res = p.communicate(input='\n'.join(opts))[0]
+    return res[:-1]
+
 
 TmuxCom.Init()
 
 v = VimComm()
 v.refresh()
+selection = FzFSelect(v.get_selection_list())
+if len(selection):
+    v.select(selection)
