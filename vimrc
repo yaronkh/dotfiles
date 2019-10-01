@@ -318,7 +318,20 @@ endfunction
 
 autocmd bufenter * call Panetitle()
 
-let g:airline#extensions#tabline#enabled = 1
-" Tab navigation like Firefox.
-nnoremap <C-S-tab> :bprevious<CR>
-nnoremap <C-tab>   :bnext<CR>
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9 ]*')
+endfunction
+
+nnoremap <silent> <Leader><Enter> :call fzf#run({
+\   'source':  reverse(<sid>buflist()),
+\   'sink':    function('<sid>bufopen'),
+\   'options': '+m',
+\   'down':    len(<sid>buflist()) + 2
+\  })<CR>
