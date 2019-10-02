@@ -17,9 +17,9 @@ try:
     printed_tree = ""
     subprocess.check_output(['stty', '-echo'])
     while psutil.pid_exists(pid):
-      curr_tree = subprocess.check_output(['pstree','-G',str(pid)])[:-1]
+      curr_tree = subprocess.check_output(['pstree','-G','-l', str(pid)])[:-1]
       if curr_tree != printed_tree:
-          subprocess.check_output(['clear'])
+          subprocess.check_call(['tput', 'clear'])
           printed_tree = curr_tree
           print (place_begin + printed_tree + invi)
       time.sleep(2)
