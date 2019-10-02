@@ -95,9 +95,7 @@ class VimInstance(object):
 
     def cwd(self):
         self.pwd = subprocess.check_output(['vim', '--servername', self.name, '--remote-expr', 'execute("pwd")'])
-        print ("1", self.pwd)
         self.pwd = self.pwd.split('\n')[-2]
-        print("2", self.pwd)
         return self.pwd
 
     def check_tmux_vim(self):
@@ -105,7 +103,6 @@ class VimInstance(object):
         try:
             pr = psutil.Process(p)
         except:
-            print ("not a Process")
             return
         parent = pr.ppid()
         self.is_tmux_vim = False
