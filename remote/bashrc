@@ -10,15 +10,17 @@ case $- in
 esac
 
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-    if ! xset b 1 2>&1 > /dev/null; then
+    if [ -z "$DISPLAY" ]; then
         echo "X DISPLAY not available"
         sleep 3
     fi
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
     export session=$(tmux list-sessions -F "#{session_id}" | sort -n | tail -1 2>/dev/null)
     tmux new-session -s "ssh_tmux$session"
     exit
 fi
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 function n()
 {
     m $@ | compup.py
@@ -150,7 +152,6 @@ v8repo=/ssd1/trees/v8/v8
 export PATH=$OUT/host/linux-x86/bin:/ssd1/trees/repo-tools:/ssd1/trees/v8/v8/tools/dev:$PATH
 alias gm=$v8repo/tools/dev/gm.py
 function wait-for-device { mldb wait-for-device && mldb shell setprop persist.ml.power.active 1; }
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
