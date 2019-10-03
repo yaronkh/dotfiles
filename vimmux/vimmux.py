@@ -43,7 +43,7 @@ class TmuxCom(object):
             return TmuxCom.panes[pane_pid]
         else:
             return None
-        
+
 
 class VimFile(object):
     desc_re = re.compile("^ *([0-9]+) +([^ ]*) +([^ ]*) *\"(.*)\" +line ([0-9]+)$")
@@ -83,13 +83,13 @@ class VimInstance(object):
 
     def is_buff_in_edit_mode(self):
         for desc in self.get_file_list():
-           v = VimFile(desc, self)
+            v = VimFile(desc, self)
            if v.stat == '%a':
                return v.edit_sign == "+"
 
     def get_active_buf_name(self):
         for desc in self.get_file_list():
-           v = VimFile(desc, self)
+            v = VimFile(desc, self)
            if v.stat == '%a':
                return v.fn
 
@@ -120,7 +120,6 @@ class VimInstance(object):
             p = parent
             parent = psutil.Process(p).ppid()
         self.tmux_pane = TmuxCom.get_pane(self.pane_pid)
-        #print "found pane_pid {0}".format(self.pane_pid)
 
     def append(self, opts):
         for fn, buf in self.files.items():
@@ -139,18 +138,29 @@ class VimInstance(object):
         file_obj = self.files[file_name]
         file_obj.show()
         ffname = os.path.basename(file_name)
-        temp_fn = os.path.join(tempfile.gettempdir(), '{0}.{1}-{2}'.format(ffname, self.pid, forpid ))
+        temp_fn = os.path.join(tempfile.gettempdir(), '{1}-{2}.{0}'.format(ffname, self.pid, forpid ))
         subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("write {0}")'.format(temp_fn)])
         subprocess.check_call(['vim', '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
         file_obj.show()
         subprocess.check_call(['vim', '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
         return temp_fn
 
+    def close_file(self, file_name):
+        file_obj = self.files[file_name]
+        file_obj.show()
+        subprocess.check_call(['vim', '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
+
+    def open_file(self, file_name):
+        if file_name != None and len(file_name):
+            if self.is_buff_in_edit_mode():
+                subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("tabnew {0}")'.format(file_name)])
+            else:
+                subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("edit {0}")'.format(file_name)])
+
     def move_file(self, editor, file_name):
         if editor == self or not len(file_name):
             return
-        modified = editor.is_buff_in_edit_mode()
-        temp_fn = editor.stash(file_name, self.pid)
+        orig_file_name = file_name
         file_name = os.path.expanduser(file_name)
         if os.path.isabs(file_name):
             target_path = file_name
@@ -158,16 +168,19 @@ class VimInstance(object):
             target_path = os.path.relpath(os.path.join(editor.pwd, file_name), self.pwd)
             if len(target_path) >= 2 and target_path[:2] == "..":
                 target_path = os.path.abspath(os.path.join(self.pwd, target_path))
-        if temp_fn != None and len(temp_fn):
-            if self.is_buff_in_edit_mode():
-                subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("tabnew {0}")'.format(temp_fn)])
-            else:
-                subprocess.check_call(['vim', '--servername', self.name, '--remote', temp_fn])
+        modified = editor.is_buff_in_edit_mode()
+        if not modified:
+            editor.close_file(orig_file_name)
+            self.open_file(target_path)
+            return
 
-            subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("file {0}")'.format(target_path)])
-            if modified:
-                subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("set modified")'])
-            os.unlink(temp_fn)
+        temp_fn = editor.stash(file_name, self.pid)
+        if temp_fn != None and len(temp_fn):
+            self.open_file(temp_fn)
+             subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("file {0}")'.format(target_path)])
+             if modified:
+                 subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("set modified")'])
+             os.unlink(temp_fn)
 
 class VimComm(object):
     buf_repr_re = re.compile("^(.*): *(.*)$")
@@ -192,7 +205,7 @@ class VimComm(object):
     def select_file(self):
         selection = FzFSelect(self.get_selection_list())
         if len(selection):
-           self.select(selection)
+            self.select(selection)
 
     def move_file(self):
         selection = FzFSelect(self.get_selection_list())
@@ -225,8 +238,6 @@ class VimComm(object):
         if target_vim == None:
             return
         target_vim.move_file(self.vims[source], fl)
-        #print tempfile.gettempdir(),tempfile.gettempprefix()
- 
 
 def FzFSelect(opts):
     p = subprocess.Popen(['fzf', '--layout=reverse-list'] , stdin=subprocess.PIPE, stdout=subprocess.PIPE)
