@@ -8,6 +8,7 @@ import psutil
 import curses
 
 try:
+    subprocess.check_call(['tmux','selectp','-Z','-t',sys.argv[2]])
     pid = int(sys.argv[1])
     if not psutil.pid_exists(pid):
         raise RuntimeError("process not found")
