@@ -84,13 +84,13 @@ class VimInstance(object):
     def is_buff_in_edit_mode(self):
         for desc in self.get_file_list():
             v = VimFile(desc, self)
-           if v.stat == '%a':
+            if v.stat == '%a':
                return v.edit_sign == "+"
 
     def get_active_buf_name(self):
         for desc in self.get_file_list():
             v = VimFile(desc, self)
-           if v.stat == '%a':
+            if v.stat == '%a':
                return v.fn
 
     def get_file_list(self):
@@ -177,10 +177,10 @@ class VimInstance(object):
         temp_fn = editor.stash(file_name, self.pid)
         if temp_fn != None and len(temp_fn):
             self.open_file(temp_fn)
-             subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("file {0}")'.format(target_path)])
-             if modified:
-                 subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("set modified")'])
-             os.unlink(temp_fn)
+            subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("file {0}")'.format(target_path)])
+            if modified:
+                subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("set modified")'])
+            os.unlink(temp_fn)
 
 class VimComm(object):
     buf_repr_re = re.compile("^(.*): *(.*)$")

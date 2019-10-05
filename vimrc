@@ -1,8 +1,8 @@
 " Plug
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin()
@@ -46,10 +46,10 @@ let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=f
 function! ZInstall()
     copen
     exec ":AsyncRun sudo apt install silversearcher-ag exuberant-ctags cscope global codesearch -y
-    \ & sed -i 's/ autochdir/ noautochdir/' ~/.vim/plugged/SrcExpl/plugin/srcexpl.vim
-    \ & sed -i 's/silent execute \"perl/silent execute \"!perl/' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim 
-    \ & sed -i 's@ . redraw!@\ . \" > /dev/null\"@' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
-    \ & sed -i \"s/'String',[ \\t]*s\\:green/'String', \\['\\#d78787', 174\\]/\" ~/.vim/plugged/gruvbox/colors/gruvbox.vim"
+                \ & sed -i 's/ autochdir/ noautochdir/' ~/.vim/plugged/SrcExpl/plugin/srcexpl.vim
+                \ & sed -i 's/silent execute \"perl/silent execute \"!perl/' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim 
+                \ & sed -i 's@ . redraw!@\ . \" > /dev/null\"@' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
+                \ & sed -i \"s/'String',[ \\t]*s\\:green/'String', \\['\\#d78787', 174\\]/\" ~/.vim/plugged/gruvbox/colors/gruvbox.vim"
 endfunction
 
 " Generate All
@@ -100,6 +100,9 @@ nnoremap <leader>zt :call ZGenTagsAndCsFiles()<CR>
 
 " Codesearch
 nnoremap <leader>zx "tyiw:exe "CSearch " . @t . ""<CR>
+
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+:nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " VimClang
 let g:clang_c_options = '-std=c11'
@@ -216,60 +219,60 @@ set noerrorbells visualbell t_vb=
 
 " Extensions
 function! Cscope(option, query, ...)
-  let realoption = a:option
+    let realoption = a:option
 
-  let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[36m%s\033[0m:\033[36m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
-  let opts = {
-  \ 'source':  "cscope -dL" . realoption . " " . a:query . " | awk '" . color . "' && cscope -f cscope_small.out -dL" . realoption . " " . a:query . " | awk '" . color . "'",
-  \ 'options': ['--ansi', '--prompt', '> ',
-  \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
-  \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
-  \ 'down': '40%'
-  \ }
+    let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[36m%s\033[0m:\033[36m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
+    let opts = {
+                \ 'source':  "cscope -dL" . realoption . " " . a:query . " | awk '" . color . "' && cscope -f cscope_small.out -dL" . realoption . " " . a:query . " | awk '" . color . "'",
+                \ 'options': ['--ansi', '--prompt', '> ',
+                \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
+                \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
+                \ 'down': '40%'
+                \ }
 
-  function! opts.sink(lines) 
-    let data = split(a:lines)
-    let file = split(data[0], ":")
-    execute 'e ' . '+' . file[1] . ' ' . file[0]
-  endfunction
-  call fzf#run(opts)
+    function! opts.sink(lines) 
+        let data = split(a:lines)
+        let file = split(data[0], ":")
+        execute 'e ' . '+' . file[1] . ' ' . file[0]
+    endfunction
+    call fzf#run(opts)
 endfunction
 
 function! CscopeQuery(option, ...)
-  call inputsave()
-  if a:option == '9'
-    let query = input('Assignments to: ')
-  elseif a:option == '3'
-    let query = input('Functions calling: ')
-  elseif a:option == '2'
-    let query = input('Functions called by: ')
-  elseif a:option == '6'
-    let query = input('Egrep: ')
-  elseif a:option == '7'
-    let query = input('File: ')
-  elseif a:option == '1'
-    let query = input('Definition: ')
-  elseif a:option == '8'
-    let query = input('Files #including: ')
-  elseif a:option == '0'
-    let query = input('C Symbol: ')
-  elseif a:option == '4'
-    let query = input('Text: ')
-  else
-    echo "Invalid option!"
-    return
-  endif
-  call inputrestore()
-  if query != ""
-    let a:ignorecase = get(a:, 1, 0)
-    if a:ignorecase
-      call Cscope(a:option, query, 1)
+    call inputsave()
+    if a:option == '9'
+        let query = input('Assignments to: ')
+    elseif a:option == '3'
+        let query = input('Functions calling: ')
+    elseif a:option == '2'
+        let query = input('Functions called by: ')
+    elseif a:option == '6'
+        let query = input('Egrep: ')
+    elseif a:option == '7'
+        let query = input('File: ')
+    elseif a:option == '1'
+        let query = input('Definition: ')
+    elseif a:option == '8'
+        let query = input('Files #including: ')
+    elseif a:option == '0'
+        let query = input('C Symbol: ')
+    elseif a:option == '4'
+        let query = input('Text: ')
     else
-      call Cscope(a:option, query)
+        echo "Invalid option!"
+        return
     endif
-  else
-    echom "Cancelled Search!"
-  endif
+    call inputrestore()
+    if query != ""
+        let a:ignorecase = get(a:, 1, 0)
+        if a:ignorecase
+            call Cscope(a:option, query, 1)
+        else
+            call Cscope(a:option, query)
+        endif
+    else
+        echom "Cancelled Search!"
+    endif
 endfunction
 
 nnoremap <silent> <Leader>ca :call Cscope('9', expand('<cword>'))<CR>
@@ -316,22 +319,25 @@ function! Panetitle()
     endif
 endfunction
 
-autocmd bufenter * call Panetitle()
+augroup my_tmux
+    autocmd!
+    autocmd bufenter * call Panetitle()
+augroup end
 
 function! s:buflist()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
+    redir => ls
+    silent ls
+    redir END
+    return split(ls, '\n')
 endfunction
 
 function! s:bufopen(e)
-  execute 'buffer' matchstr(a:e, '^[ 0-9 ]*')
+    execute 'buffer' matchstr(a:e, '^[ 0-9 ]*')
 endfunction
 
 nnoremap <silent> <Leader><Enter> :call fzf#run({
-\   'source':  reverse(<sid>buflist()),
-\   'sink':    function('<sid>bufopen'),
-\   'options': '+m',
-\   'down':    len(<sid>buflist()) + 2
-\  })<CR>
+            \   'source':  reverse(<sid>buflist()),
+            \   'sink':    function('<sid>bufopen'),
+            \   'options': '+m',
+            \   'down':    len(<sid>buflist()) + 2
+            \  })<CR>
