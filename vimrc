@@ -212,6 +212,9 @@ map <C-w>w :q<CR>
 autocmd filetype make setlocal noexpandtab autoindent
 noremap <F1> <C-w><C-p>
 noremap <F2> <C-w><C-w>
+nnoremap <Tab> :tabnext<CR>
+nnoremap <S-Tab> :tabp<CR>
+nnoremap <C-t> :tabnew<CR>
 noremap <F6> :bp<CR>
 noremap <F7> :bn<CR>
 noremap <F5> :set nu!<CR>:set paste!<CR>i
@@ -322,6 +325,7 @@ endfunction
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
+    call remote_startserver(getpid())
 augroup end
 
 function! s:buflist()
@@ -341,3 +345,5 @@ nnoremap <silent> <Leader><Enter> :call fzf#run({
             \   'options': '+m',
             \   'down':    len(<sid>buflist()) + 2
             \  })<CR>
+
+
