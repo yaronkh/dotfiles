@@ -30,6 +30,15 @@ function nn()
 {
     mm $@ | compup.py
 }
+eval $(thefuck --alias)
+
+function kp()
+{
+    for p in $(ps -efw | fzf --multi | awk '{print $2}')
+    do
+        kill -9 $p
+    done
+}
 
 HISTCONTROL=ignoreboth
 
@@ -134,17 +143,17 @@ fi
 #export PATH=/ssd1/trees/mlsdk:/ssd1/trees/node-v10.15.3-linux-x64/bin:/ssd1/trees/depot_tools:~/bin:~/bin/repo-toos:/usr/local/bim:$PATH
 export PATH=$PATH:/opt/go/bin
 export PATH=/home/local/MAGICLEAP/ykahanovitch/.cargo/bin:$PATH
-export MLCERT=/ssd1/trees/mlsdk/internal/ml_internal.cert
+export MLCERT=/ssd2/trees/mlsdk/internal/ml_internal.cert
 export USE_CCACHE=1
 export CCACHE_DIR=/home/local/MAGICLEAP/ykahanovitch/ccache
-MY_ROOT="/ssd2/trees/browser"
+MY_ROOT="/ssd2/trees/ml2"
 alias ccache $MY_ROOT/./prebuilts/misc/linux-x86/ccache/ccache
 cd $MY_ROOT
 source build/envsetup.sh
 
-L=phaedra_full-userdebug
+#L=phaedra_full-userdebug
 #L=phaedra-userdebug
-#L=acamas-userdebug
+L=acamas-userdebug
 lunch $L
 
 #alias rn="mldb shell"
