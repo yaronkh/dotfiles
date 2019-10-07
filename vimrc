@@ -35,6 +35,8 @@ Plug 'morhetz/gruvbox'
 Plug 'vim-scripts/TagHighlight'
 Plug 'erig0/cscope_dynamic'
 Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-easytags'
 call plug#end()
 
 " Generation Parameters
@@ -347,3 +349,107 @@ nnoremap <silent> <Leader><Enter> :call fzf#run({
             \  })<CR>
 
 
+" Jump to tab: <Leader>t
+function TabName(n)
+    let buflist = tabpagebuflist(a:n)
+    let winnr = tabpagewinnr(a:n)
+    return fnamemodify(bufname(buflist[winnr - 1]), ':t')
+endfunction
+
+function! s:jumpToTab(line)
+    let pair = split(a:line, ' ')
+    let cmd = pair[0].'gt'
+    execute 'normal' cmd
+endfunction
+
+nnoremap <silent> <Leader>t :call fzf#run({
+            \   'source':  reverse(map(range(1, tabpagenr('$')),
+            \ 'v:val." "." ".TabName(v:val)')),
+            \   'sink':    function('<sid>jumpToTab'),
+            \   'down':    tabpagenr('$') + 2
+            \ })<CR>
+"})
+"
+"Jump to tag in the current buffer
+function! Align_lists(lists)
+    let maxes = {}
+    for list in a:lists
+        let i = 0
+        while i < len(list)
+            let maxes[i] = max([get(maxes, i, 0), len(list[i])])
+            let i += 1
+        endwhile
+    endfor
+    for list in a:lists
+        call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
+    endfor
+    return a:lists
+endfunction
+
+function! Btags_source()
+    let lines = map(split(system(printf(
+                \ 'ctags -f - --sort=no --excmd=number --language-force=%s %s',
+                \ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
+    if v:shell_error
+        throw 'failed to extract tags'
+    endif
+    return map(Align_lists(lines), 'join(v:val, "\t")')
+endfunction
+
+function! Btags_sink(line)
+    execute split(a:line, "\t")[2]
+endfunction
+
+function! Btags()
+    try
+        call fzf#run({
+                    \ 'source':  Btags_source(),
+                    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+                    \ 'down':    '40%',
+                    \ 'sink':    function('Btags_sink')})
+    catch
+        echohl WarningMsg
+        echom v:exception
+        echohl None
+    endtry
+endfunction
+
+command! BTags call Btags()
+nnoremap @ :call Btags()<CR>
+"
+"narrow results with ag
+function! s:ag_to_qf(line)
+    let parts = split(a:line, ':')
+    return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+                \ 'text': join(parts[3:], ':')}
+endfunction
+
+function! s:ag_handler(lines)
+    if len(a:lines) < 2 | return | endif
+
+    let cmd = get({'ctrl-x': 'split',
+                \ 'ctrl-v': 'vertical split',
+                \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+    let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+
+    let first = list[0]
+    execute cmd escape(first.filename, ' %#\')
+    execute first.lnum
+    execute 'normal!' first.col.'|zz'
+
+    if len(list) > 1
+        call setqflist(list)
+        copen
+        wincmd p
+    endif
+endfunction
+
+command! -nargs=* Ag call fzf#run({
+            \ 'source':  printf('ag --nogroup --column --color "%s"',
+            \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+            \ 'sink*':    function('<sid>ag_handler'),
+            \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+            \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+            \            '--color hl:68,hl+:110',
+            \ 'down':    '50%'
+            \ })"'))
