@@ -37,6 +37,7 @@ Plug 'erig0/cscope_dynamic'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
+Plug 'simeji/winresizer'
 call plug#end()
 
 " Generation Parameters
@@ -137,16 +138,6 @@ let g:acp_behaviorSnipmateLength = 1
 " GutenTags
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
 let g:gutentags_plus_nomap = 1
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
-noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
-noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
-noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
-noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
-
 " Fzf
 let $FZF_DEFAULT_COMMAND = "if [ -f cscope.files ]; then cat cscope.files; else ag -l; fi"
 set rtp+=~/.fzf
@@ -219,7 +210,7 @@ nnoremap <S-Tab> :tabp<CR>
 nnoremap <C-t> :tabnew<CR>
 noremap <F6> :bp<CR>
 noremap <F7> :bn<CR>
-noremap <F5> :set nu!<CR>:set paste!<CR>i
+noremap <F5> :set nu!<CR>:set paste!<CR>
 set noerrorbells visualbell t_vb=
 
 " Extensions
@@ -269,8 +260,8 @@ function! CscopeQuery(option, ...)
     endif
     call inputrestore()
     if query != ""
-        let a:ignorecase = get(a:, 1, 0)
-        if a:ignorecase
+        let ignorecase = get(a:, 1, 0)
+        if ignorecase
             call Cscope(a:option, query, 1)
         else
             call Cscope(a:option, query)
@@ -280,35 +271,55 @@ function! CscopeQuery(option, ...)
     endif
 endfunction
 
-nnoremap <silent> <Leader>ca :call Cscope('9', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cc :call Cscope('3', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cd :call Cscope('2', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>ce :call Cscope('6', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cf :call Cscope('7', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cg :call Cscope('1', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>ci :call Cscope('8', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cs :call Cscope('0', expand('<cword>'))<CR>
-nnoremap <silent> <Leader>ct :call Cscope('4', expand('<cword>'))<CR>
+let csdict = { 'find_c_symbol': '0',
+             \ 'find_definition': '1',
+             \ 'functions_called_by': '2',
+             \ 'where_used': '3',
+             \ 'find_this_text_string': '4',
+             \ 'egrep': '6',
+             \ 'find_this_file': '7',
+             \ 'find_files_including': '8',
+             \ 'where_this_symbol_is_assigned': '9'}
 
-nnoremap <silent> <Leader><Leader>fa :call CscopeQuery('9')<CR>
-nnoremap <silent> <Leader><Leader>fc :call CscopeQuery('3')<CR>
-nnoremap <silent> <Leader><Leader>fd :call CscopeQuery('2')<CR>
-nnoremap <silent> <Leader><Leader>fe :call CscopeQuery('6')<CR>
-nnoremap <silent> <Leader><Leader>ff :call CscopeQuery('7')<CR>
-nnoremap <silent> <Leader><Leader>fg :call CscopeQuery('1')<CR>
-nnoremap <silent> <Leader><Leader>fi :call CscopeQuery('8')<CR>
-nnoremap <silent> <Leader><Leader>fs :call CscopeQuery('0')<CR>
-nnoremap <silent> <Leader><Leader>ct :call CscopeQuery('4')<CR>
+noremap <silent> <leader>gs :GscopeFind csdict.find_c_symbol <C-R><C-W><cr>
+noremap <silent> <leader>gg :GscopeFind csdict.find_definition <C-R><C-W><cr>
+noremap <silent> <leader>gc :GscopeFind csdict.where_used <C-R><C-W><cr>
+noremap <silent> <leader>gt :GscopeFind csdict.find_this_text_string <C-R><C-W><cr>
+noremap <silent> <leader>ge :GscopeFind csdict.egrep <C-R><C-W><cr>
+noremap <silent> <leader>gf :GscopeFind csdict.find_this_file <C-R>=expand("<cfile>")<cr><cr>
+noremap <silent> <leader>gi :GscopeFind csdict.find_files_including <C-R>=expand("<cfile>")<cr><cr>
+noremap <silent> <leader>gd :GscopeFind csdict.functions_called_by <C-R><C-W><cr>
+noremap <silent> <leader>ga :GscopeFind csdict.where_this_symbol_is_assigned <C-R><C-W><cr>
 
-nnoremap <silent> <Leader><Leader>ca :call CscopeQuery('9', 1)<CR>
-nnoremap <silent> <Leader><Leader>cc :call CscopeQuery('3', 1)<CR>
-nnoremap <silent> <Leader><Leader>cd :call CscopeQuery('2', 1)<CR>
-nnoremap <silent> <Leader><Leader>ce :call CscopeQuery('6', 1)<CR>
-nnoremap <silent> <Leader><Leader>cf :call CscopeQuery('7', 1)<CR>
-nnoremap <silent> <Leader><Leader>cg :call CscopeQuery('1', 1)<CR>
-nnoremap <silent> <Leader><Leader>ci :call CscopeQuery('8', 1)<CR>
-nnoremap <silent> <Leader><Leader>cs :call CscopeQuery('0', 1)<CR>
-nnoremap <silent> <Leader><Leader>ct :call CscopeQuery('4', 1)<CR>
+nnoremap <silent> <Leader>ca :call Cscope(csdict.where_this_symbol_is_assigned, expand('<cword>'))<CR> 
+nnoremap <silent> <Leader>cc :call Cscope(csdict.where_used                   , expand('<cword>'))<CR>
+nnoremap <silent> <Leader>cd :call Cscope(csdict.functions_called_by          , expand('<cword>'))<CR>
+nnoremap <silent> <Leader>ce :call Cscope(csdict.egrep                        , expand('<cword>'))<CR>
+nnoremap <silent> <Leader>cf :call Cscope(csdict.find_this_file               , expand('<cword>'))<CR>
+nnoremap <silent> <Leader>cg :call Cscope(csdict.find_definition              , expand('<cword>'))<CR>
+nnoremap <silent> <Leader>ci :call Cscope(csdict.find_files_including         , expand('<cword>'))<CR>
+nnoremap <silent> <Leader>cs :call Cscope(csdict.find_c_symbol                , expand('<cword>'))<CR>
+nnoremap <silent> <Leader>ct :call Cscope(csdict.find_this_text_string        , expand('<cword>'))<CR>
+
+nnoremap <silent> <Leader><Leader>fa :call CscopeQuery(csdict.where_this_symbol_is_assigned)<CR>
+nnoremap <silent> <Leader><Leader>fc :call CscopeQuery(csdict.where_used                   )<CR>
+nnoremap <silent> <Leader><Leader>fd :call CscopeQuery(csdict.functions_called_by          )<CR>
+nnoremap <silent> <Leader><Leader>fe :call CscopeQuery(csdict.egrep                        )<CR>
+nnoremap <silent> <Leader><Leader>ff :call CscopeQuery(csdict.find_this_file               )<CR>
+nnoremap <silent> <Leader><Leader>fg :call CscopeQuery(csdict.find_definition              )<CR>
+nnoremap <silent> <Leader><Leader>fi :call CscopeQuery(csdict.find_files_including         )<CR>
+nnoremap <silent> <Leader><Leader>fs :call CscopeQuery(csdict.find_c_symbol                )<CR>
+nnoremap <silent> <Leader><Leader>ct :call CscopeQuery(csdict.find_this_text_string        )<CR>
+
+nnoremap <silent> <Leader><Leader>ca :call CscopeQuery(csdict.where_this_symbol_is_assigned, 1)<CR>
+nnoremap <silent> <Leader><Leader>cc :call CscopeQuery(csdict.where_used                   , 1)<CR>
+nnoremap <silent> <Leader><Leader>cd :call CscopeQuery(csdict.functions_called_by          , 1)<CR>
+nnoremap <silent> <Leader><Leader>ce :call CscopeQuery(csdict.egrep                        , 1)<CR>
+nnoremap <silent> <Leader><Leader>cf :call CscopeQuery(csdict.find_this_file               , 1)<CR>
+nnoremap <silent> <Leader><Leader>cg :call CscopeQuery(csdict.find_definition              , 1)<CR>
+nnoremap <silent> <Leader><Leader>ci :call CscopeQuery(csdict.find_files_including         , 1)<CR>
+nnoremap <silent> <Leader><Leader>cs :call CscopeQuery(csdict.find_c_symbol                , 1)<CR>
+nnoremap <silent> <Leader><Leader>ct :call CscopeQuery(csdict.find_this_text_string        , 1)<CR>
 
 " Gruvbox
 set background=dark
@@ -331,6 +342,12 @@ augroup my_tmux
         call remote_startserver(getpid())
     endif
     noremap <silent> <Leader>bx :q<CR>
+    noremap <silent> <Leader>bc :cclose<CR>
+    noremap <silent> <Leader>z :tab split<CR>
+    noremap <Leader>w :WinResizerStartResize<CR>
+    noremap <Leader>? :Maps<CR>
+    noremap <Leader>% :vsplit<CR>
+    noremap <Leader>" :split<CR>
 augroup end
 
 function! s:buflist()
@@ -418,7 +435,7 @@ function! Btags()
 endfunction
 
 command! BTags call Btags()
-nnoremap @ :call Btags()<CR>
+nnoremap <silent> <F3> :call Btags()<CR>
 "
 "narrow results with ag
 function! s:ag_to_qf(line)
