@@ -327,7 +327,10 @@ endfunction
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
-    call remote_startserver(getpid())
+    if v:servername == ""
+        call remote_startserver(getpid())
+    endif
+    noremap <silent> <Leader>bx :q<CR>
 augroup end
 
 function! s:buflist()
