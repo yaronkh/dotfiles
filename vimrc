@@ -38,6 +38,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
 Plug 'simeji/winresizer'
+Plug 'vim-scripts/DetectIndent'
 call plug#end()
 
 " Generation Parameters
@@ -436,6 +437,11 @@ endfunction
 
 command! BTags call Btags()
 nnoremap <silent> <F3> :call Btags()<CR>
+
+function! Agg(t)
+    copen
+    exec ":AsyncRun ag " . shellescap(a:t)
+endfunction
 "
 "narrow results with ag
 function! s:ag_to_qf(line)
@@ -473,3 +479,14 @@ command! -nargs=* Ag call fzf#run({
             \            '--color hl:68,hl+:110',
             \ 'down':    '50%'
             \ })"'))
+
+"detectIndent stuff
+autocmd BufReadPost * :DetectIndent
+
+"Options:
+
+"To prefer 'expandtab' to 'noexpandtab' when no detection is possible: 
+let g:detectindent_preferred_expandtab = 1
+
+"To specify a preferred indent level when no detection is possible:
+let g:detectindent_preferred_indent = 4
