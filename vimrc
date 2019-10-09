@@ -481,6 +481,7 @@ command! -nargs=* Ag call fzf#run({
             \ })"'))
 
 "detectIndent stuff
+"==================
 autocmd BufReadPost * :DetectIndent
 
 "Options:
@@ -490,3 +491,6 @@ let g:detectindent_preferred_expandtab = 1
 
 "To specify a preferred indent level when no detection is possible:
 let g:detectindent_preferred_indent = 4
+
+"remove trailing white spaces in c, c++
+autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk '[,']s/\s\+$//e | normal! `^
