@@ -39,6 +39,7 @@ Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
 Plug 'simeji/winresizer'
 Plug 'vim-scripts/DetectIndent'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " Generation Parameters
