@@ -28,7 +28,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'brandonbloom/csearch.vim'
-Plug 'jiangmiao/auto-pairs'
+"Plug 'jiangmiao/auto-pairs'
 Plug 'majutsushi/tagbar'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'morhetz/gruvbox'
@@ -349,6 +349,8 @@ augroup my_tmux
     noremap <Leader>? :Maps<CR>
     noremap <Leader>% :vsplit<CR>
     noremap <Leader>" :split<CR>
+    "remove trailing white spaces in c, c++
+    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk '[,']s/\s\+$//e | normal! `^
 augroup end
 
 function! s:buflist()
@@ -492,5 +494,18 @@ let g:detectindent_preferred_expandtab = 1
 "To specify a preferred indent level when no detection is possible:
 let g:detectindent_preferred_indent = 4
 
-"remove trailing white spaces in c, c++
-autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk '[,']s/\s\+$//e | normal! `^
+"google compilation"
+function! MakeRoot()
+    copen
+    exec ":AsyncRun bash -ci \"cd $ANDROID_BUILD_TOP; m -j 16\""
+endfunction
+
+function! MM()
+    copen
+    exec "AsyncRun bash -ci \"cd $VIM_FILEPATH; mm -j\""
+endfunction
+
+augroup my_tmux
+    nnoremap <Leader>m :call MakeRoot()<CR>
+    nnoremap <Leader>mm :call MM()<CR>
+augroup end
