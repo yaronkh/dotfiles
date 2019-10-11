@@ -60,9 +60,9 @@ class VimFile(object):
     def show(self):
         #check if the current buffer is in edit mode
         if self.editor.is_buff_in_edit_mode() and self.fn != self.editor.get_active_buf_name():
-            subprocess.check_call(['vim', '--servername', self.editor.name, '--remote-expr', 'execute("tabnew {0}")'.format(self.fn)])
+            subprocess.check_call([VimComm.vim_client, '--servername', self.editor.name, '--remote-expr', 'execute("tabnew {0}")'.format(self.fn)])
         else:
-            subprocess.check_call(['vim', '--servername', self.editor.name, '--remote-expr', 'execute("buffer {0}")'.format(self.id)])
+            subprocess.check_call([VimComm.vim_client, '--servername', self.editor.name, '--remote-expr', 'execute("buffer {0}")'.format(self.id)])
 
 class VimInstance(object):
     def __init__(self, name):
@@ -70,7 +70,7 @@ class VimInstance(object):
         self.is_tmux_vim = False
         self.cwd()
         self.files = {}
-        self.pid = subprocess.check_output(['vim', '--servername', name, '--remote-expr', 'execute("echo getpid()")'])
+        self.pid = subprocess.check_output([VimComm.vim_client, '--servername', name, '--remote-expr', 'execute("echo getpid()")'])
         self.pid = int(self.pid.split('\n')[-2])
         self.tmux_pane = None
         self.pane_pid = -1
@@ -94,13 +94,13 @@ class VimInstance(object):
                return v.fn
 
     def get_file_list(self):
-        files_list = subprocess.check_output(['vim', '--servername', self.name, '--remote-expr', 'execute("ls")']).split('\n')
+        files_list = subprocess.check_output([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("ls")']).split('\n')
         for l in files_list:
             if len(l):
                 yield l
 
     def cwd(self):
-        self.pwd = subprocess.check_output(['vim', '--servername', self.name, '--remote-expr', 'execute("pwd")'])
+        self.pwd = subprocess.check_output([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("pwd")'])
         self.pwd = self.pwd.split('\n')[-2]
         return self.pwd
 
@@ -123,7 +123,7 @@ class VimInstance(object):
 
     def append(self, opts):
         for fn, buf in self.files.items():
-            opts.append("{0}: {1}".format(self.name, buf.fn))
+            opts.append("{1}: {0}".format(self.name, buf.fn))
 
     def select(self, name):  
         if self.tmux_pane == None:
@@ -139,23 +139,23 @@ class VimInstance(object):
         file_obj.show()
         ffname = os.path.basename(file_name)
         temp_fn = os.path.join(tempfile.gettempdir(), '{1}-{2}.{0}'.format(ffname, self.pid, forpid ))
-        subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("write {0}")'.format(temp_fn)])
-        subprocess.check_call(['vim', '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
+        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("write {0}")'.format(temp_fn)])
+        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
         file_obj.show()
-        subprocess.check_call(['vim', '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
+        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
         return temp_fn
 
     def close_file(self, file_name):
         file_obj = self.files[file_name]
         file_obj.show()
-        subprocess.check_call(['vim', '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
+        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
 
     def open_file(self, file_name):
         if file_name != None and len(file_name):
             if self.is_buff_in_edit_mode():
-                subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("tabnew {0}")'.format(file_name)])
+                subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("tabnew {0}")'.format(file_name)])
             else:
-                subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("edit {0}")'.format(file_name)])
+                subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("edit {0}")'.format(file_name)])
 
     def move_file(self, editor, file_name):
         if editor == self or not len(file_name):
@@ -177,18 +177,19 @@ class VimInstance(object):
         temp_fn = editor.stash(file_name, self.pid)
         if temp_fn != None and len(temp_fn):
             self.open_file(temp_fn)
-            subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("file {0}")'.format(target_path)])
+            subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("file {0}")'.format(target_path)])
             if modified:
-                subprocess.check_call(['vim', '--servername', self.name, '--remote-expr', 'execute("set modified")'])
+                subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("set modified")'])
             os.unlink(temp_fn)
 
 class VimComm(object):
+    vim_client = "nvr"
     buf_repr_re = re.compile("^(.*): *(.*)$")
     def __init__(self):
         self.vims = {}
 
     def refresh(self):
-        vim_servers = subprocess.check_output(['vim', '--serverlist']).split('\n')
+        vim_servers = subprocess.check_output([VimComm.vim_client, '--serverlist']).split('\n')
         for server in vim_servers:
             if len(server) == 0:
                 continue
@@ -216,14 +217,14 @@ class VimComm(object):
     def select(self, s):
         m = VimComm.buf_repr_re.match(s)
         if m != None:
-            server, fl = m.groups()
+            fl, server = m.groups()
             if server in  self.vims:
                 self.vims[server].select(fl)
 
     def move(self, target_pane, s):
         m = VimComm.buf_repr_re.match(s)
         if m != None:
-            source, fl = m.groups()
+            fl, source = m.groups()
             if not source in self.vims:
                 return
         else:
