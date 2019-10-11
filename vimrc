@@ -337,6 +337,10 @@ function! Panetitle()
     endif
 endfunction
 
+function! CopyToX11Clipboard()
+    call system('xclip', @y)
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -352,6 +356,8 @@ augroup my_tmux
     noremap <Leader>" :split<CR>
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk '[,']s/\s\+$//e | normal! `^
+    "interface to X11 clipboard with the help of xclip
+    vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
 augroup end
 
 function! s:buflist()
