@@ -213,6 +213,8 @@ nnoremap <C-t> :tabnew<CR>
 noremap <F6> :bp<CR>
 noremap <F7> :bn<CR>
 noremap <F5> :set nu!<CR>:set paste!<CR>
+"enable working with the mouse
+set mouse=a
 set noerrorbells visualbell t_vb=
 
 " Extensions
@@ -341,6 +343,15 @@ function! CopyToX11Clipboard()
     call system('xclip', @y)
 endfunction
 
+function! PasteFromX11()
+    let @y = system('xsel', '-o')
+    normal! "ypl
+endfunction
+
+function! UpdateX11Clipboard()
+    call system('xclip', @")
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -358,6 +369,8 @@ augroup my_tmux
     autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk '[,']s/\s\+$//e | normal! `^
     "interface to X11 clipboard with the help of xclip
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
+    nnoremap <silent> <leader>p :call PasteFromX11() <CR>
+    vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
 augroup end
 
 function! s:buflist()
