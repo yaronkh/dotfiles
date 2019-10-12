@@ -52,7 +52,7 @@ function! ZInstall()
     copen
     exec ":AsyncRun sudo apt install silversearcher-ag exuberant-ctags cscope global codesearch -y
                 \ & sed -i 's/ autochdir/ noautochdir/' ~/.vim/plugged/SrcExpl/plugin/srcexpl.vim
-                \ & sed -i 's/silent execute \"perl/silent execute \"!perl/' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim 
+                \ & sed -i 's/silent execute \"perl/silent execute \"!perl/' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
                 \ & sed -i 's@ . redraw!@\ . \" > /dev/null\"@' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
                 \ & sed -i \"s/'String',[ \\t]*s\\:green/'String', \\['\\#d78787', 174\\]/\" ~/.vim/plugged/gruvbox/colors/gruvbox.vim"
 endfunction
@@ -115,7 +115,7 @@ let g:clang_cpp_options = '-std=c++17 -stdlib=libc++'
 
 let g:vimroot=$PWD
 function! ZSwitchToRoot()
-    execute "cd " . g:vimroot 
+    execute "cd " . g:vimroot
 endfunction
 nnoremap <leader>zr :call ZSwitchToRoot()<CR>
 
@@ -228,7 +228,7 @@ function! Cscope(option, query, ...)
                 \ 'down': '40%'
                 \ }
 
-    function! opts.sink(lines) 
+    function! opts.sink(lines)
         let data = split(a:lines)
         let file = split(data[0], ":")
         execute 'e ' . '+' . file[1] . ' ' . file[0]
@@ -293,7 +293,7 @@ noremap <silent> <leader>gi :GscopeFind csdict.find_files_including <C-R>=expand
 noremap <silent> <leader>gd :GscopeFind csdict.functions_called_by <C-R><C-W><cr>
 noremap <silent> <leader>ga :GscopeFind csdict.where_this_symbol_is_assigned <C-R><C-W><cr>
 
-nnoremap <silent> <Leader>ca :call Cscope(csdict.where_this_symbol_is_assigned, expand('<cword>'))<CR> 
+nnoremap <silent> <Leader>ca :call Cscope(csdict.where_this_symbol_is_assigned, expand('<cword>'))<CR>
 nnoremap <silent> <Leader>cc :call Cscope(csdict.where_used                   , expand('<cword>'))<CR>
 nnoremap <silent> <Leader>cd :call Cscope(csdict.functions_called_by          , expand('<cword>'))<CR>
 nnoremap <silent> <Leader>ce :call Cscope(csdict.egrep                        , expand('<cword>'))<CR>
@@ -332,7 +332,7 @@ hi Normal ctermbg=none
 function! Panetitle()
     if @% != ""
         silent !printf '\033]2;vim: %:p\033\\'
-    else 
+    else
         silent !printf '\033]2;vim: empty\033\\'
     endif
 endfunction
@@ -495,7 +495,7 @@ autocmd BufReadPost * :DetectIndent
 
 "Options:
 
-"To prefer 'expandtab' to 'noexpandtab' when no detection is possible: 
+"To prefer 'expandtab' to 'noexpandtab' when no detection is possible:
 let g:detectindent_preferred_expandtab = 1
 
 "To specify a preferred indent level when no detection is possible:
