@@ -36,7 +36,7 @@ Plug 'vim-scripts/TagHighlight'
 Plug 'erig0/cscope_dynamic'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-easytags'
+"Plug 'xolox/vim-easytags'
 Plug 'simeji/winresizer'
 Plug 'vim-scripts/DetectIndent'
 Plug 'airblade/vim-gitgutter'
@@ -506,7 +506,15 @@ function! MM()
     exec "AsyncRun bash -ci \"cd $VIM_FILEPATH; mm -j\""
 endfunction
 
+function! MakeBootImage()
+    copen
+    exec "AsyncRun bash -ci \"croot; make bootimage -j\""
+endfunction
+
+
+
 augroup my_tmux
     nnoremap <Leader>m :call MakeRoot()<CR>
     nnoremap <Leader>mm :call MM()<CR>
+    nnoremap <Leader>mb :call MakeBootImage()<CR>
 augroup end
