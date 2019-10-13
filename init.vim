@@ -41,6 +41,7 @@ Plug 'simeji/winresizer'
 Plug 'vim-scripts/DetectIndent'
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'me-vlad/spellfiles.vim'
 call plug#end()
 
 " Generation Parameters
@@ -57,7 +58,6 @@ function! ZInstall()
                 \ & sed -i 's@ . redraw!@\ . \" > /dev/null\"@' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
                 \ & sed -i \"s/'String',[ \\t]*s\\:green/'String', \\['\\#d78787', 174\\]/\" ~/.vim/plugged/gruvbox/colors/gruvbox.vim"
 endfunction
-
 " Generate All
 function! ZGenerateAll()
     copen
@@ -214,9 +214,12 @@ nnoremap <C-t> :tabnew<CR>
 noremap <F6> :bp<CR>
 noremap <F7> :bn<CR>
 noremap <F5> :set nu!<CR>:set paste!<CR>
-"enable working with the mouse
+set spelllang=en
+"enable ddd  working with the mouse
 set mouse=a
 set noerrorbells visualbell t_vb=
+"enable spell checking
+set spell
 
 " Extensions
 function! Cscope(option, query, ...)
@@ -370,6 +373,14 @@ function! RemoveWhiteSpacesFromGitHunks()
     execute("''")
 endfunction
 
+function! FzfSpellSink(word)
+  exe 'normal! "_ciw'.a:word
+endfunction
+function! FzfSpell()
+  let suggestions = spellsuggest(expand("<cword>"))
+  return fzf#run({'source': suggestions, 'sink': function("FzfSpellSink"), 'down': 10 })
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -381,6 +392,9 @@ augroup my_tmux
     noremap <silent> <Leader>z :tab split<CR>
     noremap <Leader>w :WinResizerStartResize<CR>
     noremap <Leader>? :Maps<CR>
+    noremap <Leader>?? :Commands<CR>
+    noremap <Leader>h :History<CR>
+    noremap <Leader>% :vsplit<CR>
     noremap <Leader>% :vsplit<CR>
     noremap <Leader>" :split<CR>
     "remove trailing white spaces in c, c++
@@ -392,6 +406,7 @@ augroup my_tmux
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
     vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
     execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
+    nnoremap z= :call FzfSpell()<CR>
 augroup end
 
 function! s:buflist()
@@ -521,7 +536,7 @@ command! -nargs=* Ag call fzf#run({
             \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
             \            '--color hl:68,hl+:110',
             \ 'down':    '50%'
-            \ })"'))
+            \ })
 
 "detectIndent stuff
 "==================
@@ -556,4 +571,3 @@ augroup my_tmux
     nnoremap <Leader>mm :call MM()<CR>
     nnoremap <Leader>mb :call MakeBootImage()<CR>
 augroup end
-
