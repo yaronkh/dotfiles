@@ -352,6 +352,23 @@ function! UpdateX11Clipboard()
     call system('xclip', @")
 endfunction
 
+function! RemoveWhiteSpacesFromGitHunks()
+    execute(":mark '")
+    execute(":GitGutter")
+    let hunks = GitGutterGetHunks()
+    for h in hunks
+        let line = get(h, 2, -1)
+        let count = get(h, 3, -1)
+        if line >= 0 && count > 0
+            for i in range(count)
+                execute(":" . (line + i))
+                execute('s/\s\+$//e')
+            endfor
+        endif
+    endfor
+    execute("''")
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -367,6 +384,8 @@ augroup my_tmux
     noremap <Leader>" :split<CR>
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk '[,']s/\s\+$//e | normal! `^
+    autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
+    "autocmd BufWriteCmd * :call RemoveWhiteSpacesFromGitHunks()
     "interface to X11 clipboard with the help of xclip
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
