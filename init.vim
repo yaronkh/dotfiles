@@ -7,7 +7,7 @@ endif
 
 call plug#begin()
 "Plug 'ctrlpvim/ctrlp.vim'
-"Plug 'justmao945/vim-clang'
+ "Plug 'justmao945/vim-clang'
 "Plug 'chazy/cscope_maps'
 Plug 'wesleyche/SrcExpl'
 Plug 'vim-scripts/taglist.vim'
@@ -40,6 +40,7 @@ Plug 'xolox/vim-misc'
 Plug 'simeji/winresizer'
 Plug 'vim-scripts/DetectIndent'
 Plug 'airblade/vim-gitgutter'
+Plug 'ntpeters/vim-better-whitespace'
 call plug#end()
 
 " Generation Parameters
@@ -383,13 +384,14 @@ augroup my_tmux
     noremap <Leader>% :vsplit<CR>
     noremap <Leader>" :split<CR>
     "remove trailing white spaces in c, c++
-    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk '[,']s/\s\+$//e | normal! `^
+    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk,*.vim '[,']s/\s\+$//e | normal! `^
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     "autocmd BufWriteCmd * :call RemoveWhiteSpacesFromGitHunks()
     "interface to X11 clipboard with the help of xclip
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
     vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
+    execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
 augroup end
 
 function! s:buflist()
@@ -549,10 +551,9 @@ function! MakeBootImage()
     exec "AsyncRun bash -ci \"croot; make bootimage -j\""
 endfunction
 
-
-
 augroup my_tmux
     nnoremap <Leader>m :call MakeRoot()<CR>
     nnoremap <Leader>mm :call MM()<CR>
     nnoremap <Leader>mb :call MakeBootImage()<CR>
 augroup end
+
