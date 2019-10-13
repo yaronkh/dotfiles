@@ -67,6 +67,7 @@ class VimFile(object):
 class VimInstance(object):
     def __init__(self, name):
         self.name = name
+        self.id = -1
         self.is_tmux_vim = False
         self.cwd()
         self.files = {}
@@ -80,6 +81,9 @@ class VimInstance(object):
             if vfile.fn == '[No Name]':
                 continue
             self.files[vfile.fn] = vfile
+
+    def set_id(self, id):
+        self.id = id
 
     def is_buff_in_edit_mode(self):
         for desc in self.get_file_list():
@@ -123,9 +127,9 @@ class VimInstance(object):
 
     def append(self, opts):
         for fn, buf in self.files.items():
-            opts.append("{1}: {0}".format(self.name, buf.fn))
+            opts.append("{1}: {0}".format(self.id, buf.fn))
 
-    def select(self, name):  
+    def select(self, name):
         if self.tmux_pane == None:
             return
         self.tmux_pane.focus()
@@ -190,12 +194,16 @@ class VimComm(object):
 
     def refresh(self):
         vim_servers = subprocess.check_output([VimComm.vim_client, '--serverlist']).split('\n')
+        self.vims = {}
+        id = 0
         for server in vim_servers:
             if len(server) == 0:
                 continue
             v = VimInstance(server)
             if v.is_tmux_vim:
-                self.vims[server] = v
+                self.vims[id] = v
+                v.set_id(id)
+                id += 1
 
     def get_selection_list(self):
         res = []
@@ -218,6 +226,8 @@ class VimComm(object):
         m = VimComm.buf_repr_re.match(s)
         if m != None:
             fl, server = m.groups()
+            server = int(server)
+            print server
             if server in  self.vims:
                 self.vims[server].select(fl)
 
@@ -225,6 +235,7 @@ class VimComm(object):
         m = VimComm.buf_repr_re.match(s)
         if m != None:
             fl, source = m.groups()
+            source = int(source)
             if not source in self.vims:
                 return
         else:
