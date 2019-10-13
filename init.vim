@@ -43,8 +43,8 @@ Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " Generation Parameters
-let g:ctagsFilePatterns = '\.c$|\.cc$|\.cpp$|\.cxx$|\.h$|\.hh$|\.hpp$'
-let g:ctagsOptions = '--languages=C,C++ --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
+let g:ctagsFilePatterns = '\.c$|\.cc$|\.cpp$|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|.rc$'
+let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 
 " Install
@@ -60,13 +60,13 @@ endfunction
 " Generate All
 function! ZGenerateAll()
     copen
-    exec ":AsyncRun ctags -R " . g:ctagsOptions . " && echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && ag -l -g '" . g:ctagsFilePatterns . "' > cscope.files && cscope -bq && cindex . && gtags"
+    exec ":AsyncRun ctags -R " . g:ctagsOptions . " && echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && gtags && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && cscope -bq && cindex ."
 endfunction
 
 " Generate All
 function! ZGenerateEverything()
     copen
-    exec ":AsyncRun ctags -R " . g:ctagsEverythingOptions . " && echo '" . g:ctagsEverythingOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files && cscope -bq && cindex . && gtags"
+    exec ":AsyncRun ctags -R " . g:ctagsEverythingOptions . " && echo '" . g:ctagsEverythingOptions . "' > .gutctags && gtags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files && cscope -bq && cindex ."
 endfunction
 
 " Write tags options.
@@ -141,7 +141,7 @@ let g:acp_behaviorSnipmateLength = 1
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
 let g:gutentags_plus_nomap = 1
 " Fzf
-let $FZF_DEFAULT_COMMAND = "if [ -f cscope.files ]; then cat cscope.files; else ag -l; fi"
+let $FZF_DEFAULT_COMMAND = "if [ -s cscope.files ]; then cat cscope.files; else ag -l; fi"
 set rtp+=~/.fzf
 nnoremap <C-p> :call ZSwitchToRoot()<CR>:Files<CR>
 nnoremap <C-n> :call ZSwitchToRoot()<CR>:Tags<CR>
