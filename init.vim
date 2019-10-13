@@ -400,7 +400,7 @@ augroup my_tmux
     noremap <Leader>% :vsplit<CR>
     noremap <Leader>" :split<CR>
     "remove trailing white spaces in c, c++
-    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk,*.vim '[,']s/\s\+$//e | normal! `^
+    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk,*.vim,COMMIT_EDITMSG '[,']s/\s\+$//e | normal! `^
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     "autocmd BufWriteCmd * :call RemoveWhiteSpacesFromGitHunks()
     "interface to X11 clipboard with the help of xclip
