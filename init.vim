@@ -42,6 +42,8 @@ Plug 'vim-scripts/DetectIndent'
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'me-vlad/spellfiles.vim'
+"Plug 'sakhnik/nvim-gdb'
+Plug 'cpiger/NeoDebug'
 call plug#end()
 
 " Generation Parameters
