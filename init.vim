@@ -42,8 +42,9 @@ Plug 'vim-scripts/DetectIndent'
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'me-vlad/spellfiles.vim'
-"Plug 'sakhnik/nvim-gdb'
+"Plug 'sakhnik/nvim-gdbm'
 Plug 'cpiger/NeoDebug'
+Plug 'kshenoy/vim-signature'
 call plug#end()
 
 " Generation Parameters
@@ -150,9 +151,11 @@ nnoremap <C-p> :call ZSwitchToRoot()<CR>:Files<CR>
 nnoremap <C-n> :call ZSwitchToRoot()<CR>:Tags<CR>
 
 " Sneak
-let g:sneak#use_ic_scs = 1
-let g:sneak#s_next = 1
-
+"let g:sneak#use_ic_scs = 1
+"let g:sneak#s_next = 1
+let g:sneak#label = 1
+map f <Plug>Sneak_s
+map F <Plug>Sneak_S
 " Cscope
 let g:cscopedb_big_file = 'cscope.out'
 let g:cscopedb_small_file = 'cscope_small.out'
