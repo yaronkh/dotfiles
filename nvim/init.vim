@@ -348,9 +348,16 @@ function! FzfSpell()
   return fzf#run({'source': suggestions, 'sink': function("FzfSpellSink"), 'down': 10 })
 endfunction
 
+function! Escapeins()
+    if &readonly
+         call feedkeys("\<esc>")
+    endif
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
+    autocmd bufenter * call Escapeins()
     if v:servername == ""
         call remote_startserver(getpid())
     endif
