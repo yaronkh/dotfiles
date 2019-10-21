@@ -45,6 +45,7 @@ Plug 'me-vlad/spellfiles.vim'
 "Plug 'sakhnik/nvim-gdbm'
 Plug 'cpiger/NeoDebug'
 Plug 'kshenoy/vim-signature'
+Plug 'vivien/vim-linux-coding-style'
 "Plug 'scrooloose/nerdcommenter'
 call plug#end()
 
@@ -381,6 +382,8 @@ augroup my_tmux
     vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
     "execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
     nnoremap z= :call FzfSpell()<CR>
+    nnoremap <Leader>li :LinuxCodingStyle<cr>
+    let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
 augroup end
 
 function! s:buflist()
