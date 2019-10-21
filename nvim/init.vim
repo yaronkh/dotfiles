@@ -356,6 +356,18 @@ function! Escapeins()
     endif
 endfunction
 
+function! SplitVAndSwap()
+    vne
+    wincmd x
+    wincmd l
+endfunction
+
+function! SplitAndSwap()
+    new
+    wincmd x
+    wincmd j
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -368,10 +380,10 @@ augroup my_tmux
     noremap <silent> <Leader>z :tab split<CR>
     noremap <Leader>w :WinResizerStartResize<CR>
     noremap <Leader>? :Maps<CR>
-    noremap <Leader>?? :Commands<CR>
+    noremap <Leader>?? :Commands<CR>SplitVAndSwap()<cr>
     noremap <Leader>h :History<CR>
-    noremap <Leader>% :vne<CR>
-    noremap <Leader>" :new<CR>
+    noremap <Leader>% :call SplitVAndSwap()<cr>
+    noremap <Leader>" :call SplitAndSwap()<cr>
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk,*.vim,COMMIT_EDITMSG '[,']s/\s\+$//e | normal! `^
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
