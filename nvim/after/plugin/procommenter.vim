@@ -1,40 +1,78 @@
-command! -range Comment <line1>,<line2>call CcomenterOpr('r')
-nnoremap <Leader>k :set operatorfunc=set operatorfunc=CcomenterOpr<cr>g@
+command! -range Comment <line1>,<line2>call CcommenterOpr('r')
+nnoremap <Leader>k :set operatorfunc=set operatorfunc=CcommenterOpr<cr>g@
 nnoremap <Leader>kk :Comment<CR>
-vnoremap <leader>k :<c-u>call CcomenterOpr(visualmode())<cr>
+vnoremap <leader>k :<c-u>call CcommenterOpr(visualmode())<cr>
 
 command! -range Uncomment <line1>,<line2>call CuncommenterOpr('r')
 nnoremap <Leader>u :set operatorfunc=set operatorfunc=CuncommenterOpr<cr>g@
 nnoremap <Leader>uu :Uncomment<CR>
 vnoremap <leader>u :<c-u>call CuncommenterOpr(visualmode())<cr>
 
-function! CcomentLines(firstLine, firstCol, lastLine)
-    call setpos('.', [0, a:firstLine, a:firstCol, 0])
-    normal! i//
-    for i in range(a:firstLine + 1, a:lastLine)
-        call cursor(i, 1)
-        normal! 0i//
+function! CcommentLinesNice(firstLine, lastLine)
+    if a:firstLine > a:lastLine
+        return
+    endif
+
+    let indnt = GetIndentSize(a:firstLine, a:lastLine)
+    for i in range(a:firstLine, a:lastLine)
+        call cursor(i, indnt + 1)
+        normal! i//
     endfor
 endfunction
 
-function! CuncommentLines(firstLine, firstCol, lastLine)
-    call setpos('.', [0, a:firstLine, a:firstCol, 0])
-    let lines = getline(a:firstLine, a:lastLine)
-    let linestr = lines[0]
-    if linestr[a:firstCol - 1: a:firstCol] == '//'
-       if a:firstCol == 1
-           let linestr = linestr[2:]
-       else
-           let linestr = linestr[:a:firstCol - 2] . linestr[a:firstCol + 1:]
-       endif
+function! CcommentLines(firstLine, firstCol, lastLine)
+    let idnt0 = GetLineIndent(0, a:firstLine)
+    if a:firstCol <= (idnt0 + 1)
+        call CcommentLinesNice(a:firstLine, a:lastLine)
+    else
+        call setpos('.', [0, a:firstLine, a:firstCol, 0])
+        normal! i//
+        if a:lastLine > a:firstLine
+            call CcommentLinesNice(a:firstLine + 1, a:lastLine)
+        endif
     endif
-    call setline(a:firstLine, linestr)
-    let i = a:firstLine + 1
-    for l in lines[1:]
-        let ll = substitute(l, '^\s*//', "", 'g')
-        call setline(i, ll)
-        let i += 1
-    endfor
+endfunction
+
+function! GetLineIndent(indx, lineNum)
+    let byteIndx = match(getline(a:lineNum), '\S')
+    if byteIndx < 0
+        return col(a:lineNum)
+    else
+        return byteIndx
+endfunction
+
+function! GetIndentSize(firstLine, lastLine)
+    return min(map(range(a:firstLine, a:lastLine), function("GetLineIndent")))
+endfunction
+
+function! CuncommentLinesNice(firstLine, lastLine)
+    if a:firstLine <= a:lastLine
+        let i = a:firstLine
+        for l in getline(a:firstLine, a:lastLine)
+            let ll = substitute(l, '\(^\s*\)//', '\1', 'e')
+            call setline(i, ll)
+            let i += 1
+        endfor
+    endif
+endfunction
+
+function! CuncommentLines(firstLine, firstCol, lastLine)
+    let idnt0 = GetLineIndent(0, a:firstLine)
+    if a:firstCol <= (idnt0 + 1)
+        call CuncommentLinesNice(a:firstLine, a:lastLine)
+    else
+        call setpos('.', [0, a:firstLine, a:firstCol, 0])
+        let linestr = getline(a:firstLine)
+        if linestr[a:firstCol - 1: a:firstCol] == '//'
+            if a:firstCol == 1
+                let linestr = linestr[2:]
+            else
+                let linestr = linestr[:a:firstCol - 2] . linestr[a:firstCol + 1:]
+            endif
+        endif
+        call setline(a:firstLine, linestr)
+        call CuncommentLinesNice(a:firstLine + 1, a:lastLine)
+    endif
 endfunction
 
 function! IsAtCommentRegion()
@@ -58,14 +96,12 @@ endfunction
 function! CcommentRegion(firstCol, firstLine, lastCol, lastLine)
     call cursor(a:firstLine, a:firstCol)
     let inCommentRange = IsAtCommentRegion()
-    if inCommentRange
-        normal! i(*
-    else
-        normal! i/*
-    endif
     let lastCol = a:lastCol
-    if a:firstLine == a:lastLine
-        let lastCol += 2
+    if !inCommentRange
+        normal! i/*
+        if a:firstLine == a:lastLine
+            let lastCol += 2
+        endif
     endif
     for l in range(a:firstLine, a:lastLine)
         let c1 = 1
@@ -79,9 +115,7 @@ function! CcommentRegion(firstCol, firstLine, lastCol, lastLine)
         let inCommentRange = CcEscape(l, c1, c2, inCommentRange)
     endfor
     call cursor(a:lastLine, lastCol)
-    if inCommentRange
-        normal! a*)
-    else
+    if !inCommentRange
         normal! a*/
     endif
 endfunction
@@ -144,11 +178,11 @@ function! GetOprParams(mode, firstl, lastll)
     return { "lPos" : lPos, "cPos" : cPos, "firstLine" : firstLine, "lastLine" : lastLine, "firstCol" : firstCol, "lastCol" : lastCol, "isLineComment" : isLineComment}
 endfunction
 
-function! CcomenterOpr(mode) range
+function! CcommenterOpr(mode) range
     let params = GetOprParams(a:mode, a:firstline, a:lastline)
 
     if params.isLineComment
-        call CcomentLines(params.firstLine, params.firstCol, params.lastLine)
+        call CcommentLines(params.firstLine, params.firstCol, params.lastLine)
     else
         call CcommentRegion(params.firstCol, params.firstLine, params.lastCol, params.lastLine)
     endif
