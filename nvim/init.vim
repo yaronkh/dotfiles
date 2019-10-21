@@ -209,6 +209,7 @@ set cmdheight=1
 set wildmode=list:longest,full
 set completeopt=longest,menuone
 set nowrap
+set colorcolumn=80
 nnoremap <C-q> <C-v>
 set shellslash
 map <C-w>w :q<CR>
@@ -368,9 +369,8 @@ augroup my_tmux
     noremap <Leader>? :Maps<CR>
     noremap <Leader>?? :Commands<CR>
     noremap <Leader>h :History<CR>
-    noremap <Leader>% :vsplit<CR>
-    noremap <Leader>% :vsplit<CR>
-    noremap <Leader>" :split<CR>
+    noremap <Leader>% :vne<CR>
+    noremap <Leader>" :new<CR>
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk,*.vim,COMMIT_EDITMSG '[,']s/\s\+$//e | normal! `^
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
