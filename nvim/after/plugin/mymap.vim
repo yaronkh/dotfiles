@@ -1,40 +1,28 @@
+let csdict = { 'find_c_symbol':                 {'id' : '0', 'query' : 'C symbol:',            'key' : 's'},
+             \ 'find_definition':               {'id' : '1', 'query' : 'Definition:',          'key' : 'g'},
+             \ 'functions_called_by':           {'id' : '2', 'query' : 'Functions called by:', 'key' : 'd'},
+             \ 'where_used':                    {'id' : '3', 'query' : 'Functions calling:',   'key' : 'c'},
+             \ 'find_this_text_string':         {'id' : '4', 'query' : 'Text:',                'key' : 't'},
+             \ 'egrep':                         {'id' : '6', 'query' : 'Egrep:',               'key' : 'e'},
+             \ 'find_this_file':                {'id' : '7', 'query' : 'File:',                'key' : 'f'},
+             \ 'find_files_including':          {'id' : '8', 'query' : 'Files #including:',    'key' : 'i'},
+             \ 'where_this_symbol_is_assigned': {'id' : '9', 'query' : 'Assignments to:',      'key' : 'a'}}
 
-noremap <silent> <leader>gs :GscopeFind csdict.find_c_symbol <C-R><C-W><cr>
-noremap <silent> <leader>gg :GscopeFind csdict.find_definition <C-R><C-W><cr>
-noremap <silent> <leader>gc :GscopeFind csdict.where_used <C-R><C-W><cr>
-noremap <silent> <leader>gt :GscopeFind csdict.find_this_text_string <C-R><C-W><cr>
-noremap <silent> <leader>ge :GscopeFind csdict.egrep <C-R><C-W><cr>
-noremap <silent> <leader>gf :GscopeFind csdict.find_this_file <C-R>=expand("<cfile>")<cr><cr>
-noremap <silent> <leader>gi :GscopeFind csdict.find_files_including <C-R>=expand("<cfile>")<cr><cr>
-noremap <silent> <leader>gd :GscopeFind csdict.functions_called_by <C-R><C-W><cr>
-noremap <silent> <leader>ga :GscopeFind csdict.where_this_symbol_is_assigned <C-R><C-W><cr>
+function! CscopeQuery(option, ...)
+    call inputsave()
+    let query = input(a:option.query)
+    call inputrestore()
+    let ignorecase = get(a:, 1, 0)
+    if ignorecase
+        call Cscope(a:option.id, a:option.query, 1)
+    else
+        call Cscope(a:option.id, a:option.query)
+    endif
+endfunction
 
-nnoremap <silent> <Leader>ca :call Cscope(csdict.where_this_symbol_is_assigned, expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cc :call Cscope(csdict.where_used                   , expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cd :call Cscope(csdict.functions_called_by          , expand('<cword>'))<CR>
-nnoremap <silent> <Leader>ce :call Cscope(csdict.egrep                        , expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cf :call Cscope(csdict.find_this_file               , expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cg :call Cscope(csdict.find_definition              , expand('<cword>'))<CR>
-nnoremap <silent> <Leader>ci :call Cscope(csdict.find_files_including         , expand('<cword>'))<CR>
-nnoremap <silent> <Leader>cs :call Cscope(csdict.find_c_symbol                , expand('<cword>'))<CR>
-nnoremap <silent> <Leader>ct :call Cscope(csdict.find_this_text_string        , expand('<cword>'))<CR>
-
-nnoremap <silent> <Leader><Leader>fa :call CscopeQuery(csdict.where_this_symbol_is_assigned)<CR>
-nnoremap <silent> <Leader><Leader>fc :call CscopeQuery(csdict.where_used                   )<CR>
-nnoremap <silent> <Leader><Leader>fd :call CscopeQuery(csdict.functions_called_by          )<CR>
-nnoremap <silent> <Leader><Leader>fe :call CscopeQuery(csdict.egrep                        )<CR>
-nnoremap <silent> <Leader><Leader>ff :call CscopeQuery(csdict.find_this_file               )<CR>
-nnoremap <silent> <Leader><Leader>fg :call CscopeQuery(csdict.find_definition              )<CR>
-nnoremap <silent> <Leader><Leader>fi :call CscopeQuery(csdict.find_files_including         )<CR>
-nnoremap <silent> <Leader><Leader>fs :call CscopeQuery(csdict.find_c_symbol                )<CR>
-nnoremap <silent> <Leader><Leader>ct :call CscopeQuery(csdict.find_this_text_string        )<CR>
-
-nnoremap <silent> <Leader><Leader>ca :call CscopeQuery(csdict.where_this_symbol_is_assigned, 1)<CR>
-nnoremap <silent> <Leader><Leader>cc :call CscopeQuery(csdict.where_used                   , 1)<CR>
-nnoremap <silent> <Leader><Leader>cd :call CscopeQuery(csdict.functions_called_by          , 1)<CR>
-nnoremap <silent> <Leader><Leader>ce :call CscopeQuery(csdict.egrep                        , 1)<CR>
-nnoremap <silent> <Leader><Leader>cf :call CscopeQuery(csdict.find_this_file               , 1)<CR>
-nnoremap <silent> <Leader><Leader>cg :call CscopeQuery(csdict.find_definition              , 1)<CR>
-nnoremap <silent> <Leader><Leader>ci :call CscopeQuery(csdict.find_files_including         , 1)<CR>
-nnoremap <silent> <Leader><Leader>cs :call CscopeQuery(csdict.find_c_symbol                , 1)<CR>
-nnoremap <silent> <Leader><Leader>ct :call CscopeQuery(csdict.find_this_text_string        ,\% 1)<CR>
+for action in items(csdict)
+    exe('nnoremap <silent> <leader>g' . action[1].key . '  :GscopeFind ' . action[1].id . '<C-R><C-W><cr> "' . action[0] . '. use text under cursor')
+    exe('nnoremap <silent> <Leader>c' . action[1].key . '  :call Cscope(' .  action[1].id . ', expand("<cword>"))<CR> "' . action[0] . 'use text under cursor and select')
+    exe('nnoremap <silent> <Leader><Leader>f' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ')<CR> "' . action[0] . '. prompt for input.')
+    exe('nnoremap <silent> <Leader><Leader>c' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ', 1)<CR> "' . action[0] . ' prompt for input (case insensitive)')
+endfor
