@@ -210,7 +210,7 @@ set cmdheight=1
 set wildmode=list:longest,full
 set completeopt=longest,menuone
 set nowrap
-set colorcolumn=80
+"set colorcolumn=80
 nnoremap <C-q> <C-v>
 set shellslash
 map <C-w>w :q<CR>
@@ -487,8 +487,15 @@ nnoremap <silent> <F3> :call Btags()<CR>
 
 function! Agg(t)
     copen
-    exec ":AsyncRun ag " . shellescap(a:t)
+    exec ":AsyncRun ag " . shellescape(a:t)
 endfunction
+
+function! Mgrep(t)
+    copen
+    exec ":AsyncRun find . -name .repo -prune -o -name .git -prune -o -path ./out -prune -o -regextype posix-egrep -iregex '(.*\/Makefile|.*\/Makefile\..*|.*\.make|.*\.mak|.*\.mk)' -type f -exec grep --color -n " . shellescape(a:t) . ' {} +'
+endfunction
+
+command! -nargs=* Mg call Mgrep(<q-args>)
 "
 "narrow results with ag
 function! s:ag_to_qf(line)
