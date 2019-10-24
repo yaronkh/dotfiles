@@ -20,9 +20,14 @@ function! CscopeQuery(option, ...)
     endif
 endfunction
 
+function! GscopeFindFunc(q, s)
+    exe('GscopeFind ' . a:q . ' ' . a:s)
+endfunction
+
 for action in items(csdict)
-    exe('nnoremap <silent> <leader>g' . action[1].key . '  :GscopeFind ' . action[1].id . '<C-R><C-W><cr> "' . action[0] . '. use text under cursor')
-    exe('nnoremap <silent> <Leader>c' . action[1].key . '  :call Cscope(' .  action[1].id . ', expand("<cword>"))<CR> "' . action[0] . 'use text under cursor and select')
-    exe('nnoremap <silent> <Leader><Leader>f' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ')<CR> "' . action[0] . '. prompt for input.')
-    exe('nnoremap <silent> <Leader><Leader>c' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ', 1)<CR> "' . action[0] . ' prompt for input (case insensitive)')
+    exe('let ' . action[0] . ' = "' . action[1].id . '"')
+    exe('nnoremap <leader>g' . action[1].key . ' :call GscopeFindFunc(' . action[0] . ', expand("<cword>"))<cr>')
+    exe('nnoremap <silent> <Leader>c' . action[1].key . '  :call Cscope(' .  action[0] . ', expand("<cword>"))<CR>')
+    exe('nnoremap <silent> <Leader><Leader>f' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ')<CR>')
+    exe('nnoremap <silent> <Leader><Leader>c' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ', 1)<CR>')
 endfor
