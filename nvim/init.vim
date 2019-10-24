@@ -251,53 +251,6 @@ function! Cscope(option, query, ...)
     call fzf#run(opts)
 endfunction
 
-function! CscopeQuery(option, ...)
-    call inputsave()
-    if a:option == '9'
-        let query = input('Assignments to: ')
-    elseif a:option == '3'
-        let query = input('Functions calling: ')
-    elseif a:option == '2'
-        let query = input('Functions called by: ')
-    elseif a:option == '6'
-        let query = input('Egrep: ')
-    elseif a:option == '7'
-        let query = input('File: ')
-    elseif a:option == '1'
-        let query = input('Definition: ')
-    elseif a:option == '8'
-        let query = input('Files #including: ')
-    elseif a:option == '0'
-        let query = input('C Symbol: ')
-    elseif a:option == '4'
-        let query = input('Text: ')
-    else
-        echo "Invalid option!"
-        return
-    endif
-    call inputrestore()
-    if query != ""
-        let ignorecase = get(a:, 1, 0)
-        if ignorecase
-            call Cscope(a:option, query, 1)
-        else
-            call Cscope(a:option, query)
-        endif
-    else
-        echom "Cancelled Search!"
-    endif
-endfunction
-
-let csdict = { 'find_c_symbol': '0',
-             \ 'find_definition': '1',
-             \ 'functions_called_by': '2',
-             \ 'where_used': '3',
-             \ 'find_this_text_string': '4',
-             \ 'egrep': '6',
-             \ 'find_this_file': '7',
-             \ 'find_files_including': '8',
-             \ 'where_this_symbol_is_assigned': '9'}
-
 " Gruvbox
 set background=dark
 let g:gruvbox_contrast_datk = 'medium'
@@ -392,6 +345,7 @@ augroup my_tmux
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
     vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
+    noremap <silent> <RightMouse> :Maps<cr>
     "execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
     nnoremap z= :call FzfSpell()<CR>
     nnoremap <Leader>li :LinuxCodingStyle<cr>
@@ -487,7 +441,7 @@ nnoremap <silent> <F3> :call Btags()<CR>
 
 function! Agg(t)
     copen
-    exec ":AsyncRun ag " . shellescape(a:t)
+    exec ":AsyncRun ag " . shellescap(a:t)
 endfunction
 
 function! Mgrep(t)
