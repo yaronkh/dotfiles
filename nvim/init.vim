@@ -267,7 +267,9 @@ function! Panetitle()
 endfunction
 
 function! CopyToX11Clipboard()
-    call system('xclip', @y)
+    call system('xclip -i -sel clipboard', @y)
+    call system('xclip -i -sel primary', @y)
+    call system('xclip -i -sel secondary', @y)
 endfunction
 
 function! PasteFromX11()
@@ -276,7 +278,9 @@ function! PasteFromX11()
 endfunction
 
 function! UpdateX11Clipboard()
-    call system('xclip', @")
+    call system('xclip -i -sel clipboard', @")
+    call system('xclip -i -sel primary', @")
+    call system('xclip -i -sel secondary', @")
 endfunction
 
 function! RemoveWhiteSpacesFromGitHunks()
