@@ -126,6 +126,9 @@ class VimInstance(object):
         self.tmux_pane = TmuxCom.get_pane(self.pane_pid)
 
     def append(self, opts):
+        vimstr = "vim: {0} path:{1}".format(self.id, self.cwd())
+        opts.append(vimstr)
+        opts.append("="*len(vimstr))
         for fn, buf in self.files.items():
             opts.append("{1}: {0}".format(self.id, buf.fn))
 
@@ -133,7 +136,7 @@ class VimInstance(object):
         if self.tmux_pane == None:
             return
         self.tmux_pane.focus()
-        if name in self.files:
+        if len(name) and name in self.files:
             self.files[name].show()
 
     def stash(self, file_name, forpid):
@@ -189,6 +192,7 @@ class VimInstance(object):
 class VimComm(object):
     vim_client = "nvr"
     buf_repr_re = re.compile("^(.*): *(.*)$")
+    vim_repr = re.compile("^vim: ([0-9]+) path:")
     def __init__(self):
         self.vims = {}
 
@@ -209,6 +213,7 @@ class VimComm(object):
         res = []
         for vim_name, vim in self.vims.items():
             vim.append(res)
+            res.append("")
         return res
 
     def select_file(self):
@@ -223,6 +228,13 @@ class VimComm(object):
             self.move(target_pane, selection)
 
     def select(self, s):
+        m = VimComm.vim_repr.match(s)
+        if m != None:
+            server, = m.groups()
+            server = int(server)
+            self.vims[server].select("")
+            return
+
         m = VimComm.buf_repr_re.match(s)
         if m != None:
             fl, server = m.groups()
