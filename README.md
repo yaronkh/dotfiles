@@ -1,4 +1,4 @@
-# Yaron's dofile
+# Yaron's dofiles
 
 ## Get my configuration files
 get my configuration files and place them under your home directory
@@ -60,7 +60,7 @@ You will need to install tmux on your remote machine
 
 1. make sure that you have xclip on the station that runs tmux.
 
-1. In order to use my script (``CTRL-b` `` `CTRL-bv` and `CTRL-bm`) make sure that you have python2.7 and pstree.
+1. In order to use my script (``CTRL-b` `` `CTRL-bv` and `CTRL-bm`) make sure that you have python3.x and pstree.
  you can use yum to install those utilities
 
 1. Add the following lines to your  ~/.bashrc file:
@@ -86,14 +86,16 @@ you can set PS1 var in your .bashrc.
 for example the following line will print the host name to the pane title:
 `PS1="\[\033]2$PWD\033\033k$(hostname)\]$PS1"`
 
-## Install neo vim (nvim)
-Install neo vim (nvim) on the remote machine.
+## Install neovim (nvim)
+Install neovim (nvim) on the remote machine.
 All my customization files for nvim are simple and should run even on old versions of nvim
 
 1. the following utilities are used by my nvim configuration so make sure that
 those utilities are available or install them via yum:
  silversearcher-ag exuberant-ctags cscope global codesearch
  take a look at the function ZInstall in ~/dotfiles/nvim/init.vim
+
+1. install neovim-remote (neovim nvr utility is required)
 
 1. copy my nvim  confi files to your .config directory:
 `cp -r ~/dotfiles/nvim ~/.config/`
@@ -106,6 +108,14 @@ those utilities are available or install them via yum:
 1. you might want to change the line
 `let g:linuxsty_patterns = [ "/kernel/", "/linux/"]`
 this list holds a set of regular expression used to detect kernel code repository
+
+## Install tmux-neovim customization scripts:
+
+1. verify python version (python3.x is required):
+`python --version`
+
+1. Verify that python module "psutil" is installed:
+`python -c "import psutil" && echo "psutil installed"`
 
 ## Quick tour
 
