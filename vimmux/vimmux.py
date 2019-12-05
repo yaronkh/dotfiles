@@ -8,6 +8,8 @@ import psutil
 import re
 import tempfile
 
+def check_output(args):
+    return subprocess.check_output(args).decode('ascii')
 
 class TmuxPane(object):
     def __init__(self, session_id, pane_pid, pane_id, window_index):
@@ -16,7 +18,7 @@ class TmuxPane(object):
         self.session_id = session_id
 
     def focus(self):
-        #current_session = subprocess.check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
+        #current_session = check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
         subprocess.check_call(['tmux', 'selectw', '-t', self.window])
         subprocess.check_call(['tmux', 'selectp', '-Z', '-t', self.id])
 
@@ -28,10 +30,10 @@ class TmuxCom(object):
     @staticmethod
     def Init():
         TmuxCom.panes = {}
-        TmuxCom.server_pid = subprocess.check_output(['tmux', 'display-message', '-p', '#{pid}'])
+        TmuxCom.server_pid = check_output(['tmux', 'display-message', '-p', '#{pid}'])
         TmuxCom.server_pid = int(TmuxCom.server_pid, 10)
-        TmuxCom.current_session = subprocess.check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
-        pane_list = subprocess.check_output(['tmux','list-panes','-a','-F',"#{session_id} #{pane_pid} #{pane_id} #{window_id}"])[:-1].split('\n')
+        TmuxCom.current_session = check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
+        pane_list = check_output(['tmux','list-panes','-a','-F',"#{session_id} #{pane_pid} #{pane_id} #{window_id}"])[:-1].split('\n')
         for p in pane_list:
             session_id, pane_pid, pane_id, window_index = p.split()
             t = TmuxPane(session_id, pane_pid, pane_id, window_index)
@@ -71,7 +73,7 @@ class VimInstance(object):
         self.is_tmux_vim = False
         self.cwd()
         self.files = {}
-        self.pid = subprocess.check_output([VimComm.vim_client, '--servername', name, '--remote-expr', 'execute("echo getpid()")'])
+        self.pid = check_output([VimComm.vim_client, '--servername', name, '--remote-expr', 'execute("echo getpid()")'])
         self.pid = int(self.pid.split('\n')[-2])
         self.tmux_pane = None
         self.pane_pid = -1
@@ -98,13 +100,13 @@ class VimInstance(object):
                return v.fn
 
     def get_file_list(self):
-        files_list = subprocess.check_output([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("ls")']).split('\n')
+        files_list = check_output([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("ls")']).split('\n')
         for l in files_list:
             if len(l):
                 yield l
 
     def cwd(self):
-        self.pwd = subprocess.check_output([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("pwd")'])
+        self.pwd = check_output([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("pwd")'])
         self.pwd = self.pwd.split('\n')[-2]
         return self.pwd
 
@@ -129,7 +131,7 @@ class VimInstance(object):
         vimstr = "vim: {0} path:{1}".format(self.id, self.cwd())
         opts.append(vimstr)
         opts.append("="*len(vimstr))
-        for fn, buf in self.files.items():
+        for fn, buf in list(self.files.items()):
             opts.append("{1}: {0}".format(self.id, buf.fn))
 
     def select(self, name):
@@ -197,7 +199,7 @@ class VimComm(object):
         self.vims = {}
 
     def refresh(self):
-        vim_servers = subprocess.check_output([VimComm.vim_client, '--serverlist']).split('\n')
+        vim_servers = check_output([VimComm.vim_client, '--serverlist']).split('\n')
         self.vims = {}
         id = 0
         for server in vim_servers:
@@ -211,7 +213,7 @@ class VimComm(object):
 
     def get_selection_list(self):
         res = []
-        for vim_name, vim in self.vims.items():
+        for vim_name, vim in list(self.vims.items()):
             vim.append(res)
             res.append("")
         return res
@@ -239,7 +241,7 @@ class VimComm(object):
         if m != None:
             fl, server = m.groups()
             server = int(server)
-            print server
+            print(server)
             if server in  self.vims:
                 self.vims[server].select(fl)
 
@@ -254,7 +256,7 @@ class VimComm(object):
             return
         target = ''
         target_vim = None
-        for server, vim in self.vims.items():
+        for server, vim in list(self.vims.items()):
             if target_pane == vim.tmux_pane.id:
                 target = server
                 target_vim = vim
@@ -265,8 +267,8 @@ class VimComm(object):
 
 def FzFSelect(opts):
     p = subprocess.Popen(['fzf', '--layout=reverse-list'] , stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    res = p.communicate(input='\n'.join(opts))[0]
-    return res[:-1]
+    res = p.communicate(input='\n'.join(opts).encode('ascii'))[0]
+    return res[:-1].decode('ascii')
 
 
 
