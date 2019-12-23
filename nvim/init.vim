@@ -47,6 +47,7 @@ Plug 'cpiger/NeoDebug'
 Plug 'kshenoy/vim-signature'
 Plug 'vivien/vim-linux-coding-style'
 "Plug 'scrooloose/nerdcommenter'
+"Plug 'ycm-core/YouCompleteMe'
 call plug#end()
 
 " Generation Parameters
@@ -143,6 +144,18 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 " Omni
 "au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.c,*.h,*.cxx,*.cc,*.hh set omnifunc=omni#cpp#complete#Main
 let g:acp_behaviorSnipmateLength = 1
+set tags+=~/dotfiles/nvim/tags/cpp
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+"" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menuone,menu,longest,preview
 
 " GutenTags
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
@@ -154,7 +167,7 @@ nnoremap <C-p> :call ZSwitchToRoot()<CR>:Files<CR>
 nnoremap <C-n> :call ZSwitchToRoot()<CR>:Tags<CR>
 
 " Sneak
-"let g:sneak#use_ic_scs = 1
+"let g:sneak#use_i"c_scs = 1
 "let g:sneak#s_next = 1
 let g:sneak#label = 1
 map f <Plug>Sneak_s
