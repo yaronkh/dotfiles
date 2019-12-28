@@ -68,13 +68,13 @@ endfunction
 " Generate All
 function! ZGenerateAll()
     copen
-    exec ":AsyncRun ctags -R " . g:ctagsOptions . " && echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && gtags && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && cscope -bq && cindex ."
+    exec ":AsyncRun ctags -R " . g:ctagsOptions . " && echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && gtags && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && cscope -bq"
 endfunction
 
 " Generate All
 function! ZGenerateEverything()
     copen
-    exec ":AsyncRun ctags -R " . g:ctagsEverythingOptions . " && echo '" . g:ctagsEverythingOptions . "' > .gutctags && gtags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files && cscope -bq && cindex ."
+    exec ":AsyncRun ctags -R " . g:ctagsEverythingOptions . " && echo '" . g:ctagsEverythingOptions . "' > .gutctags && gtags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files && cscope -bq index"
 endfunction
 
 " Write tags options.
@@ -158,8 +158,22 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
 " GutenTags
+let g:gutentags_modules = ['ctags']
+" enable gtags module
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
+
+" config project root markers.
+"let g:gutentags_project_root = ['.root']
+
+" generate datebases in my cache directory, prevent gtags files polluting my p                                                                                                             roject
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+
+" forbid gutentags adding gtags databases
+let g:gutentags_auto_add_gtags_cscope = 0
+
 let g:gutentags_plus_nomap = 1
+set statusline+=%{gutentags#statusline()}
+let g:gutentags_define_advanced_commands = 1
 " Fzf
 let $FZF_DEFAULT_COMMAND = "if [ -s cscope.files ]; then cat cscope.files; else ag -l; fi"
 set rtp+=~/.fzf
