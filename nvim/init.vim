@@ -48,6 +48,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'vivien/vim-linux-coding-style'
 "Plug 'scrooloose/nerdcommenter'
 "Plug 'ycm-core/YouCompleteMe'
+Plug 'davidhalter/jedi-vim'
 call plug#end()
 
 " Generation Parameters
