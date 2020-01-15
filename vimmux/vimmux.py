@@ -73,6 +73,7 @@ class VimInstance(object):
         self.is_tmux_vim = False
         self.cwd()
         self.files = {}
+        check_output([VimComm.vim_client, '--servername', name, '--remote-send', '<esc>'])
         self.pid = check_output([VimComm.vim_client, '--servername', name, '--remote-expr', 'execute("echo getpid()")'])
         self.pid = int(self.pid.split('\n')[-2])
         self.tmux_pane = None
