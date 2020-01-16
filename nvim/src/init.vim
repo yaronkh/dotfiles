@@ -181,6 +181,9 @@ set rtp+=~/.fzf
 nnoremap <C-p> :call ZSwitchToRoot()<CR>:Files<CR>
 nnoremap <C-n> :call ZSwitchToRoot()<CR>:Tags<CR>
 
+"setting the default browser
+let g:netrw_browsex_viewer="google-chrome-stable"
+
 " Sneak
 "let g:sneak#use_i"c_scs = 1
 "let g:sneak#s_next = 1
