@@ -144,7 +144,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " Omni
 "au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.c,*.h,*.cxx,*.cc,*.hh set omnifunc=omni#cpp#complete#Main
-let g:acp_behaviorSnipmateLength = 1
+"let g:acp_behaviorSnipmateLength = 1
 set tags+=~/dotfiles/nvim/tags/cpp
 let OmniCpp_NamespaceSearch = 1
 let OmniCpp_GlobalScopeSearch = 1
