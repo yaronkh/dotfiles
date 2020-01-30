@@ -65,6 +65,9 @@ You will need to install tmux on your remote machine
 
 1. Add the following lines to your  ~/.bashrc file:
 ```
+#make that the terminal is not in bracketed paste mode
+printf "\e[?2004l"
+
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
     if [ -z "$DISPLAY" ]; then
         echo "X DISPLAY not available"
