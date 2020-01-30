@@ -90,6 +90,13 @@ for example the following line will print the host name to the pane title:
 Install neovim (nvim) on the remote machine.
 All my customization files for nvim are simple and should run even on old versions of nvim
 
+to install neovim from ubunto repository:
+```
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install neovim
+```
+
 1. the following utilities are used by my nvim configuration so make sure that
 those utilities are available or install them via yum:
  silversearcher-ag exuberant-ctags cscope global codesearch
