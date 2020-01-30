@@ -235,8 +235,8 @@ set showcmd
 set incsearch
 set hlsearch
 color desert
-set shiftwidth=4
-set tabstop=4
+"set shiftwidth=4
+"set tabstop=4
 set cmdheight=1
 "set number
 set wildmode=list:longest,full
@@ -357,6 +357,25 @@ function! SplitAndSwap()
     wincmd j
 endfunction
 
+let g:do_restore_last_session = 1
+let g:do_save_session = 1
+
+function! RestoreSess()
+  if argc() > 0
+      let g:do_save_session = 0
+  endif
+
+  if g:do_restore_last_session > 0 && argc() == 0 && filereadable('GPATH') && filereadable('LASTSESSION.vim')
+    source LASTSESSION.vim
+  endif
+endfunction
+
+function! SaveSess()
+    if g:do_save_session > 0 && filereadable('GPATH')
+        :mks! LASTSESSION.vim
+    endif
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -376,6 +395,8 @@ augroup my_tmux
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk,*.vim,COMMIT_EDITMSG '[,']s/\s\+$//e | normal! `^
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
+    autocmd VimLeave * call SaveSess()
+    autocmd VimEnter * nested call RestoreSess()
     "autocmd BufWriteCmd * :call RemoveWhiteSpacesFromGitHunks()
     "interface to X11 clipboard with the help of xclip
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
@@ -531,10 +552,12 @@ autocmd BufReadPost * :DetectIndent
 "Options:
 
 "To prefer 'expandtab' to 'noexpandtab' when no detection is possible:
-let g:detectindent_preferred_expandtab = 1
+"let g:detectindent_preferred_expandtab = 1
 
 "To specify a preferred indent level when no detection is possible:
 let g:detectindent_preferred_indent = 4
+let g:detectindent_max_lines_to_analyse = 10
+let g:detectindent_preferred_when_mixed = 3
 
 "google compilation"
 function! MakeRoot()
