@@ -2,7 +2,7 @@
 
 function die(){
         echo "FATAL: $0"
-        exit 255
+        return 255
 }
 
 

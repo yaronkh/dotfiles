@@ -7,13 +7,16 @@ if command -v tmux > /dev/null; then
                 exit 0
         fi
 fi
+sudo apt-get update
 sudo apt-get install -y build-essential
+sudo apt-get install -y gcc
 sudo apt-get install -y autotools-dev
 sudo apt-get install -y automake
 sudo apt-get install -y libncurses5-dev libncursesw5-dev
 
 if ! [ -d ~/tmp ]; then mkdir ~/tmp; fi
 cd ~/tmp || die "cannot chdir to ~/tmp"
+
 git clone https://github.com/tmux/tmux.git || die "cannot clone tmux source"
 
 cd tmux
