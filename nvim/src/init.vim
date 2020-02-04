@@ -49,6 +49,8 @@ Plug 'vivien/vim-linux-coding-style'
 "Plug 'scrooloose/nerdcommenter'
 "Plug 'ycm-core/YouCompleteMe'
 Plug 'davidhalter/jedi-vim'
+Plug 'gotcha/vimpdb'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 " Generation Parameters
