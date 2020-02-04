@@ -45,6 +45,14 @@ $ ./Install`
 1. open terminal and make sure that `CTRL-r` and `CTRL-t` works
 
 ## Install tmux
+
+### preparation for tmux compilation on ubuntu:
+```
+sudo apt-get install -y autotools-dev
+sudo apt-get install -y automake
+sudo apt-get install libncurses5-dev libncursesw5-dev
+```
+
 tmux is a terminal multiplexer.
 You will need to install tmux on the remote server and launch it automatically from
 your .bashrc file
