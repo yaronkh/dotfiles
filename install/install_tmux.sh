@@ -16,10 +16,14 @@ sudo apt-get install -y libncurses5-dev libncursesw5-dev
 
 if ! [ -d ~/tmp ]; then mkdir ~/tmp; fi
 cd ~/tmp || die "cannot chdir to ~/tmp"
+if ! [ -d ~/tmp/tmux ]; then
+	git clone https://github.com/tmux/tmux.git || die "cannot clone tmux source"
+	cd tmux
+else
+	cd tmux
+	git fetch || die "cannot fetch updates from tmux"
+fi
 
-git clone https://github.com/tmux/tmux.git || die "cannot clone tmux source"
-
-cd tmux
 git checkout master || die "cannot change to tmux master branch"
 sh autogen.sh || die "cannot prepare compilation files"
 ./configure && make -j || die "tmux compilation failed"
