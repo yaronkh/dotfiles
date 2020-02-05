@@ -1,0 +1,12 @@
+[MESSAGES CONTROL]
+disable=locally-disabled,missing-docstring,invalid-name,fixme,duplicate-code,interface-not-implemented,wrong-import-position,len-as-condition,useless-super-delegation,using-constant-test,wrong-import-order,no-else-return,ungrouped-imports,trailing-newlines,consider-using-enumerate,arguments-differ,simplifiable-if-statement,too-many-boolean-expressions,too-many-nested-blocks
+
+[DESIGN]
+max-args=7
+
+[FORMAT]
+max-line-length=150
+
+[TYPECHECK]
+ignored-classes=AttributeHolder
+generated-members=save, delete

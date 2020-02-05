@@ -51,6 +51,7 @@ Plug 'vivien/vim-linux-coding-style'
 Plug 'davidhalter/jedi-vim'
 Plug 'gotcha/vimpdb'
 Plug 'tpope/vim-fugitive'
+Plug 'dense-analysis/ale'
 call plug#end()
 
 " Generation Parameters
@@ -143,6 +144,17 @@ nnoremap <C-L> :NERDTreeToggle<CR>:wincmd w<CR>:TagbarToggle<CR>
 
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+"python linting
+" Check Python files with flake8 and pylint.
+"let b:ale_linters = ['flake8', 'pylint']
+let b:ale_linters = ['pylint']
+" Fix Python files with autopep8 and yapf.
+let b:ale_fixers = ['autopep8', 'yapf']
+" Disable warnings about trailing whitespace for Python files.
+let b:ale_warn_about_trailing_whitespace = 0
+let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
+
 
 " Omni
 "au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.c,*.h,*.cxx,*.cc,*.hh set omnifunc=omni#cpp#complete#Main
@@ -249,6 +261,7 @@ nnoremap <C-q> <C-v>
 set shellslash
 map <C-w>w :q<CR>
 autocmd filetype make setlocal noexpandtab autoindent
+autocmd filetype sh setlocal expandtab
 noremap <F1> <C-w><C-p>
 noremap <F2> <C-w><C-w>
 nnoremap <Tab> :tabnext<CR>
