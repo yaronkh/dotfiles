@@ -52,6 +52,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'gotcha/vimpdb'
 Plug 'tpope/vim-fugitive'
 Plug 'dense-analysis/ale'
+Plug 'yuki-ycino/fzf-preview.vim'
 call plug#end()
 
 " Generation Parameters
@@ -435,13 +436,8 @@ function! s:bufopen(e)
     execute 'buffer' matchstr(a:e, '^[ 0-9 ]*')
 endfunction
 
-nnoremap <silent> <Leader><Enter> :call fzf#run({
-            \   'source':  reverse(<sid>buflist()),
-            \   'sink':    function('<sid>bufopen'),
-            \   'options': '+m',
-            \   'down':    len(<sid>buflist()) + 2
-            \  })<CR>
-
+"cool buffer switcher"
+nnoremap <silent> <Leader><Enter> :FzfPreviewBuffers<CR>
 
 " Jump to tab: <Leader>t
 function TabName(n)
