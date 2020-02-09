@@ -438,6 +438,7 @@ endfunction
 
 "cool buffer switcher"
 nnoremap <silent> <Leader><Enter> :FzfPreviewBuffers<CR>
+nnoremap <silent> <C-g>s :FzfPreviewGitStatus<CR>
 
 " Jump to tab: <Leader>t
 function TabName(n)
