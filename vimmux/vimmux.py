@@ -85,20 +85,20 @@ class VimInstance(object):
                 continue
             self.files[vfile.fn] = vfile
 
-    def set_id(self, id):
-        self.id = id
+    def set_id(self, _id):
+        self.id = _id
 
     def is_buff_in_edit_mode(self):
         for desc in self.get_file_list():
-            v = VimFile(desc, self)
-            if v.stat == '%a':
-               return v.edit_sign == "+"
+            vv = VimFile(desc, self)
+            if vv.stat == '%a':
+                return vv.edit_sign == "+"
 
     def get_active_buf_name(self):
         for desc in self.get_file_list():
-            v = VimFile(desc, self)
-            if v.stat == '%a':
-               return v.fn
+            vv = VimFile(desc, self)
+            if vv.stat == '%a':
+                return vv.fn
 
     def get_file_list(self):
         files_list = check_output([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("ls")']).split('\n')
@@ -115,7 +115,7 @@ class VimInstance(object):
         p = self.pid
         try:
             pr = psutil.Process(p)
-        except:
+        except Exception: # pylint: disable=broad-except
             return
         parent = pr.ppid()
         self.is_tmux_vim = False
@@ -132,11 +132,11 @@ class VimInstance(object):
         vimstr = "vim: {0} path:{1}".format(self.id, self.cwd())
         opts.append(vimstr)
         opts.append("="*len(vimstr))
-        for fn, buf in list(self.files.items()):
+        for _, buf in list(self.files.items()):
             opts.append("{1}: {0}".format(self.id, buf.fn))
 
     def select(self, name):
-        if self.tmux_pane == None:
+        if self.tmux_pane is None:
             return
         self.tmux_pane.focus()
         if len(name) and name in self.files:
@@ -148,7 +148,7 @@ class VimInstance(object):
         file_obj = self.files[file_name]
         file_obj.show()
         ffname = os.path.basename(file_name)
-        temp_fn = os.path.join(tempfile.gettempdir(), '{1}-{2}.{0}'.format(ffname, self.pid, forpid ))
+        temp_fn = os.path.join(tempfile.gettempdir(), '{1}-{2}.{0}'.format(ffname, self.pid, forpid))
         subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("write {0}")'.format(temp_fn)])
         subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
         file_obj.show()
