@@ -5,6 +5,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+"this is the first diff"
+
 call plug#begin()
 "Plug 'ctrlpvim/ctrlp.vim'
  "Plug 'justmao945/vim-clang'
@@ -56,7 +58,7 @@ Plug 'yuki-ycino/fzf-preview.vim'
 call plug#end()
 
 " Generation Parameters
-let g:ctagsFilePatterns = '\.c$|\.cc$|\.cpp$|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|.rc$'
+let g:ctagsFilePatterns = '\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|.rc$'
 let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
@@ -111,7 +113,7 @@ nnoremap <leader>zi :call ZInstall()<CR>
 
 " Generate All Mapping
 nnoremap <leader>zg :call ZGenerateAll()<CR>
-nnoremap <leader>zG :call ZGenerateEverything()<CR>
+nnoremap  <leader>zG :call ZGenerateEverything()<CR>
 
 " Generate Tags and Cscope Files Mapping
 nnoremap <leader>zt :call ZGenTagsAndCsFiles()<CR>
@@ -121,6 +123,8 @@ nnoremap <leader>zx "tyiw:exe "CSearch " . @t . ""<CR>
 
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 :nnoremap <leader>sv :source $MYVIMRC<cr>
+
+"yet another diff
 
 " VimClang
 let g:clang_c_options = '-std=c11'
@@ -409,7 +413,7 @@ augroup my_tmux
     noremap <Leader>% :call SplitVAndSwap()<cr>
     noremap <Leader>" :call SplitAndSwap()<cr>
     "remove trailing white spaces in c, c++
-    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.mk,*.vim,COMMIT_EDITMSG '[,']s/\s\+$//e | normal! `^
+    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG '[,']s/\s\+$//e | normal! `^
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     autocmd VimLeave * call SaveSess()
     autocmd VimEnter * nested call RestoreSess()
