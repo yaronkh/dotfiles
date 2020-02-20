@@ -202,19 +202,19 @@ class VimComm(object):
     def refresh(self):
         vim_servers = check_output([VimComm.vim_client, '--serverlist']).split('\n')
         self.vims = {}
-        id = 0
+        id_ = 0
         for server in vim_servers:
             if len(server) == 0:
                 continue
-            v = VimInstance(server)
-            if v.is_tmux_vim:
-                self.vims[id] = v
-                v.set_id(id)
-                id += 1
+            vi = VimInstance(server)
+            if vi.is_tmux_vim:
+                self.vims[id_] = vi
+                vi.set_id(id_)
+                id_ += 1
 
     def get_selection_list(self):
         res = []
-        for vim_name, vim in list(self.vims.items()):
+        for _, vim in list(self.vims.items()):
             vim.append(res)
             res.append("")
         return res
@@ -242,7 +242,7 @@ class VimComm(object):
         if m != None:
             fl, server = m.groups()
             server = int(server)
-            print(server)
+            print server
             if server in  self.vims:
                 self.vims[server].select(fl)
 
@@ -255,19 +255,17 @@ class VimComm(object):
                 return
         else:
             return
-        target = ''
         target_vim = None
-        for server, vim in list(self.vims.items()):
+        for _, vim in list(self.vims.items()):
             if target_pane == vim.tmux_pane.id:
-                target = server
                 target_vim = vim
                 break
-        if target_vim == None:
+        if target_vim is None:
             return
         target_vim.move_file(self.vims[source], fl)
 
 def FzFSelect(opts):
-    p = subprocess.Popen(['fzf', '--layout=reverse-list'] , stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    p = subprocess.Popen(['fzf', '--layout=reverse-list'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     res = p.communicate(input='\n'.join(opts).encode('ascii'))[0]
     return res[:-1].decode('ascii')
 
