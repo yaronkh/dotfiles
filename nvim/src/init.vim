@@ -412,6 +412,7 @@ augroup my_tmux
     noremap <Leader>h :History<CR>
     noremap <Leader>% :call SplitVAndSwap()<cr>
     noremap <Leader>" :call SplitAndSwap()<cr>
+    noremap <Leader>b :bufdo bd<cr>
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG '[,']s/\s\+$//e | normal! `^
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
@@ -427,6 +428,7 @@ augroup my_tmux
     nnoremap z= :call FzfSpell()<CR>
     nnoremap <Leader>li :LinuxCodingStyle<cr>
     let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
+
 augroup end
 
 function! s:buflist()
