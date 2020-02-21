@@ -56,7 +56,16 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-PS1='\[\033]2$PWD\033\033k$(hostname)\]'
+#option to set per-pane variable
+function set_tmux_opt {
+  tmux set -q "@$1_$TMUX_PANE" "$2"
+}
+
+function get_tmux_opt {
+  tmux show -v "@$1_$2"
+}
+PS1='\[\033]2$PWD\033\033$(set_tmux_opt hide_border "" && ~/dotfiles/tmux/hide_border.sh $TMUX_PANE)\]'
+#PS1='\[\033]2$PWD\033\033k$(hostname)$(tmux set pane-border-status bottom)\]'
 if [ "$color_prompt" = yes ]; then
     PS1=$PS1'${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
