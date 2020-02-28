@@ -396,6 +396,12 @@ function! SaveSess()
     endif
 endfunction
 
+function! EraseTralingWs()
+    let save_pos = getpos(".")
+    '[,']s/\s\+$//e
+    call setpos('.', save_pos)
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -414,7 +420,7 @@ augroup my_tmux
     noremap <Leader>" :call SplitAndSwap()<cr>
     noremap <Leader>b :bufdo bd<cr>
     "remove trailing white spaces in c, c++
-    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG '[,']s/\s\+$//e | normal! `^
+    autocmd InsertLeave *.c,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     autocmd VimLeave * call SaveSess()
     autocmd VimEnter * nested call RestoreSess()
