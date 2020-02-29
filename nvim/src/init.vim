@@ -449,7 +449,14 @@ function! s:bufopen(e)
 endfunction
 
 "cool buffer switcher"
-nnoremap <silent> <Leader><Enter> :FzfPreviewBuffers<CR>
+"nnoremap <silent> <Leader><Enter> :FzfPreviewBuffers<CR>
+nnoremap <silent> <Leader><Enter> :call fzf#run({
+            \   'source':  reverse(<sid>buflist()),
+            \   'sink':    function('<sid>bufopen'),
+            \   'options': '+m',
+            \   'down':    len(<sid>buflist()) + 2
+            \  })<CR>
+
 nnoremap <silent> <C-g>s :FzfPreviewGitStatus<CR>
 
 " Jump to tab: <Leader>t
