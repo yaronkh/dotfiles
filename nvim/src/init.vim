@@ -402,6 +402,10 @@ function! EraseTralingWs()
     call setpos('.', save_pos)
 endfunction
 
+function! InsertDate()
+    r!date
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -432,9 +436,10 @@ augroup my_tmux
     noremap <silent> <RightMouse> :Maps<cr>
     "execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
     nnoremap z= :call FzfSpell()<CR>
-    nnoremap <Leader>li :LinuxCodingStyle<cr>
+    inoremap <Leader>li :LinuxCodingStyle<cr>
     let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
-
+    nnoremap <C-d> :call InsertDate()<cr>
+    inoremap <C-d> <C-o>:call InsertDate() <CR>
 augroup end
 
 function! s:buflist()
