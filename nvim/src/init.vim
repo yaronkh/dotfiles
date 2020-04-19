@@ -15,7 +15,7 @@ Plug 'wesleyche/SrcExpl'
 Plug 'vim-scripts/taglist.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'wesleyche/Trinity'
-Plug 'vim-scripts/OmniCppComplete'
+Plug 'vim-scripts/OmniCppComplete' "C/C++ omni-completion with ctags database
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 "Plug 'rdolgushin/snipMate-acp'
@@ -55,6 +55,7 @@ Plug 'gotcha/vimpdb'
 Plug 'tpope/vim-fugitive'
 Plug 'dense-analysis/ale'
 Plug 'yuki-ycino/fzf-preview.vim'
+Plug 'jreybert/vimagit'
 call plug#end()
 
 " Generation Parameters
