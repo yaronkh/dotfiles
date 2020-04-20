@@ -407,10 +407,29 @@ function! InsertDate()
     r!date
 endfunction
 
+" Give indication in which mode we are at, using a cursor shape.
+" | for insert
+" _ for replace
+" ■ for normal
+augroup CursorShape
+  " This is in an BufEnter autocmds because for some reason vim-gnupg reverts
+  " to the original behavior.
+  autocmd!
+
+  autocmd BufEnter * call LoadCursorShapes()
+augroup END
+
+function! LoadCursorShapes()
+  let &t_SI = "\<Esc>[6 q"
+  let &t_SR = "\<Esc>[4 q"
+  let &t_EI = "\<Esc>"
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
     autocmd bufenter * call Escapeins()
+    autocmd BufEnter * call LoadCursorShapes()
     if v:servername == ""
         call remote_startserver(getpid())
     endif
