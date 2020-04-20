@@ -56,11 +56,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'dense-analysis/ale'
 Plug 'yuki-ycino/fzf-preview.vim'
 Plug 'jreybert/vimagit'
+Plug 'artur-shaik/vim-javacomplete2'
 call plug#end()
 
 " Generation Parameters
-let g:ctagsFilePatterns = '\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc$'
-let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
+let g:ctagsFilePatterns = '\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
+let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
 set cursorline
@@ -427,6 +428,9 @@ endfunction
 
 augroup my_tmux
     autocmd!
+    "autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+    "autocmd FileType java setlocal omnifunc=javacomplete#Complete
+    "autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
     autocmd bufenter * call Panetitle()
     autocmd bufenter * call Escapeins()
     autocmd BufEnter * call LoadCursorShapes()
@@ -444,7 +448,7 @@ augroup my_tmux
     noremap <Leader>" :call SplitAndSwap()<cr>
     noremap <Leader>b :bufdo bd<cr>
     "remove trailing white spaces in c, c++
-    autocmd InsertLeave *.c,*.sh,*.j2,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
+    autocmd InsertLeave *.c,*.sh,*.java,*.j2,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     autocmd VimLeave * call SaveSess()
     autocmd VimEnter * nested call RestoreSess()
