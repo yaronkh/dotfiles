@@ -11,6 +11,7 @@ call plug#begin()
 "Plug 'ctrlpvim/ctrlp.vim'
  "Plug 'justmao945/vim-clang'
 "Plug 'chazy/cscope_maps'
+Plug 'junegunn/vim-easy-align'
 Plug 'wesleyche/SrcExpl'
 Plug 'vim-scripts/taglist.vim'
 Plug 'scrooloose/nerdtree'
