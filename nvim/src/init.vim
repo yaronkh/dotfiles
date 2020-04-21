@@ -58,6 +58,7 @@ Plug 'dense-analysis/ale'
 Plug 'yuki-ycino/fzf-preview.vim'
 Plug 'jreybert/vimagit'
 Plug 'artur-shaik/vim-javacomplete2'
+Plug 'aserebryakov/vim-todo-lists'
 call plug#end()
 
 " Generation Parameters
