@@ -58,6 +58,7 @@ Plug 'dense-analysis/ale'
 Plug 'yuki-ycino/fzf-preview.vim'
 Plug 'jreybert/vimagit'
 Plug 'artur-shaik/vim-javacomplete2'
+Plug 'vimwiki/vimwiki'
 Plug 'aserebryakov/vim-todo-lists'
 call plug#end()
 
@@ -454,8 +455,6 @@ augroup my_tmux
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     autocmd VimLeave * call SaveSess()
     autocmd VimEnter * nested call RestoreSess()
-    "autocmd BufWriteCmd * :call RemoveWhiteSpacesFromGitHunks()
-    "interface to X11 clipboard with the help of xclip
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
     vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
@@ -466,6 +465,13 @@ augroup my_tmux
     let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
     nnoremap <C-d> :call InsertDate()<cr>
     inoremap <C-d> <C-o>:call InsertDate() <CR>
+    :map <Leader>tt <Plug>VimwikiToggleListItem
+augroup end
+
+augroup my_vimagit
+    autocmd User VimagitEnterCommit setlocal textwidth=72
+    autocmd User VimagitLeaveCommit setlocal textwidth=0
+    "autocmd  vimagit-VimagitLeaveCommit * :write
 augroup end
 
 function! s:buflist()
