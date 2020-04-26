@@ -469,9 +469,6 @@ augroup my_tmux
 augroup end
 
 augroup my_vimagit
-    "read files that was changed on disk, outside vim (autoread doesnot seems to
-    "be working on neovim
-    autocmd FocusGained * silent! checktime
     autocmd User VimagitEnterCommit setlocal textwidth=72
     autocmd User VimagitLeaveCommit setlocal textwidth=0
     "autocmd  vimagit-VimagitLeaveCommit * :write
@@ -485,7 +482,10 @@ augroup AutoUpdate()
 augroup end
 
 function! CheckUpdate(timer)
+    "update the file if the file has changed on disk
     silent! checktime
+    "remove git signs if the file has been commited
+    silent! GitGutter
     call timer_start(1000,'CheckUpdate')
    endfunction
 
