@@ -63,7 +63,7 @@ Plug 'aserebryakov/vim-todo-lists'
 call plug#end()
 
 " Generation Parameters
-let g:ctagsFilePatterns = '\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
+let g:ctagsFilePatterns = '\.wiki$|\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
 let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
@@ -77,34 +77,34 @@ function! ZInstall()
                 \ & sed -i 's@ . redraw!@\ . \" > /dev/null\"@' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
                 \ & sed -i \"s/'String',[ \\t]*s\\:green/'String', \\['\\#d78787', 174\\]/\" ~/.vim/plugged/gruvbox/colors/gruvbox.vim"
 endfunction
+
 " Generate All
 function! ZGenerateAll()
-    copen
-    exec ":AsyncRun ctags -R " . g:ctagsOptions . " && echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && gtags && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && cscope -bq"
+    call ZGenTags()
+    call ZWriteTagsOptions()
+    :!gtags
+    call ZGenCsFiles()
+    :!cscope -bq
 endfunction
 
 " Generate All
 function! ZGenerateEverything()
-    copen
-    exec ":AsyncRun ctags -R " . g:ctagsEverythingOptions . " && echo '" . g:ctagsEverythingOptions . "' > .gutctags && gtags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files && cscope -bq index"
+    exec "!ctags -R " . g:ctagsEverythingOptions . " && echo '" . g:ctagsEverythingOptions . "' > .gutctags && gtags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files && cscope -bq index"
 endfunction
 
 " Write tags options.
 function! ZWriteTagsOptions()
-    copen
-    exec ":AsyncRun echo " . g:ctagsOptions . " > .gutctags && sed -i 's/ /\\n/g' .gutctags"
+    exec "!echo " . g:ctagsOptions . " > .gutctags && sed -i 's/ /\\n/g' .gutctags"
 endfunction
 
 " Generate Tags
 function! ZGenTags()
-    copen
-    exec ":AsyncRun ctags -R " . g:ctagsOptions
+      exec ":!ctags -R " . g:ctagsOptions
 endfunction
 
 " Generate Cscope Files
 function! ZGenCsFiles()
-    copen
-    exec ":AsyncRun ag -l -g '" . g:ctagsFilePatterns . "' > cscope.files"
+    exec ":!ag -l -g '" . g:ctagsFilePatterns . "' > cscope.files"
 endfunction
 
 " Generate Tags and Cscope Files
