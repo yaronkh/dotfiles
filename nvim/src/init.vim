@@ -60,10 +60,11 @@ Plug 'jreybert/vimagit'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'vimwiki/vimwiki'
 Plug 'aserebryakov/vim-todo-lists'
+Plug 'aklt/plantuml-syntax'
 call plug#end()
 
 " Generation Parameters
-let g:ctagsFilePatterns = '\.wiki$|\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
+let g:ctagsFilePatterns = '\.uml$|\.wiki$|\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
 let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
