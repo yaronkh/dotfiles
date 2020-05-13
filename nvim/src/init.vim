@@ -81,7 +81,7 @@ endfunction
 " Generate All
 function! ZGenerateAll()
     copen
-    exec ":AsyncRun ctags -R " . g:ctagsOptions . " && echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && gtags && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && cscope -bq"
+    exec ":AsyncRun ctags -R " . g:ctagsOptions . " && echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && gtags && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && (git ls-files >> cscope.files 2> /dev/null || true) &&  sort -u cscope.files > cscope.tmp && rm cscope.files && mv cscope.tmp cscope.files && cscope -bq"
 endfunction
 
 " Generate All
