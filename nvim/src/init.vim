@@ -65,7 +65,8 @@ call plug#end()
 
 " Generation Parameters
 let g:ctagsFilePatterns = '\.uml$|\.wiki$|\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
-let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
+"let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
+let g:ctagsOptions = '--exclude=build --languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
 set cursorline
@@ -164,8 +165,8 @@ let b:ale_linters = ['pylint']
 let b:ale_fixers = ['autopep8', 'yapf']
 " Disable warnings about trailing whitespace for Python files.
 let b:ale_warn_about_trailing_whitespace = 0
+let g:ale_python_pylint_executable = 'python3'
 let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
-
 
 " Omni
 "au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.c,*.h,*.cxx,*.cc,*.hh set omnifunc=omni#cpp#complete#Main
@@ -467,7 +468,26 @@ augroup my_tmux
     nnoremap <C-d> :call InsertDate()<cr>
     inoremap <C-d> <C-o>:call InsertDate() <CR>
     :map <Leader>tt <Plug>VimwikiToggleListItem
+    "replace all occurences of the word under cursor
+    :nnoremap <Leader>s :call ReplaceWordUnderCursor()<CR>
+    :set errorformat+=%f:%l
 augroup end
+
+function! LaunchIpythonInTmux()
+    let g:ipythPaneId = system("cd test && tmux splitw -v -P -F \"#{pane_id}\" brazil-test-exec ipython")
+    exec ":call system('tmux set -q @vim_server " . v:servername . "')"
+endfunction
+
+function! CaptureLastIpytTb()
+    copen
+    exec ":AsyncRun ~/dotfiles/vimmux/start_show_tb.sh \\" . g:ipythPaneId
+endfunction
+
+function! ReplaceWordUnderCursor()
+    let w = expand("<cword>")
+    let r = input('replace ' + w + ' with : ')
+    :%s/w/r/g
+endfunction
 
 augroup my_vimagit
     autocmd User VimagitEnterCommit setlocal textwidth=72

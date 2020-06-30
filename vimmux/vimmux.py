@@ -264,6 +264,7 @@ class VimComm(object):
             return
         target_vim.move_file(self.vims[source], fl)
 
+
 def FzFSelect(opts):
     p = subprocess.Popen(['fzf', '--layout=reverse-list'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     res = p.communicate(input='\n'.join(opts).encode('ascii'))[0]
@@ -281,3 +282,5 @@ if len(sys.argv) < 2 or sys.argv[1] == "select":
 if sys.argv[1] == "move":
     v.move_file()
     exit(0)
+if sys.argv[1] == "display":
+    print v.get_selection_list()
