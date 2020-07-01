@@ -41,7 +41,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'xolox/vim-misc'
 "Plug 'xolox/vim-easytags'
 Plug 'simeji/winresizer'
-Plug 'vim-scripts/DetectIndent'
+"Plug 'vim-scripts/DetectIndent'
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'me-vlad/spellfiles.vim'
@@ -456,6 +456,8 @@ augroup my_tmux
     autocmd InsertLeave *.c,*.sh,*.java,*.j2,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     autocmd VimLeave * call SaveSess()
+    autocmd VimLeavePre * :tabdo NERDTreeClose
+    autocmd VimLeavePre * :tabdo TagbarClose
     autocmd VimEnter * nested call RestoreSess()
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
@@ -466,12 +468,25 @@ augroup my_tmux
     inoremap <Leader>li :LinuxCodingStyle<cr>
     let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
     nnoremap <C-d> :call InsertDate()<cr>
+    nnoremap <F10> :call LaunchIpythonInTmux()<CR>
     inoremap <C-d> <C-o>:call InsertDate() <CR>
     :map <Leader>tt <Plug>VimwikiToggleListItem
     "replace all occurences of the word under cursor
     :nnoremap <Leader>s :call ReplaceWordUnderCursor()<CR>
+    command! Bb call BrazilBuild()
+    command! Bbrec call BrazilRecuriseBuild()
     :set errorformat+=%f:%l
 augroup end
+
+function! BrazilBuild()
+    copen
+    :AsyncRun brazil-build
+endfunction
+
+function! BrazilRecuriseBuild()
+    copen
+    :AsyncRun brazil-recursive-cmd brazil-build
+endfunction
 
 function! LaunchIpythonInTmux()
     let g:ipythPaneId = system("cd test && tmux splitw -v -P -F \"#{pane_id}\" brazil-test-exec ipython")
@@ -651,7 +666,7 @@ command! -nargs=* Ag call fzf#run({
 
 "detectIndent stuff
 "==================
-autocmd BufReadPost * :DetectIndent
+" autocmd BufReadPost * :DetectIndent
 
 "Options:
 
