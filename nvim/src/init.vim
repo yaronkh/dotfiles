@@ -493,9 +493,9 @@ function! LaunchIpythonInTmux()
     exec ":call system('tmux set -q @vim_server " . v:servername . "')"
 endfunction
 
-function! CaptureLastIpytTb()
+function! CaptureLastIpytTb(paneid)
     copen
-    exec ":AsyncRun ~/dotfiles/vimmux/start_show_tb.sh \\" . g:ipythPaneId
+    exec ":AsyncRun ~/dotfiles/vimmux/start_show_tb.sh \\" . a:paneid
 endfunction
 
 function! ReplaceWordUnderCursor()

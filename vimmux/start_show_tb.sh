@@ -3,7 +3,7 @@
 PANE_ID=$1
 PACK_DIR_RE="^\/.*\/site-packages\/"
 
-pane_data=$(tmux capture-pane -S - -p -t $PANE_ID)
+pane_data=$(tmux capture-pane -J -S - -p -t $PANE_ID)
 num_lines=$(echo "$pane_data" | wc -l)
 last_entry_line=$(echo "$pane_data" | grep -n ' Traceback ' | tail -1 | cut -d: -f1 )
 from_line=$(echo "$num_lines-$last_entry_line" | bc)
