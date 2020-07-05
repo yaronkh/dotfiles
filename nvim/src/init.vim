@@ -473,14 +473,42 @@ augroup my_tmux
     :map <Leader>tt <Plug>VimwikiToggleListItem
     "replace all occurences of the word under cursor
     :nnoremap <Leader>s :call ReplaceWordUnderCursor()<CR>
+augroup end
+
+augroup brazil
     command! Bb call BrazilBuild()
     command! Bbrec call BrazilRecuriseBuild()
+    command! Btest call BrazilRunTest()
+    :nnoremap <Leader>T :Btest<CR>
     :set errorformat+=%f:%l
 augroup end
+
+function! BrazilGetAllTests()
+    let res = []
+    let all_files = split(globpath("test", "test_*"), "\n")
+    for f in all_files
+        let tests = systemlist("grep -E '^def +test_.*\\(.*\\):' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/(.*)://'")
+        for test in tests
+            let res = add(res, f . "::" . test)
+        endfor
+    endfor
+    return res
+endfunction
+
+function! BrazilRunTest()
+    let y = BrazilGetAllTests()
+    call fzf#run({'source': y, 'sink': function('BrazilTest'), 'down': len(y) + 2})
+endfunction
 
 function! BrazilBuild()
     copen
     :AsyncRun brazil-build
+endfunction
+
+function! BrazilTest(testName)
+    copen
+    exec ":AsyncRun brazil-test-exec pytest -s -vv " . a:testName . " 2>&1"
+    "test/test_orchestration_component.py::test_get_update_replication_info
 endfunction
 
 function! BrazilRecuriseBuild()
