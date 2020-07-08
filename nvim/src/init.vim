@@ -458,6 +458,7 @@ augroup my_tmux
     autocmd VimLeave * call SaveSess()
     autocmd VimLeavePre * :tabdo NERDTreeClose
     autocmd VimLeavePre * :tabdo TagbarClose
+    autocmd VimLeavePre * :tabdo cclose
     autocmd VimEnter * nested call RestoreSess()
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
@@ -476,6 +477,7 @@ augroup my_tmux
 augroup end
 
 augroup brazil
+    let g:brazilLastTest = ""
     command! Bb call BrazilBuild()
     command! Bbrec call BrazilRecuriseBuild()
     command! Btest call BrazilRunTest()
@@ -486,12 +488,22 @@ augroup end
 function! BrazilGetAllTests()
     let res = []
     let all_files = split(globpath("test", "test_*"), "\n")
+    let fnd = 0
     for f in all_files
         let tests = systemlist("grep -E '^def +test_.*\\(.*\\):' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/(.*)://'")
         for test in tests
-            let res = add(res, f . "::" . test)
+            let test_str = f . "::" . test
+            if test_str != g:brazilLastTest
+                let res = add(res, test_str)
+            else
+                let fnd = 1
+            endif
         endfor
     endfor
+    if g:brazilLastTest != "" && fnd == 1
+        let res = add(res, g:brazilLastTest)
+    endif
+    let res = reverse(res)
     return res
 endfunction
 
@@ -502,11 +514,13 @@ endfunction
 
 function! BrazilBuild()
     copen
+    :wincmd J
     :AsyncRun brazil-build
 endfunction
 
 function! BrazilTest(testName)
     copen
+    let g:brazilLastTest = a:testName
     exec ":AsyncRun brazil-test-exec pytest -s -vv " . a:testName . " 2>&1"
     "test/test_orchestration_component.py::test_get_update_replication_info
 endfunction
