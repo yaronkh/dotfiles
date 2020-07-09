@@ -478,11 +478,14 @@ augroup end
 
 augroup brazil
     let g:brazilLastTest = ""
+    let g:brazilTesting = 0
     command! Bb call BrazilBuild()
     command! Bbrec call BrazilRecuriseBuild()
     command! Btest call BrazilRunTest()
     :nnoremap <Leader>T :Btest<CR>
-    :set errorformat+=%f:%l
+    autocmd USER AsyncRunStop call BrazilTestFinished()
+
+
 augroup end
 
 function! BrazilGetAllTests()
@@ -509,7 +512,15 @@ endfunction
 
 function! BrazilRunTest()
     let y = BrazilGetAllTests()
+    let g:brazilTesting = 1
     call fzf#run({'source': y, 'sink': function('BrazilTest'), 'down': len(y) + 2})
+endfunction
+
+function! BrazilTestFinished()
+    if g:brazilTesting != 0
+        let g:brazilTesting = 0
+        "let v:errorformat = g:brazilSavedEf
+    endif
 endfunction
 
 function! BrazilBuild()
@@ -520,8 +531,15 @@ endfunction
 
 function! BrazilTest(testName)
     copen
+    let g:brazilSavedEf = &errorformat
+    "the next errorformat match python interpreter error
+    ":set errorformat=\ %#File\ \"%f\"\\,\ line\ %l\\,%m
+    :set errorformat=\%*\\sFile\ \"%f\"\\,\ line\ %l\\,\ %m,\%*\\sFile\ \"%f\"\\,\ line\ %l,
+    :set errorformat+=%f:%l%.%#
+    "the next errorformat matches python traback printout
+
     let g:brazilLastTest = a:testName
-    exec ":AsyncRun brazil-test-exec pytest -s -vv " . a:testName . " 2>&1"
+    exec ":AsyncRun brazil-test-exec pytest -s -vv " . a:testName
     "test/test_orchestration_component.py::test_get_update_replication_info
 endfunction
 
