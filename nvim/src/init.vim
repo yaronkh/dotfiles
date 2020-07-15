@@ -470,6 +470,7 @@ augroup my_tmux
     let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
     nnoremap <C-d> :call InsertDate()<cr>
     nnoremap <F10> :call LaunchIpythonInTmux()<CR>
+    nnoremap <F9> :call OpenVimTmuxTerm()<CR>
     inoremap <C-d> <C-o>:call InsertDate() <CR>
     :map <Leader>tt <Plug>VimwikiToggleListItem
     "replace all occurences of the word under cursor
@@ -551,6 +552,13 @@ endfunction
 function! LaunchIpythonInTmux()
     let g:ipythPaneId = system("cd test && tmux splitw -v -P -F \"#{pane_id}\" brazil-test-exec ipython")
     exec ":call system('tmux set -q @vim_server " . v:servername . "')"
+endfunction
+
+function! OpenVimTmuxTerm()
+    let shcmd = "tmux split-window sh -c \"cd " . g:vimroot . ";exec ${SHELL:-sh}\""
+    "let cmd = ":call system(\"tmux split-window sh -c \"cd " . g:vimroot . ";exec ${SHELL:-sh}/\"\")"
+    echom shcmd
+    exec ":call system('" . shcmd . "')"
 endfunction
 
 function! CaptureLastIpytTb(paneid)
