@@ -471,6 +471,7 @@ augroup my_tmux
     nnoremap <C-d> :call InsertDate()<cr>
     nnoremap <F10> :call LaunchIpythonInTmux()<CR>
     nnoremap <F9> :call OpenVimTmuxTerm()<CR>
+    nnoremap <F8> :call OpenVimBufTmuxTerm()<CR>
     inoremap <C-d> <C-o>:call InsertDate() <CR>
     :map <Leader>tt <Plug>VimwikiToggleListItem
     "replace all occurences of the word under cursor
@@ -556,11 +557,15 @@ endfunction
 
 function! OpenVimTmuxTerm()
     let shcmd = "tmux split-window sh -c \"cd " . g:vimroot . ";exec ${SHELL:-sh}\""
-    "let cmd = ":call system(\"tmux split-window sh -c \"cd " . g:vimroot . ";exec ${SHELL:-sh}/\"\")"
     echom shcmd
     exec ":call system('" . shcmd . "')"
 endfunction
-
+function! OpenVimBufTmuxTerm()
+    let d = expand('%:p:h')
+    let shcmd = "tmux split-window sh -c \"cd " . d . ";exec ${SHELL:-sh}\""
+    echom shcmd
+    exec ":call system('" . shcmd . "')"
+endfunction
 function! CaptureLastIpytTb(paneid)
     copen
     exec ":AsyncRun ~/dotfiles/vimmux/start_show_tb.sh \\" . a:paneid
