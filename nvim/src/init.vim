@@ -688,9 +688,19 @@ endfunction
 command! BTags call Btags()
 nnoremap <silent> <F3> :call Btags()<CR>
 
+augroup AgGroup
+    nnoremap <C-A> :call AgWord()<CR>
+augroup end
 function! Agg(t)
     copen
     exec ":AsyncRun ag " . shellescap(a:t)
+endfunction
+
+function AgWord()
+    let wordUnderCursor = expand("<cword>")
+    copen
+    let cmd = ":AsyncRun ag " . wordUnderCursor
+    exec cmd
 endfunction
 
 function! Mgrep(t)
