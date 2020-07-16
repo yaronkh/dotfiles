@@ -160,13 +160,13 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 "python linting
 " Check Python files with flake8 and pylint.
 "let b:ale_linters = ['flake8', 'pylint']
-let b:ale_linters = ['pylint']
+"let g:ale_linters = { 'python': ['pylint', 'mypy']}
 " Fix Python files with autopep8 and yapf.
 let b:ale_fixers = ['autopep8', 'yapf']
 " Disable warnings about trailing whitespace for Python files.
 let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'python3'
-let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
+"let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
 
 " Omni
 "au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.c,*.h,*.cxx,*.cc,*.hh set omnifunc=omni#cpp#complete#Main
@@ -482,6 +482,7 @@ augroup brazil
     let g:brazilLastTest = ""
     let g:brazilTesting = 0
     command! Bb call BrazilBuild()
+    command! Bbr call BrazilBuildRelease()
     command! Bbrec call BrazilRecuriseBuild()
     command! Btest call BrazilRunTest()
     :nnoremap <Leader>T :Btest<CR>
@@ -529,6 +530,11 @@ function! BrazilBuild()
     copen
     :wincmd J
     :AsyncRun brazil-build
+endfunction
+
+function! BrazilBuildRelease()
+    copen
+    exec ":AsyncRun bash -c \"brazil-build release 2>&1 | ~/dotfiles/vimmux/replace_top_dir.sh\""
 endfunction
 
 function! BrazilTest(testName)
@@ -698,8 +704,9 @@ endfunction
 
 function AgWord()
     let wordUnderCursor = expand("<cword>")
+    :set errorformat=%f:%l:%m
     copen
-    let cmd = ":AsyncRun ag " . wordUnderCursor
+    let cmd = ":AsyncRun ag --noheading " . wordUnderCursor
     exec cmd
 endfunction
 
