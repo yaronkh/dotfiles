@@ -166,7 +166,7 @@ let b:ale_fixers = ['autopep8', 'yapf']
 " Disable warnings about trailing whitespace for Python files.
 let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'python3'
-"let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
+let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
 
 " Omni
 "au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.c,*.h,*.cxx,*.cc,*.hh set omnifunc=omni#cpp#complete#Main
@@ -487,7 +487,7 @@ augroup brazil
     command! Btest call BrazilRunTest()
     :nnoremap <Leader>T :Btest<CR>
     autocmd USER AsyncRunStop call BrazilTestFinished()
-
+    :nnoremap <F1> :call RunMyPy()<CR>
 
 augroup end
 
@@ -528,13 +528,29 @@ endfunction
 
 function! BrazilBuild()
     copen
+    call BrazilSetErrFormat()
     :wincmd J
     :AsyncRun brazil-build
 endfunction
 
 function! BrazilBuildRelease()
     copen
+    call BrazilSetErrFormat()
     exec ":AsyncRun bash -c \"brazil-build release 2>&1 | ~/dotfiles/vimmux/replace_top_dir.sh\""
+endfunction
+
+function! RunMyPy()
+    let fname = expand('%:p')
+    copen
+    call BrazilSetErrFormat()
+    exec ":AsyncRun mypy  " . fname
+endfunction
+
+function! BrazilSetErrFormat()
+    :set errorformat=\%.%#\ File\ \"%f\"\\,\ line\ %l\\,\ %m,
+    :set errorformat+=\%*\\sFile\ \"%f\"\\,\ line\ %l,
+    ":set errorformat+=%f:%l%.%#
+    :set errorformat+=%f:%l%m
 endfunction
 
 function! BrazilTest(testName)
@@ -542,8 +558,7 @@ function! BrazilTest(testName)
     let g:brazilSavedEf = &errorformat
     "the next errorformat match python interpreter error
     ":set errorformat=\ %#File\ \"%f\"\\,\ line\ %l\\,%m
-    :set errorformat=\%*\\sFile\ \"%f\"\\,\ line\ %l\\,\ %m,\%*\\sFile\ \"%f\"\\,\ line\ %l,
-    :set errorformat+=%f:%l%.%#
+    call BrazilSetErrFormat()
     "the next errorformat matches python traback printout
 
     let g:brazilLastTest = a:testName
@@ -553,6 +568,7 @@ endfunction
 
 function! BrazilRecuriseBuild()
     copen
+    call BrazilSetErrFormat()
     :AsyncRun brazil-recursive-cmd brazil-build
 endfunction
 
@@ -706,7 +722,8 @@ function AgWord()
     let wordUnderCursor = expand("<cword>")
     :set errorformat=%f:%l:%m
     copen
-    let cmd = ":AsyncRun ag --noheading " . wordUnderCursor
+    "let cmd = ":AsyncRun ag --noheading " . wordUnderCursor
+    let cmd = ":AsyncRun git grep -n " . wordUnderCursor
     exec cmd
 endfunction
 
