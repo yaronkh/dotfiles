@@ -712,6 +712,7 @@ nnoremap <silent> <F3> :call Btags()<CR>
 
 augroup AgGroup
     nnoremap <C-A> :call AgWord()<CR>
+    vnoremap <C-A> :call AgVisual()<CR>
 augroup end
 function! Agg(t)
     copen
@@ -719,12 +720,50 @@ function! Agg(t)
 endfunction
 
 function AgWord()
+    if g:asyncrun_status == 'running'
+        :AsyncStop
+        throw "job is being executed in background, wait a second and try again"
+    endif
     let wordUnderCursor = expand("<cword>")
+    call AgThat(wordUnderCursor)
+endfunction
+
+function AgThat(t)
     :set errorformat=%f:%l:%m
     copen
-    "let cmd = ":AsyncRun ag --noheading " . wordUnderCursor
-    let cmd = ":AsyncRun git grep -n " . wordUnderCursor
+    "let cmd = ":AsyncRun ag --noheading " . a:t
+    let cmd = ":AsyncRun git grep -n \"" . a:t . "\""
     exec cmd
+endfunction
+
+function AgVisual()
+    if g:asyncrun_status == 'running'
+        :AsyncStop
+        throw "job is being executed in background, wait a second and try again"
+    endif
+    let line_start = getpos("'<")[1]
+    let line_end = getpos("'>")[1]
+    if line_start != line_end
+        throw "multi line search is not supported"
+    endif
+    let searchWord = s:get_visual_selection()
+    if searchWord =""
+        return
+    endif
+    call AgThat(searchWord)
+endfunction
+
+function! s:get_visual_selection()
+    " Why is this not a built-in Vim script function?!
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
 endfunction
 
 function! Mgrep(t)
