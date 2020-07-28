@@ -20,6 +20,7 @@ process_line(){
 }
 
 while IFS= read -r line; do
+    line=$(echo "$line" | sed 's/^\[.*\]//')
     process_line "$PACK_DIR_RE1" "$line" || echo "$line"
 done
 
