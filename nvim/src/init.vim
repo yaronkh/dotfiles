@@ -747,7 +747,7 @@ function AgVisual()
         throw "multi line search is not supported"
     endif
     let searchWord = s:get_visual_selection()
-    if searchWord =""
+    if searchWord == ""
         return
     endif
     call AgThat(searchWord)
