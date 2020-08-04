@@ -493,7 +493,7 @@ augroup end
 
 function! BrazilGetAllTests()
     let res = []
-    let all_files = split(globpath("test", "test_*"), "\n")
+    let all_files = split(globpath("test/*", "test_*"), "\n") + split(globpath("online_tests", "test_*"), "\n")
     let fnd = 0
     for f in all_files
         let tests = systemlist("grep -E '^def +test_.*\\(.*\\):' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/(.*)://'")
@@ -516,7 +516,11 @@ endfunction
 function! BrazilRunTest()
     let y = BrazilGetAllTests()
     let g:brazilTesting = 1
-    call fzf#run({'source': y, 'sink': function('BrazilTest'), 'down': len(y) + 2})
+    let l = len(y) + 2
+    if l > 15
+        let l = 15
+    endif
+    call fzf#run({'source': y, 'sink': function('BrazilTest'), 'down': l})
 endfunction
 
 function! BrazilTestFinished()
