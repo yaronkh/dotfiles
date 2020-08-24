@@ -387,18 +387,22 @@ endfunction
 let g:do_restore_last_session = 1
 let g:do_save_session = 1
 
+function! IsProj()
+    return filereadable('tags') || filereadable('LASTSESSION.vim')
+endfunction
+
 function! RestoreSess()
   if argc() > 0
       let g:do_save_session = 0
   endif
 
-  if g:do_restore_last_session > 0 && argc() == 0 && filereadable('GPATH') && filereadable('LASTSESSION.vim')
+  if g:do_restore_last_session > 0 && argc() == 0 && IsProj() && filereadable('LASTSESSION.vim')
     source LASTSESSION.vim
   endif
 endfunction
 
 function! SaveSess()
-    if g:do_save_session > 0 && filereadable('GPATH')
+    if g:do_save_session > 0 && IsProj()
         :mks! LASTSESSION.vim
     endif
 endfunction
