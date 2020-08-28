@@ -82,37 +82,19 @@ endfunction
 " Generate All
 function! ZGenerateAll()
     copen
-    exec ":AsyncRun ctags -R " . g:ctagsOptions . " && echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && gtags && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && (git ls-files >> cscope.files 2> /dev/null || true) &&  sort -u cscope.files > cscope.tmp && rm cscope.files && mv cscope.tmp cscope.files && cscope -bq"
+    exec ":AsyncRun echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags  && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && (git ls-files >> cscope.files 2> /dev/null || true) &&  sort -u cscope.files > cscope.tmp && rm cscope.files && mv cscope.tmp cscope.files && cscope -bq"
 endfunction
 
 " Generate All
 function! ZGenerateEverything()
     copen
-    exec ":AsyncRun ctags -R " . g:ctagsEverythingOptions . " && echo '" . g:ctagsEverythingOptions . "' > .gutctags && gtags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files && cscope -bq index"
-endfunction
-
-" Write tags options.
-function! ZWriteTagsOptions()
-    copen
-    exec ":AsyncRun echo " . g:ctagsOptions . " > .gutctags && sed -i 's/ /\\n/g' .gutctags"
-endfunction
-
-" Generate Tags
-function! ZGenTags()
-    copen
-    exec ":AsyncRun ctags -R " . g:ctagsOptions
-endfunction
-
-" Generate Cscope Files
-function! ZGenCsFiles()
-    copen
-    exec ":AsyncRun ag -l -g '" . g:ctagsFilePatterns . "' > cscope.files"
+    exec ":AsyncRun echo '" . g:ctagsEverythingOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files"
 endfunction
 
 " Generate Tags and Cscope Files
 function! ZGenTagsAndCsFiles()
     copen
-    exec ":AsyncRun ag -l -g '" . g:ctagsFilePatterns . "' > cscope.files && ctags -R " . g:ctagsOptions
+    exec ":AsyncRun ag -l -g '" . g:ctagsFilePatterns . "' > cscope.files"
 endfunction
 
 " Install Mapping
@@ -190,7 +172,7 @@ let g:gutentags_modules = ['ctags']
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
 
 " config project root markers.
-"let g:gutentags_project_root = ['.root']
+let g:gutentags_project_root = ['.root', '.git']
 
 " generate datebases in my cache directory, prevent gtags files polluting my p                                                                                                             roject
 let g:gutentags_cache_dir = expand('~/.cache/tags')

@@ -43,7 +43,7 @@ endfunction
 for action in items(ccommmondict)
     exe('let ' . action[0] . ' = "' . action[1].id . '"')
     exe('nnoremap <leader>g' . action[1].key . ' :call GscopeFindFunc(' . action[0] . ', expand("<cword>"))<cr>')
-    exe('nnoremap <silent> <Leader>c' . action[1].key . '  :call Cscope(' .  action[0] . ', expand("<cword>"))<CR>')
+    exe('nnoremap <silent> <Leader>c' . action[1].key . '  :call GscopeFindFunc(' .  action[0] . ', expand("<cword>"))<CR>')
     exe('nnoremap <silent> <Leader><Leader>f' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ')<CR>')
     exe('nnoremap <silent> <Leader><Leader>c' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ', 1)<CR>')
 endfor
@@ -54,7 +54,7 @@ for action in items(csdict)
     let cAction = action[1]
     for ft in ['c', 'cpp', 'javascript', 'make', 'vim']
         exe('autocmd FileType ' . ft . ' noremap <buffer> <leader>g' . cAction.key . ' :call GscopeFindFunc(' . action[0] . ', expand("<cword>"))<cr>')
-        exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <Leader>c' . cAction.key . '  :call Cscope(' .  action[0] . ', expand("<cword>"))<CR>')
+        exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <Leader>c' . cAction.key . '  :call GscopeFindFunc(' .  action[0] . ', expand("<cword>"))<CR>')
         exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <Leader><Leader>f' . cAction.key . ' :call CscopeQuery(csdict.' . action[0] . ')<CR>')
         exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <Leader><Leader>c' . cAction.key . ' :call CscopeQuery(csdict.' . action[0] . ', 1)<CR>')
     endfor
