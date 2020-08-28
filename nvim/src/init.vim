@@ -391,6 +391,12 @@ function! IsProj()
     return filereadable('tags') || filereadable('LASTSESSION.vim')
 endfunction
 
+function! SetGuttentagsEnable()
+    if argc() > 0
+        let g:gutentags_enabled = 0
+    endif
+endfunction
+
 function! RestoreSess()
   if argc() > 0
       let g:do_save_session = 0
@@ -464,6 +470,7 @@ augroup my_tmux
     autocmd VimLeavePre * :tabdo TagbarClose
     autocmd VimLeavePre * :tabdo cclose
     autocmd VimEnter * nested call RestoreSess()
+    autocmd VimEnter * nested call SetGuttentagsEnable()
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
     vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
