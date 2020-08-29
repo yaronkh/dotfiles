@@ -79,22 +79,17 @@ function! ZInstall()
                 \ & sed -i 's@ . redraw!@\ . \" > /dev/null\"@' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
                 \ & sed -i \"s/'String',[ \\t]*s\\:green/'String', \\['\\#d78787', 174\\]/\" ~/.vim/plugged/gruvbox/colors/gruvbox.vim"
 endfunction
+
+function! GetGutctagsFN()
+    return gutentags#get_cachefile(gutentags#get_project_root($PWD), 'LASTSESSION.vim')
+endfunction
+
 " Generate All
 function! ZGenerateAll()
+    let l:gutctags = gutentags#get_cachefile(gutentags#get_project_root($PWD), '.gutctags')
+    let l:cscope_files = gutentags#get_cachefile(gutentags#get_project_root($PWD), '.cscope.files')
     copen
-    exec ":AsyncRun echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags  && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && (git ls-files >> cscope.files 2> /dev/null || true) &&  sort -u cscope.files > cscope.tmp && rm cscope.files && mv cscope.tmp cscope.files"
-endfunction
-
-" Generate All
-function! ZGenerateEverything()
-    copen
-    exec ":AsyncRun echo '" . g:ctagsEverythingOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags && ag -l > cscope.files"
-endfunction
-
-" Generate Tags and Cscope Files
-function! ZGenTagsAndCsFiles()
-    copen
-    exec ":AsyncRun ag -l -g '" . g:ctagsFilePatterns . "' > cscope.files"
+    exec ":AsyncRun echo '" . g:ctagsOptions . "' > " . l:gutctags . " && sed -i 's/ /\\n/g' " . l:gutctags . " && ag -l -i -g '" . g:ctagsFilePatterns . "' > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
 endfunction
 
 " Install Mapping
@@ -102,10 +97,6 @@ nnoremap <leader>zi :call ZInstall()<CR>
 
 " Generate All Mapping
 nnoremap <leader>zg :call ZGenerateAll()<CR>
-nnoremap  <leader>zG :call ZGenerateEverything()<CR>
-
-" Generate Tags and Cscope Files Mapping
-nnoremap <leader>zt :call ZGenTagsAndCsFiles()<CR>
 
 " Codesearch
 nnoremap <leader>zx "tyiw:exe "CSearch " . @t . ""<CR>
@@ -183,9 +174,15 @@ let g:gutentags_plus_nomap = 1
 set statusline+=%{gutentags#statusline()}
 let g:gutentags_define_advanced_commands = 1
 " Fzf
-let $FZF_DEFAULT_COMMAND = "if [ -s cscope.files ]; then cat cscope.files; else ag -l; fi"
 set rtp+=~/.fzf
-nnoremap <C-p> :call ZSwitchToRoot()<CR>:Files<CR>
+
+function DoShowFiles()
+    let l:cscope_files = gutentags#get_cachefile(gutentags#get_project_root($PWD), '.cscope.files')
+    " let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat " . l:cscope_files . "; else ag -l; fi"
+    let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat '" . l:cscope_files . "'; else ag -l; fi"
+    :Files
+endfunction
+nnoremap <C-p> :call DoShowFiles()<CR>
 nnoremap <C-n> :call ZSwitchToRoot()<CR>:Tags<CR>
 
 "setting the default browser
@@ -369,7 +366,7 @@ let g:do_restore_last_session = 1
 let g:do_save_session = 1
 
 function! GetLastSessionFn()
-     return gutentags#get_project_root($PWD) . "/LASTSESSION.vim"
+    return gutentags#get_cachefile(gutentags#get_project_root($PWD), 'LASTSESSION.vim')
 endfunction
 
 function! IsProj()
@@ -383,18 +380,23 @@ function! SetGuttentagsEnable()
 endfunction
 
 function! RestoreSess()
-  if argc() > 0
-      let g:do_save_session = 0
-  endif
+    try
+        if argc() > 0
+            let g:do_save_session = 0
+        endif
 
-  if g:do_restore_last_session > 0 && argc() == 0 && IsProj() && filereadable(GetLastSessionFn())
-    exec "source " . GetLastSessionFn()
-  endif
+        if g:do_restore_last_session > 0 && argc() == 0 && IsProj() && filereadable(GetLastSessionFn())
+            exec "source " . GetLastSessionFn()
+        endif
+    catch /.*/
+        let g:do_save_session = 0
+    endtry
 endfunction
 
 function! SaveSess()
+    echom "do_save_session=" . g:do_save_session
     if g:do_save_session > 0 && IsProj()
-        exec ":mks " . GetLastSessionFn()
+        exec ":mks! " . GetLastSessionFn()
     endif
 endfunction
 
