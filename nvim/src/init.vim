@@ -66,7 +66,7 @@ call plug#end()
 " Generation Parameters
 let g:ctagsFilePatterns = '\.uml$|\.wiki$|\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
 "let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
-let g:ctagsOptions = '--exclude=build --languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
+let g:ctagsOptions = '-R --exclude=build --languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
 set cursorline
@@ -82,7 +82,7 @@ endfunction
 " Generate All
 function! ZGenerateAll()
     copen
-    exec ":AsyncRun echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags  && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && (git ls-files >> cscope.files 2> /dev/null || true) &&  sort -u cscope.files > cscope.tmp && rm cscope.files && mv cscope.tmp cscope.files && cscope -bq"
+    exec ":AsyncRun echo '" . g:ctagsOptions . "' > .gutctags && sed -i 's/ /\\n/g' .gutctags  && ag -l -i -g '" . g:ctagsFilePatterns . "' > cscope.files && (git ls-files >> cscope.files 2> /dev/null || true) &&  sort -u cscope.files > cscope.tmp && rm cscope.files && mv cscope.tmp cscope.files"
 endfunction
 
 " Generate All
@@ -119,9 +119,8 @@ nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 let g:clang_c_options = '-std=c11'
 let g:clang_cpp_options = '-std=c++17 -stdlib=libc++'
 
-let g:vimroot=$PWD
 function! ZSwitchToRoot()
-    execute "cd " . g:vimroot
+    execute "cd " . gutentags#get_project_root($PWD)
 endfunction
 nnoremap <leader>zr :call ZSwitchToRoot()<CR>
 
@@ -167,9 +166,9 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
 " GutenTags
-let g:gutentags_modules = ['ctags']
+"let g:gutentags_modules = ['cscope']
 " enable gtags module
-let g:gutentags_modules = ['ctags', 'gtags_cscope']
+let g:gutentags_modules = ['cscope', 'ctags', 'gtags_cscope']
 
 " config project root markers.
 let g:gutentags_project_root = ['.root', '.git']
@@ -369,8 +368,12 @@ endfunction
 let g:do_restore_last_session = 1
 let g:do_save_session = 1
 
+function! GetLastSessionFn()
+     return gutentags#get_project_root($PWD) . "/LASTSESSION.vim"
+endfunction
+
 function! IsProj()
-    return filereadable('tags') || filereadable('LASTSESSION.vim')
+    return g:gutentags_enabled || filereadable(GetLastSessionFn())
 endfunction
 
 function! SetGuttentagsEnable()
@@ -384,14 +387,14 @@ function! RestoreSess()
       let g:do_save_session = 0
   endif
 
-  if g:do_restore_last_session > 0 && argc() == 0 && IsProj() && filereadable('LASTSESSION.vim')
-    source LASTSESSION.vim
+  if g:do_restore_last_session > 0 && argc() == 0 && IsProj() && filereadable(GetLastSessionFn())
+    exec "source " . GetLastSessionFn()
   endif
 endfunction
 
 function! SaveSess()
     if g:do_save_session > 0 && IsProj()
-        :mks! LASTSESSION.vim
+        exec ":mks " . GetLastSessionFn()
     endif
 endfunction
 
@@ -422,6 +425,10 @@ function! LoadCursorShapes()
   let &t_SR = "\<Esc>[4 q"
   let &t_EI = "\<Esc>"
 endfunction
+
+" augroup mycpp
+"      autocmd BufReadPost * set tags=[b:gutentags_files['ctags']]
+" augroup end
 
 augroup my_tmux
     autocmd!
@@ -575,7 +582,7 @@ function! LaunchIpythonInTmux()
 endfunction
 
 function! OpenVimTmuxTerm()
-    let shcmd = "tmux split-window sh -c \"cd " . g:vimroot . ";exec ${SHELL:-sh}\""
+    let shcmd = "tmux split-window sh -c \"cd " . ZSwitchToRoot() . ";exec ${SHELL:-sh}\""
     echom shcmd
     exec ":call system('" . shcmd . "')"
 endfunction
