@@ -84,12 +84,25 @@ function! GetGutctagsFN()
     return gutentags#get_cachefile(gutentags#get_project_root($PWD), 'LASTSESSION.vim')
 endfunction
 
+function! GetBufferDirectory()
+    let l:path = expand("%:p:h")
+    if l:path == ""
+        return $PWD
+    endif
+    return l:path
+endfunction
+
+function! GetProjectRoot()
+    return gutentags#get_project_root(GetBufferDirectory())
+endfunction
+
 " Generate All
 function! ZGenerateAll()
-    let l:gutctags = gutentags#get_cachefile(gutentags#get_project_root($PWD), '.gutctags')
-    let l:cscope_files = gutentags#get_cachefile(gutentags#get_project_root($PWD), '.cscope.files')
+    let l:pr = GetProjectRoot()
+    let l:gutctags = l:pr . '/' . '.gutctags'
+    let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
     copen
-    exec ":AsyncRun echo '" . g:ctagsOptions . "' > " . l:gutctags . " && sed -i 's/ /\\n/g' " . l:gutctags . " && ag -l -i -g '" . g:ctagsFilePatterns . "' > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
+    exec ":AsyncRun cd '" . l:pr . "' && echo '" . g:ctagsOptions . "' > " . l:gutctags . " && sed -i 's/ /\\n/g' " . l:gutctags . " && ag -l -i -g '" . g:ctagsFilePatterns . "' > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
 endfunction
 
 " Install Mapping
@@ -109,11 +122,6 @@ nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 " VimClang
 let g:clang_c_options = '-std=c11'
 let g:clang_cpp_options = '-std=c++17 -stdlib=libc++'
-
-function! ZSwitchToRoot()
-    execute "cd " . gutentags#get_project_root($PWD)
-endfunction
-nnoremap <leader>zr :call ZSwitchToRoot()<CR>
 
 " Trinity
 "nnoremap <C-L> :TrinityToggleNERDTree<CR>:TrinityToggleTagList<CR>
@@ -168,7 +176,7 @@ let g:gutentags_project_root = ['.root', '.git']
 let g:gutentags_cache_dir = expand('~/.cache/tags')
 
 " forbid gutentags adding gtags databases
-let g:gutentags_auto_add_gtags_cscope = 0
+let g:gutentags_auto_add_gtags_cscope = 1
 
 let g:gutentags_plus_nomap = 1
 set statusline+=%{gutentags#statusline()}
@@ -177,13 +185,14 @@ let g:gutentags_define_advanced_commands = 1
 set rtp+=~/.fzf
 
 function DoShowFiles()
-    let l:cscope_files = gutentags#get_cachefile(gutentags#get_project_root($PWD), '.cscope.files')
-    " let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat " . l:cscope_files . "; else ag -l; fi"
-    let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat '" . l:cscope_files . "'; else ag -l; fi"
+    let l:pr = GetProjectRoot()
+    let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
+    let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat '" . l:cscope_files . "'; else ag -l '' '" . l:pr . "'; fi"
     :Files
 endfunction
+
 nnoremap <C-p> :call DoShowFiles()<CR>
-nnoremap <C-n> :call ZSwitchToRoot()<CR>:Tags<CR>
+nnoremap <C-n> :Tags<CR>
 
 "setting the default browser
 let g:netrw_browsex_viewer="google-chrome-stable"
@@ -584,7 +593,7 @@ function! LaunchIpythonInTmux()
 endfunction
 
 function! OpenVimTmuxTerm()
-    let shcmd = "tmux split-window sh -c \"cd " . ZSwitchToRoot() . ";exec ${SHELL:-sh}\""
+    let shcmd = "tmux split-window sh -c \"cd " . GetProjectRoot() . ";exec ${SHELL:-sh}\""
     echom shcmd
     exec ":call system('" . shcmd . "')"
 endfunction
@@ -737,7 +746,7 @@ endfunction
 function AgThat(t)
     :set errorformat=%f:%l:%m
     copen
-    "let cmd = ":AsyncRun ag --noheading " . a:t
+    let l:pr = GetProjectRoot()
     let cmd = ":AsyncRun git grep -n \"" . a:t . "\""
     exec cmd
 endfunction
