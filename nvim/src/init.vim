@@ -188,7 +188,7 @@ function DoShowFiles()
     let l:pr = GetProjectRoot()
     let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
     let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat '" . l:cscope_files . "'; else ag -l '' '" . l:pr . "'; fi"
-    :Files
+    exec ":Files " . l:pr
 endfunction
 
 nnoremap <C-p> :call DoShowFiles()<CR>
