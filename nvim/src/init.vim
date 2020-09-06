@@ -11,6 +11,7 @@ call plug#begin()
 "Plug 'ctrlpvim/ctrlp.vim'
  "Plug 'justmao945/vim-clang'
 "Plug 'chazy/cscope_maps'
+Plug 'puremourning/vimspector'
 Plug 'junegunn/vim-easy-align'
 Plug 'wesleyche/SrcExpl'
 Plug 'vim-scripts/taglist.vim'
@@ -261,14 +262,14 @@ set shellslash
 map <C-w>w :q<CR>
 autocmd filetype make setlocal noexpandtab autoindent
 autocmd filetype sh setlocal expandtab
-noremap <F1> <C-w><C-p>
-noremap <F2> <C-w><C-w>
+" noremap <F1> <C-w><C-p>
+" noremap <F2> <C-w><C-w>
 nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabp<CR>
 nnoremap <C-t> :tabnew<CR>
-noremap <F6> :bp<CR>
-noremap <F7> :bn<CR>
-noremap <F5> :set nu!<CR>:set paste!<CR>
+" noremap <F6> :bp<CR>
+" noremap <F7> :bn<CR>
+" noremap <F5> :set nu!<CR>:set paste!<CR>
 set spelllang=en
 "enable ddd  working with the mouse
 set mouse=a
@@ -481,8 +482,8 @@ augroup my_tmux
     let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
     nnoremap <C-d> :call InsertDate()<cr>
     nnoremap <F10> :call LaunchIpythonInTmux()<CR>
-    nnoremap <F9> :call OpenVimTmuxTerm()<CR>
-    nnoremap <F8> :call OpenVimBufTmuxTerm()<CR>
+    nnoremap <F1> :call OpenVimTmuxTerm()<CR>
+    nnoremap <F2> :call OpenVimBufTmuxTerm()<CR>
     inoremap <C-d> <C-o>:call InsertDate() <CR>
     :map <Leader>tt <Plug>VimwikiToggleListItem
     "replace all occurences of the word under cursor
@@ -498,7 +499,7 @@ augroup brazil
     command! Btest call BrazilRunTest()
     :nnoremap <Leader>T :Btest<CR>
     autocmd USER AsyncRunStop call BrazilTestFinished()
-    :nnoremap <F1> :call RunMyPy()<CR>
+    " :nnoremap <F1> :call RunMyPy()<CR>
 
 augroup end
 
