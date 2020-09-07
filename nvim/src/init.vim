@@ -410,7 +410,7 @@ endfunction
 
 function! SaveSess()
     echom "do_save_session=" . g:do_save_session
-    :bufdo call KillDbgBuf()
+    call KillDbgBuf()
     if g:do_save_session > 0 && IsProj()
         exec ":mks! " . GetLastSessionFn()
     endif
@@ -449,6 +449,29 @@ function! WatchVar()
 endfunction
 
 function! KillDbgBuf()
+    :tabn 1
+    let allt = []
+    for t in range(1, tabpagenr('$'))
+        :tabn
+        let buffers = tabpagebuflist(t)
+        for w in range(1, len(buffers))
+            let l:bn = bufname(buffers[w-1])
+            if l:bn =~ "vimspector"
+                call add(allt, t)
+                break
+            endif
+        endfor
+    endfor
+    let l:diff = 0
+    for l in allt
+        let l:v = l - l:diff
+        exec ":tabclose " . l:v
+        let l:diff = l:diff + 1
+    endfor
+    :bufdo call KillDbgBufE()
+endfunction
+
+function! KillDbgBufE()
     let l:bn = bufname()
     if l:bn =~ "vimspector"
         :bd
@@ -456,8 +479,11 @@ function! KillDbgBuf()
 endfunction
 
 function! SafeLaunchVimSpector()
-    :bufdo call KillDbgBuf()
     call vimspector#Launch()
+endfunction
+
+function! SafeCloseVimspector()
+    call vimspector#Stop()
 endfunction
 
 augroup debug
@@ -468,7 +494,8 @@ augroup debug
      noremap ;1 :call vimspector#StepOver()<CR>
      noremap ;i :call vimspector#StepInto()<CR>
      noremap ;o :call vimspector#StepOut()<CR>
-     noremap ;t :call vimspector#Stop()<CR>
+     noremap ;t :call SafeCloseVimspector()<CR>
+     noremap ;` :call KillDbgBuf()
 augroup end
 
 augroup my_tmux
