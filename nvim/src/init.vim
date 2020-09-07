@@ -138,6 +138,9 @@ nnoremap <C-L> :NERDTreeToggle<CR>:wincmd w<CR>:TagbarToggle<CR>
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
+"neovim python
+" let g:python3_host_prog="/home/ANT.AMAZON.COM/kahayaro/.pyenv/shims/python"
+
 "python linting
 " Check Python files with flake8 and pylint.
 "let b:ale_linters = ['flake8', 'pylint']
@@ -441,6 +444,23 @@ endfunction
 " augroup mycpp
 "      autocmd BufReadPost * set tags=[b:gutentags_files['ctags']]
 " augroup end
+"
+"
+
+function! WatchVar()
+    exec ":VimspectorWatch " . expand("<cword>")
+endfunction
+
+augroup debug
+     noremap ;l :call vimspector#Launch()<CR>
+     noremap ;c :VimspectorContinue<CR>
+     noremap ;b :call vimspector#ToggleBreakpoint()<CR>
+     noremap ;w :call WatchVar()<CR>
+     noremap ;1 :call vimspector#StepOver()<CR>
+     noremap ;i :call vimspector#StepInto()<CR>
+     noremap ;o :call vimspector#StepOut()<CR>
+     noremap ;t :call vimspector#Stop()<CR>
+augroup end
 
 augroup my_tmux
     autocmd!
