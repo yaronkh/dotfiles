@@ -272,7 +272,7 @@ nnoremap <S-Tab> :tabp<CR>
 nnoremap <C-t> :tabnew<CR>
 " noremap <F6> :bp<CR>
 " noremap <F7> :bn<CR>
-" noremap <F5> :set nu!<CR>:set paste!<CR>
+noremap <F5> :set nu!<CR>:set paste!<CR>
 set spelllang=en
 "enable ddd  working with the mouse
 set mouse=a
@@ -406,8 +406,11 @@ function! RestoreSess()
     endtry
 endfunction
 
+
+
 function! SaveSess()
     echom "do_save_session=" . g:do_save_session
+    :bufdo call KillDbgBuf()
     if g:do_save_session > 0 && IsProj()
         exec ":mks! " . GetLastSessionFn()
     endif
@@ -441,18 +444,24 @@ function! LoadCursorShapes()
   let &t_EI = "\<Esc>"
 endfunction
 
-" augroup mycpp
-"      autocmd BufReadPost * set tags=[b:gutentags_files['ctags']]
-" augroup end
-"
-"
-
 function! WatchVar()
     exec ":VimspectorWatch " . expand("<cword>")
 endfunction
 
+function! KillDbgBuf()
+    let l:bn = bufname()
+    if l:bn =~ "vimspector"
+        :bd
+    endif
+endfunction
+
+function! SafeLaunchVimSpector()
+    :bufdo call KillDbgBuf()
+    call vimspector#Launch()
+endfunction
+
 augroup debug
-     noremap ;l :call vimspector#Launch()<CR>
+     noremap ;l :call SafeLaunchVimSpector()<CR>
      noremap ;c :VimspectorContinue<CR>
      noremap ;b :call vimspector#ToggleBreakpoint()<CR>
      noremap ;w :call WatchVar()<CR>
