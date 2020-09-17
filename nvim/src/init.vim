@@ -488,7 +488,7 @@ endfunction
 
 augroup debug
      noremap ;l :call SafeLaunchVimSpector()<CR>
-     noremap ;c :VimspectorContinue<CR>
+     noremap ;c :call vimspector#Continue<CR>
      noremap ;b :call vimspector#ToggleBreakpoint()<CR>
      noremap ;w :call WatchVar()<CR>
      noremap ;1 :call vimspector#StepOver()<CR>
@@ -564,7 +564,7 @@ function! BrazilGetAllTests()
     let all_files = split(globpath("test/*", "test_*"), "\n") + split(globpath("online_tests", "test_*"), "\n")
     let fnd = 0
     for f in all_files
-        let tests = systemlist("grep -E '^def +test_.*\\(.*\\):' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/(.*)://'")
+        let tests = systemlist("grep -E '^def +test_.*\\(.*\\).*:' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/(.*).*://'")
         for test in tests
             let test_str = f . "::" . test
             if test_str != g:brazilLastTest
@@ -634,7 +634,7 @@ function! BrazilTest(testName)
     "the next errorformat matches python traback printout
 
     let g:brazilLastTest = a:testName
-    exec ":AsyncRun brazil-test-exec pytest -s -vv " . a:testName
+    exec ":AsyncRun GEVENT_SUPPORT=True brazil-test-exec pytest -s -vv " . a:testName
     "test/test_orchestration_component.py::test_get_update_replication_info
 endfunction
 
