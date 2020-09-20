@@ -137,6 +137,9 @@ Plug 'vimwiki/vimwiki'
 
 " adds todo funcionality for vimwiki
 Plug 'aserebryakov/vim-todo-lists'
+
+" adds cpp competions with clang ide assistant (great)
+Plug 'justmao945/vim-clang'
 call plug#end()
 
 " Generation Parameters
@@ -282,21 +285,6 @@ let g:netrw_browsex_viewer="google-chrome-stable"
 let g:sneak#label = 1
 map f <Plug>Sneak_s
 map F <Plug>Sneak_S
-" Cscope
-let g:cscopedb_big_file = 'cscope.out'
-let g:cscopedb_small_file = 'cscope_small.out'
-let g:cscopedb_auto_files = 0
-
-" Multi Cursor
-let g:multi_cursor_use_default_mapping = 0
-let g:multi_cursor_start_word_key      = '<C-k>'
-"let g:multi_cursor_select_all_word_key = '<A-k>'
-let g:multi_cursor_start_key           = 'g<C-k>'
-"let g:multi_cursor_select_all_key      = 'g<A-k>'
-let g:multi_cursor_next_key            = '<C-k>'
-let g:multi_cursor_prev_key            = '<C-e>'
-let g:multi_cursor_skip_key            = '<C-x>'
-let g:multi_cursor_quit_key            = '<Esc>'
 
 " Cpp Highlight
 let g:cpp_class_scope_highlight = 1
@@ -354,27 +342,6 @@ set mouse=a
 set noerrorbells visualbell t_vb=
 "enable spell checking
 set spell
-
-" Extensions
-function! Cscope(option, query, ...)
-    let realoption = a:option
-
-    let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[36m%s\033[0m:\033[36m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
-    let opts = {
-                \ 'source':  "cscope -dL" . realoption . " " . a:query . " | awk '" . color . "' && cscope -f cscope_small.out -dL" . realoption . " " . a:query . " | awk '" . color . "'",
-                \ 'options': ['--ansi', '--prompt', '> ',
-                \             '--multi', '--bind', 'alt-a:select-all,alt-d:deselect-all',
-                \             '--color', 'fg:188,fg+:222,bg+:#3a3a3a,hl+:104'],
-                \ 'down': '40%'
-                \ }
-
-    function! opts.sink(lines)
-        let data = split(a:lines)
-        let file = split(data[0], ":")
-        execute 'e ' . '+' . file[1] . ' ' . file[0]
-    endfunction
-    call fzf#run(opts)
-endfunction
 
 " Gruvbox
 set background=dark
@@ -481,8 +448,6 @@ function! RestoreSess()
     endtry
 endfunction
 
-
-
 function! SaveSess()
     echom "do_save_session=" . g:do_save_session
     call KillDbgBuf()
@@ -571,6 +536,49 @@ augroup debug
      noremap ;o :call vimspector#StepOut()<CR>
      noremap ;t :call SafeCloseVimspector()<CR>
      noremap ;` :call KillDbgBuf()
+augroup end
+
+function! MoveBuf(dr)
+    let l:mybuf = bufnr("%")
+    let l:myline = line(".")
+    let l:mycol = col(".")
+    let l:mywin = bufwinnr("%")
+    exec "wincmd " . a:dr
+    let l:otherwin = bufwinnr("%")
+    let l:otherline = line(".")
+    let l:othercol = col(".")
+    if l:mywin != l:otherwin
+        let l:otherbuf = bufnr("%")
+        exec ":b " . l:mybuf
+        call cursor(l:myline, l:mycol)
+        exe l:mywin . "wincmd w"
+        exec ":b " . l:otherbuf
+        call cursor(l:otherline, l:othercol)
+        return [l:otherwin, l:myline, l:mycol]
+    endif
+    return [l:mywin, l:myline, l:mycol]
+endfunction
+
+function! MoveBufAndStay(dr)
+    let l:ret = MoveBuf(a:dr)
+    let l:target = ret[0]
+    let l:line = ret[1]
+    let l:col = ret[2]
+    exec l:target . "wincmd w"
+    call cursor(l:line, l:col)
+endfunctio
+
+
+augroup buffmove
+    nnoremap 2<Right> :call MoveBuf("l")<CR>
+    nnoremap 2<Left> :call MoveBuf("h")<CR>
+    nnoremap 2<Down> :call MoveBuf("j")<CR>
+    nnoremap 2<Up> :call MoveBuf("k")<CR>
+
+    nnoremap 3<Right> :call MoveBufAndStay("l")<CR>
+    nnoremap 3<Left> :call MoveBufAndStay("h")<CR>
+    nnoremap 3<Down> :call MoveBufAndStay("j")<CR>
+    nnoremap 3<Up> :call MoveBufAndStay("k")<CR>
 augroup end
 
 augroup my_tmux
