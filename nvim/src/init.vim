@@ -37,7 +37,6 @@ Plug 'majutsushi/tagbar'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'morhetz/gruvbox'
 Plug 'vim-scripts/TagHighlight'
-Plug 'erig0/cscope_dynamic'
 Plug 'terryma/vim-expand-region'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'xolox/vim-misc'
@@ -562,7 +561,7 @@ augroup end
 
 function! BrazilGetAllTests()
     let res = []
-    let all_files = split(globpath("test/*", "test_*"), "\n") + split(globpath("online_tests", "test_*"), "\n")
+    let all_files = split(globpath("test/*", "test_*"), "\n") + split(globpath("test_integ", "test_*"), "\n")
     let fnd = 0
     for f in all_files
         let tests = systemlist("grep -E '^def +test_.*\\(.*\\).*:' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/(.*).*://'")
