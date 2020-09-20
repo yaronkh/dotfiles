@@ -270,6 +270,8 @@ function DoShowFiles()
     let l:pr = GetProjectRoot()
     let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
     let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat '" . l:cscope_files . "'; else ag -l '' '" . l:pr . "'; fi"
+    " Empty value to disable preview window altogether
+    let g:fzf_preview_window = ''
     exec ":Files " . l:pr
 endfunction
 
