@@ -581,6 +581,8 @@ augroup buffmove
     nnoremap 3<Left> :call MoveBufAndStay("h")<CR>
     nnoremap 3<Down> :call MoveBufAndStay("j")<CR>
     nnoremap 3<Up> :call MoveBufAndStay("k")<CR>
+
+    autocmd! Filetype qf nnoremap <buffer> 4<Right> <C-w><Enter><C-w>L | nnoremap <buffer> 4<Left> <C-w><Enter><C-w>H | nnoremap <buffer> 4<Up> <C-w><Enter><C-w>K | nnoremap <buffer> 4<Down> <C-w><Enter><C-w>J
 augroup end
 
 augroup my_tmux
