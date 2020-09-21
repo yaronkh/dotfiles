@@ -275,6 +275,17 @@ function DoShowFiles()
     exec ":Files " . l:pr
 endfunction
 
+function! s:fzf_statusline()
+      " Override statusline as you like
+      highlight fzf1 ctermfg=161 ctermbg=251
+      highlight fzf2 ctermfg=23 ctermbg=251
+      highlight fzf3 ctermfg=237 ctermbg=251
+      setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+endfunction
+
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
+
+
 nnoremap <C-p> :call DoShowFiles()<CR>
 nnoremap <C-n> :Tags<CR>
 
@@ -540,6 +551,55 @@ augroup debug
      noremap ;` :call KillDbgBuf()
 augroup end
 
+"windows and buffer management. The target is to manage the
+"list of visited buffer in window, in the order that they are visited
+
+"a function called when entering into window
+function! WinEntered()
+    if !exists('w:created')
+        "the lines inside will be called only on the first time the window is
+        "created
+        let w:winbufs = []
+    endif
+endfunction
+
+function! BufEntered(nr)
+    call WinEntered()
+    if a:nr == 0
+        let l:bid = bufnr("%")
+    else
+        let l:bid = expand('<abuf>')
+    endif
+    if len(w:winbufs) == 0 || w:winbufs[-1] != l:bid
+        call add(w:winbufs, l:bid)
+    endif
+endfunction
+
+function! BufDeleted()
+    let l:bid = expand('<abuf>')
+    let l:winid = win_findbuf(l:bid)
+    let l:ids = []
+    for i in l:winid
+        call add(ids, win_id2win(win_getid()))
+    endfor
+    echom join(l:ids, ",")
+endfunction
+
+" autocmd that will set up the w:created variable
+autocmd VimEnter * autocmd WinEnter * let w:created=1
+
+" Consider this one, since WinEnter doesn't fire on the first window created when Vim launches.
+" You'll need to set any options for the first window in your vimrc,
+" or in an earlier VimEnter autocmd if you include this
+autocmd VimEnter * let w:created=1
+
+" Example of how to use w:created in an autocmd to initialize a window-local option
+autocmd WinEnter * call WinEntered()
+
+autocmd BufEnter * call BufEntered(0)
+autocmd BufAdd * call BufEntered(1)
+autocmd BufUnload * call BufDeleted()
+
 function! MoveBuf(dr)
     let l:mybuf = bufnr("%")
     let l:myline = line(".")
@@ -554,20 +614,15 @@ function! MoveBuf(dr)
         exec ":b " . l:mybuf
         call cursor(l:myline, l:mycol)
         exe l:mywin . "wincmd w"
-        exec ":b " . l:otherbuf
-        call cursor(l:otherline, l:othercol)
-        return [l:otherwin, l:myline, l:mycol]
+        exec ":bp1"
+        return l:otherwin
     endif
-    return [l:mywin, l:myline, l:mycol]
+    return l:mywin
 endfunction
 
 function! MoveBufAndStay(dr)
-    let l:ret = MoveBuf(a:dr)
-    let l:target = ret[0]
-    let l:line = ret[1]
-    let l:col = ret[2]
+    let l:target = MoveBuf(a:dr)
     exec l:target . "wincmd w"
-    call cursor(l:line, l:col)
 endfunctio
 
 
