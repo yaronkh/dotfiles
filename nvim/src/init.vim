@@ -554,21 +554,62 @@ function! MoveBuf(dr)
         exec ":b " . l:mybuf
         call cursor(l:myline, l:mycol)
         exe l:mywin . "wincmd w"
-        exec ":b " . l:otherbuf
-        call cursor(l:otherline, l:othercol)
-        return [l:otherwin, l:myline, l:mycol]
+        exe ':b#'
+        return l:otherwin
     endif
-    return [l:mywin, l:myline, l:mycol]
+    return l:mywin
 endfunction
 
 function! MoveBufAndStay(dr)
-    let l:ret = MoveBuf(a:dr)
-    let l:target = ret[0]
-    let l:line = ret[1]
-    let l:col = ret[2]
+    let l:target = MoveBuf(a:dr)
     exec l:target . "wincmd w"
-    call cursor(l:line, l:col)
-endfunctio
+endfunction
+
+"move window to the previous tab
+function MoveToPrevTab()
+  "there is only one window
+  if tabpagenr('$') == 1 && winnr('$') == 1
+    return
+  endif
+  "preparing new window
+  let l:tab_nr = tabpagenr('$')
+  let l:cur_buf = bufnr('%')
+  if tabpagenr() != 1
+    close!
+    if l:tab_nr == tabpagenr('$')
+      tabprev
+    endif
+    sp
+  else
+    close!
+    exe "0tabnew"
+  endif
+  "opening current buffer in new window
+  exe "b".l:cur_buf
+endfunction
+
+" Move window to the next tab
+function MoveToNextTab()
+  "there is only one window
+  if tabpagenr('$') == 1 && winnr('$') == 1
+    return
+  endif
+  "preparing new window
+  let l:tab_nr = tabpagenr('$')
+  let l:cur_buf = bufnr('%')
+  if tabpagenr() < tab_nr
+    close!
+    if l:tab_nr == tabpagenr('$')
+      tabnext
+    endif
+    sp
+  else
+    close!
+    tabnew
+  endif
+  "opening current buffer in new window
+  exe "b".l:cur_buf
+endfunction
 
 
 augroup buffmove
@@ -582,7 +623,12 @@ augroup buffmove
     nnoremap 3<Down> :call MoveBufAndStay("j")<CR>
     nnoremap 3<Up> :call MoveBufAndStay("k")<CR>
 
+    " in quickfix window pressing 4 and arrow will open the link in a new
+    " buffer according to the arrow direction
     autocmd! Filetype qf nnoremap <buffer> 4<Right> <C-w><Enter><C-w>L | nnoremap <buffer> 4<Left> <C-w><Enter><C-w>H | nnoremap <buffer> 4<Up> <C-w><Enter><C-w>K | nnoremap <buffer> 4<Down> <C-w><Enter><C-w>J
+
+    nnoremap 4<Right> :call MoveToNextTab()<CR><C-w>H
+    nnoremap 4<Left> :call MoveToPrevTab()<CR><C-w>H
 augroup end
 
 augroup my_tmux
