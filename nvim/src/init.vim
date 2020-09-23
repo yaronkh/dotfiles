@@ -140,6 +140,7 @@ Plug 'aserebryakov/vim-todo-lists'
 
 " adds cpp competions with clang ide assistant (great)
 Plug 'justmao945/vim-clang'
+
 call plug#end()
 
 " Generation Parameters
@@ -631,11 +632,28 @@ augroup buffmove
     nnoremap 4<Left> :call MoveToPrevTab()<CR><C-w>H
 augroup end
 
+"toggles whether or not the current window is automatically zoomed
+function! ToggleMaxWins()
+  if exists('g:windowMax')
+    au! maxCurrWin
+    wincmd =
+    unlet g:windowMax
+  else
+    augroup maxCurrWin
+        au! BufEnter * wincmd _ | wincmd |
+        "
+        " only max it vertically
+        " au! WinEnter * wincmd _
+    augroup END
+    do maxCurrWin WinEnter
+    exe ": wincmd _ | wincmd |"
+    let g:windowMax=1
+  endif
+endfunction
+nnoremap <Leader>z :call ToggleMaxWins()<CR>
+
 augroup my_tmux
     autocmd!
-    "autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-    "autocmd FileType java setlocal omnifunc=javacomplete#Complete
-    "autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
     autocmd bufenter * call Panetitle()
     autocmd bufenter * call Escapeins()
     autocmd BufEnter * call LoadCursorShapes()
@@ -644,7 +662,7 @@ augroup my_tmux
     endif
     noremap <silent> <Leader>bx :q<CR>
     noremap <silent> <Leader>bc :cclose<CR>
-    noremap <silent> <Leader>z :tab split<CR>
+    "noremap <silent> <Leader>z :tab split<CR>
     noremap <Leader>w :WinResizerStartResize<CR>
     noremap <Leader>? :Maps<CR>
     noremap <Leader>?? :Commands<CR>SplitVAndSwap()<cr>
@@ -664,7 +682,7 @@ augroup my_tmux
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
     vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
-    noremap <silent> <RightMouse> :Maps<cr>
+    noremap <silent> <RightMouse> :Maps<CR>
     "execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
     nnoremap z= :call FzfSpell()<CR>
     inoremap <Leader>li :LinuxCodingStyle<cr>
@@ -825,26 +843,9 @@ function! CheckUpdate(timer)
     call timer_start(1000,'CheckUpdate')
    endfunction
 
-function! s:buflist()
-    redir => ls
-    silent ls
-    redir END
-    return split(ls, '\n')
-endfunction
-
-function! s:bufopen(e)
-    execute 'buffer' matchstr(a:e, '^[ 0-9 ]*')
-endfunction
-
 "cool buffer switcher"
 "nnoremap <silent> <Leader><Enter> :FzfPreviewBuffers<CR>
-nnoremap <silent> <Leader><Enter> :call fzf#run({
-            \   'source':  reverse(<sid>buflist()),
-            \   'sink':    function('<sid>bufopen'),
-            \   'options': '+m',
-            \   'down':    len(<sid>buflist()) + 2
-            \  })<CR>
-
+nnoremap <silent> <Leader><Enter> :Buffers<CR>
 nnoremap <silent> <C-g>s :FzfPreviewGitStatus<CR>
 
 " Jump to tab: <Leader>t
@@ -859,6 +860,21 @@ function! s:jumpToTab(line)
     let cmd = pair[0].'gt'
     execute 'normal' cmd
 endfunction
+
+" An action can be a reference to a function that processes selected lines
+function! s:build_quickfix_list(lines)
+    call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+    copen
+    cc
+endfunction
+
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+let g:fzf_action = { 'ctrl-q': function('s:build_quickfix_list'),
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
 
 nnoremap <silent> <Leader>t :call fzf#run({
             \   'source':  reverse(map(range(1, tabpagenr('$')),
