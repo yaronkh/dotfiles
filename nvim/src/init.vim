@@ -843,9 +843,14 @@ function! CheckUpdate(timer)
     call timer_start(1000,'CheckUpdate')
    endfunction
 
+function! SelectBuffer()
+    let g:fzf_preview_window = 'right:50%'
+    execute ":Buffers"
+endfunction
+
 "cool buffer switcher"
 "nnoremap <silent> <Leader><Enter> :FzfPreviewBuffers<CR>
-nnoremap <silent> <Leader><Enter> :Buffers<CR>
+nnoremap <silent> <Leader><Enter> :call SelectBuffer()<CR>
 nnoremap <silent> <C-g>s :FzfPreviewGitStatus<CR>
 
 " Jump to tab: <Leader>t
