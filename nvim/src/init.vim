@@ -531,12 +531,16 @@ endfunction
 
 augroup debug
      noremap ;l :call SafeLaunchVimSpector()<CR>
-     noremap ;c :call vimspector#Continue<CR>
+     noremap ;c :call vimspector#Continue()<CR>
      noremap ;b :call vimspector#ToggleBreakpoint()<CR>
      noremap ;w :call WatchVar()<CR>
      noremap ;1 :call vimspector#StepOver()<CR>
+     noremap <F10> :call vimspector#StepOver()<CR>
      noremap ;i :call vimspector#StepInto()<CR>
+     noremap <F11> :call vimspector#StepInto()<CR>
      noremap ;o :call vimspector#StepOut()<CR>
+     noremap ;o :call vimspector#StepOut()<CR>
+     noremap <S-F11> :call vimspector#StepOut()<CR>
      noremap ;t :call SafeCloseVimspector()<CR>
      noremap ;` :call KillDbgBuf()
 augroup end
@@ -688,7 +692,7 @@ augroup my_tmux
     inoremap <Leader>li :LinuxCodingStyle<cr>
     let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
     nnoremap <C-d> :call InsertDate()<cr>
-    nnoremap <F10> :call LaunchIpythonInTmux()<CR>
+    " nnoremap <F10> :call LaunchIpythonInTmux()<CR>
     nnoremap <F1> :call OpenVimTmuxTerm()<CR>
     nnoremap <F2> :call OpenVimBufTmuxTerm()<CR>
     inoremap <C-d> <C-o>:call InsertDate() <CR>
