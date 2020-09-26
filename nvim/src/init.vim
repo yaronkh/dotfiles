@@ -545,32 +545,47 @@ augroup debug
      noremap ;` :call KillDbgBuf()
 augroup end
 
-function! MoveBuf(dr)
+function MoveBuf(dr, is_dup)
     let l:mybuf = bufnr("%")
     let l:myline = line(".")
     let l:mycol = col(".")
     let l:mywin = win_getid()
     exec "wincmd " . a:dr
     let l:otherwin = win_getid()
+    let l:otherbuf = bufnr("%")
     let l:otherline = line(".")
     let l:othercol = col(".")
-    if l:mywin != l:otherwin
-        let l:otherbuf = bufnr("%")
-        exec ":b " . l:mybuf
-        call cursor(l:myline, l:mycol)
-        call win_gotoid(l:mywin)
-        try
-            exe ':Bclose'
-        catch
-        "    exe ":enew"
-        endtry
-        return l:otherwin
+    if l:mywin == l:otherwin
+        if a:dr == "l"
+            vsplit
+        elseif a:dr == "h"
+            vsplit
+            wincmd l
+        elseif a:dr == "j"
+            split
+        else
+            split
+            wincmd j
+        endif
+        " if !a:is_dup
+        "     exec ":wincmd " . a:dr
+        "     enew
+        "     call win_gotoid(l:mywin)
+        " endif
+        return MoveBuf(a:dr, a:is_dup)
     endif
-    return l:mywin
+    exec ":b " . l:mybuf
+    call cursor(l:myline, l:mycol)
+    call win_gotoid(l:mywin)
+    if !a:is_dup
+        exec ":b " . l:otherbuf
+        call cursor(l:otherline, l:othercol)
+    endif
+    return l:otherwin
 endfunction
 
-function! MoveBufAndStay(dr)
-    let l:target = MoveBuf(a:dr)
+function! MoveBufAndStay(dr, is_dup)
+    let l:target = MoveBuf(a:dr, a:is_dup)
     call win_gotoid(l:target)
 endfunction
 
@@ -635,7 +650,8 @@ function Kwbd(kwbdStage)
     endif
     let s:kwbdBufNum = bufnr("%")
     let s:kwbdWinNum = winnr()
-    windo call Kwbd(2)
+    cckecvejrnljhdfcktubcbdltcgdjvctlticghe
+
     execute s:kwbdWinNum . 'wincmd w'
     let s:buflistedLeft = 0
     let s:bufFinalJump = 0
@@ -686,15 +702,20 @@ endfunction
 
 
 augroup buffmove
-    nnoremap 2<Right> :call MoveBuf("l")<CR>
-    nnoremap 2<Left> :call MoveBuf("h")<CR>
-    nnoremap 2<Down> :call MoveBuf("j")<CR>
-    nnoremap 2<Up> :call MoveBuf("k")<CR>
+    nnoremap 1<Right> :wincmd l<CR>
+    nnoremap 1<Left> :wincmd h<CR>
+    nnoremap 1<Down> :wincmd j<CR>
+    nnoremap 1<Up> :wincmd k<CR>
 
-    nnoremap 3<Right> :call MoveBufAndStay("l")<CR>
-    nnoremap 3<Left> :call MoveBufAndStay("h")<CR>
-    nnoremap 3<Down> :call MoveBufAndStay("j")<CR>
-    nnoremap 3<Up> :call MoveBufAndStay("k")<CR>
+    nnoremap 2<Right> :call MoveBuf("l", 0)<CR>
+    nnoremap 2<Left> :call MoveBuf("h", 0)<CR>
+    nnoremap 2<Down> :call MoveBuf("j", 0)<CR>
+    nnoremap 2<Up> :call MoveBuf("k", 0)<CR>
+
+    nnoremap 3<Right> :call MoveBufAndStay("l", 0)<CR>
+    nnoremap 3<Left> :call MoveBufAndStay("h", 0)<CR>
+    nnoremap 3<Down> :call MoveBufAndStay("j", 0)<CR>
+    nnoremap 3<Up> :call MoveBufAndStay("k", 0)<CR>
 
     " in quickfix window pressing 4 and arrow will open the link in a new
     " buffer according to the arrow direction
@@ -702,6 +723,16 @@ augroup buffmove
 
     nnoremap 4<Right> :call MoveToNextTab()<CR><C-w>H
     nnoremap 4<Left> :call MoveToPrevTab()<CR><C-w>H
+
+    nnoremap 5<Right> :call MoveBuf("l", 1)<CR>
+    nnoremap 5<Left> :call MoveBuf("h", 1)<CR>
+    nnoremap 5<Down> :call MoveBuf("j", 1)<CR>
+    nnoremap 5<Up> :call MoveBuf("k", 1)<CR>
+
+    nnoremap 6<Right> :call MoveBufAndStay("l", 1)<CR>
+    nnoremap 6<Left> :call MoveBufAndStay("h", 1)<CR>
+    nnoremap 6<Down> :call MoveBufAndStay("j", 1)<CR>
+    nnoremap 6<Up> :call MoveBufAndStay("k", 1)<CR>
 augroup end
 
 "toggles whether or not the current window is automatically zoomed
