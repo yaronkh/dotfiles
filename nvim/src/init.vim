@@ -1,147 +1,63 @@
+let g:sp_home = expand("<sfile>:p:h") . "/../../"
+function! GetSourceFile(file)
+    return g:sp_home . a:file
+endfunction
+
 " Plug
-if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+let g:sp_plug_source = "source " . GetSourceFile("nvim/src/plug.vim")
 
-"this is the first diff"
+let g:sp_plug_target = get(g:, "sp_config_dir", g:HomePath . "/.config/nvim") . "/autoload/plug.vim"
+let g:sp_plug_sha_file = get(g:, "sp_config_dir", g:HomePath . "/.config/nvim") . "/plugs_sha"
 
-call plug#begin()
-" vimspector - debugger front end for debugger. In particular it is used for
-" gdb and debugpy
-Plug 'puremourning/vimspector'
+function! UpdatePlugins(chsum)
+    " let l:psid = GetPlugSID()
+    try
+        PlugInstall --sync
+        PlugUpdate --sync
+        call writefile([a:chsum], g:sp_plug_sha_file, 'b')
+    catch
+        echom "plug update failed"
+    endtry
+endfunction
 
-" align text in old c-style fashin style
-Plug 'junegunn/vim-easy-align'
+"return the sid of the script nvim/src/plug.vim
+function! GetPlugSID()
+    let l:fp = expand(g:sp_plug_source . ":p")
+    redir => out | silent! scriptnames | redir END
+    let l:i = 0
+    for l in split(out, "\n")
+        let l:j = strridx(l, "nvim/src/plug.vim")
+        if l:j >= 0
+            return l:i + 1
+        endif
+        let l:i = l:i + 1
+    endfor
+    return 0
+endfunction
 
-" enable tag search in all opened buffers
-Plug 'vim-scripts/taglist.vim'
+function CheckIfUpdateNeeded()
+    if !filereadable(g:sp_plug_target)
+        call writefile([g:sp_plug_source, "\n"], g:sp_plug_target, 'b')
+        call writefile([system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))], g:sp_plug_sha_file, 'b')
+        let g:chsum = system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))
+        autocmd VimEnter * call UpdatePlugins(g:chsum)
+    elseif !filereadable(g:sp_plug_sha_file)
+        call writefile([system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))], g:sp_plug_sha_file, 'b')
+        let g:chsum = system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))
+        autocmd VimEnter * call UpdatePlugins(g:chsum)
+    else
+        let g:echsum = readfile(g:sp_plug_sha_file)[0]
+        let g:chsum = system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))
+        if g:chsum != g:echsum
+            call writefile([g:chsum], g:sp_plug_sha_file, 'b')
+            autocmd VimEnter * call UpdatePlugins(g:chsum)
+        endif
+    endif
+endfunction
 
-" file system explorer for vim editor
-Plug 'scrooloose/nerdtree'
+call CheckIfUpdateNeeded()
 
-" manages nerdtree and taglist in single system ui
-" presee C-L to toggle that view
-Plug 'wesleyche/Trinity'
-
-" cpp completions with ctags database (created in gutentags and
-" gutentags_plus)
-Plug 'vim-scripts/OmniCppComplete'
-
-" function libraries used by other plugins
-Plug 'tomtom/tlib_vim'
-"Plug 'rdolgushin/snipMate-acp'
-
-" opens completion popup when certain characters are typed
-Plug 'vim-scripts/AutoComplPop'
-
-" manages tag files under ~/.cache/tags
-Plug 'ludovicchabant/vim-gutentags'
-
-" expands vim-gutentags so files from multiple projects
-Plug 'skywind3000/gutentags_plus'
-
-" enable fzf functions in vim
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-" Opens and navigate through alternate files
-" for example, if you are on c file and want todo
-" open the corresponding h files in vertical split, just run :AV
-Plug 'vim-scripts/a.vim'
-
-" fancy tabline and statusline that light according to edit mode
-Plug 'vim-airline/vim-airline'
-
-" run things asynchronous
-Plug 'skywind3000/asyncrun.vim'
-
-" Plug 'brandonbloom/csearch.vim'
-"Plug 'jiangmiao/auto-pairs'
-Plug 'majutsushi/tagbar'
-
-" retro style for vim`
-Plug 'morhetz/gruvbox'
-
-" highlight tags in code
-Plug 'vim-scripts/TagHighlight'
-
-" enable virtual selection of code block
-" for example, enter into virtual selection mode (press v)
-" than, press + for expand the selection and _ for shrink it back
-Plug 'terryma/vim-expand-region'
-
-" additional vim c++ syntax highlighting
-" this includes c++11/14/17 and much more
-Plug 'octol/vim-cpp-enhanced-highlight'
-
-" basic plugin that provides many misc functionality
-" for example, run functions asynchrounously, periodic call and more
-Plug 'xolox/vim-misc'
-
-" plugin for resizing window, Pres C-E and start playing
-Plug 'simeji/winresizer'
-"Plug 'vim-scripts/DetectIndent'
-"
-"A Vim plugin which shows a git diff in the sign column
-Plug 'airblade/vim-gitgutter'
-
-" This plugin causes all trailing whitespace characters to be highlighted.
-Plug 'ntpeters/vim-better-whitespace'
-
-" spelling plugin. spells comments and strings in code
-" to fix words, place the cursor on a problematic word and press z=
-Plug 'me-vlad/spellfiles.vim'
-"Plug 'sakhnik/nvim-gdbm'
-
-" plugin around gdb, this plugin is deprecated in favor
-" of vimspector
-Plug 'cpiger/NeoDebug'
-
-" show marks and bookmarks in the sign side coloumn
-Plug 'kshenoy/vim-signature'
-
-" detect linux kernel code and mark code that
-" violates linux coding style
-Plug 'vivien/vim-linux-coding-style'
-
-" code completer for python, that uses jedi library
-" I've exanded that to include 'goto-definition' and
-" where used
-Plug 'davidhalter/jedi-vim'
-
-" plugin to python debugger. This plugin is deprecated
-" in favor of vimspector with debugpy
-Plug 'gotcha/vimpdb'
-
-" a wrapper around git. for example, :GBlame will show
-" git blame window to the left
-Plug 'tpope/vim-fugitive'
-
-"ALE (Asynchronous Lint Engine)
-"is a plugin providing linting (syntax checking and semantic errors) in NeoVim 0.2.0+
-"it checks your code interactively and shows error mark in the sign coloum`
-Plug 'dense-analysis/ale'
-
-" collection of files that uses fzf. For example FZFTags and FZFWindows
-Plug 'yuki-ycino/fzf-preview.vim'
-
-" great plugin for creating commits in vim. just type :Magit
-" get help in the new window by pressing ?
-Plug 'jreybert/vimagit'
-Plug 'artur-shaik/vim-javacomplete2'
-
-" presonal wiki for vim. similar to emacs org
-Plug 'vimwiki/vimwiki'
-
-" adds todo funcionality for vimwiki
-Plug 'aserebryakov/vim-todo-lists'
-
-" adds cpp competions with clang ide assistant (great)
-Plug 'justmao945/vim-clang'
-
-call plug#end()
+exe ":source " . GetSourceFile("nvim/src/plugs.vim")
 
 " Generation Parameters
 let g:ctagsFilePatterns = '\.uml$|\.wiki$|\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
@@ -229,12 +145,9 @@ let b:ale_fixers = ['autopep8', 'yapf']
 " Disable warnings about trailing whitespace for Python files.
 let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'python3'
-let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
+let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
 
-" Omni
-"au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.c,*.h,*.cxx,*.cc,*.hh set omnifunc=omni#cpp#complete#Main
-"let g:acp_behaviorSnipmateLength = 1
-set tags+=~/dotfiles/nvim/tags/cpp
+exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
 let OmniCpp_GlobalScopeSearch = 1
 let OmniCpp_ShowAccess = 1
@@ -248,7 +161,7 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
 " GutenTags
-"let g:gutentags_modules = ['cscope']
+
 " enable gtags module
 let g:gutentags_modules = ['cscope', 'ctags', 'gtags_cscope']
 
@@ -567,11 +480,6 @@ function MoveBuf(dr, is_dup)
             split
             wincmd j
         endif
-        " if !a:is_dup
-        "     exec ":wincmd " . a:dr
-        "     enew
-        "     call win_gotoid(l:mywin)
-        " endif
         return MoveBuf(a:dr, a:is_dup)
     endif
     exec ":b " . l:mybuf
@@ -585,8 +493,7 @@ function MoveBuf(dr, is_dup)
 endfunction
 
 function! MoveBufAndStay(dr, is_dup)
-    let l:target = MoveBuf(a:dr, a:is_dup)
-    call win_gotoid(l:target)
+    call win_gotoid(MoveBuf(a:dr, a:is_dup))
 endfunction
 
 "move window to the previous tab
@@ -650,8 +557,6 @@ function Kwbd(kwbdStage)
     endif
     let s:kwbdBufNum = bufnr("%")
     let s:kwbdWinNum = winnr()
-    cckecvejrnljhdfcktubcbdltcgdjvctlticghe
-
     execute s:kwbdWinNum . 'wincmd w'
     let s:buflistedLeft = 0
     let s:bufFinalJump = 0
@@ -863,7 +768,7 @@ endfunction
 function! BrazilBuildRelease()
     copen
     call BrazilSetErrFormat()
-    exec ":AsyncRun bash -c \"brazil-build release 2>&1 | ~/dotfiles/vimmux/replace_top_dir.sh\""
+    exec ":AsyncRun bash -c \"brazil-build release 2>&1 | " . GetSourceFile("vimmux/replace_top_dir.sh") . "\""
 endfunction
 
 function! RunMyPy()
@@ -917,7 +822,7 @@ function! OpenVimBufTmuxTerm()
 endfunction
 function! CaptureLastIpytTb(paneid)
     copen
-    exec ":AsyncRun ~/dotfiles/vimmux/start_show_tb.sh \\" . a:paneid
+    exec ":AsyncRun " . GetSourceFile("vimmux/start_show_tb.sh") .  " \\" . a:paneid
 endfunction
 
 function! ReplaceWordUnderCursor()
