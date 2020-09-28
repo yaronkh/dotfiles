@@ -1,4 +1,11 @@
 call plug#begin()
+
+"window manipulation plugin,
+"enable to move buffers between tabs,
+"exchange buffers between windows,
+"easy window navigation and duplicate buffers across windows
+Plug 'yaronkh/vim-winmanip'
+
 "
 " vimspector - debugger front end for debugger. In particular it is used for
 " gdb and debugpy
