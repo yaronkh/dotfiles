@@ -124,7 +124,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'dense-analysis/ale'
 
 " collection of files that uses fzf. For example FZFTags and FZFWindows
-Plug 'yuki-ycino/fzf-preview.vim'
+"Plug 'yuki-ycino/fzf-preview.vim' { 'branch': 'release', 'do': ':UpdateRemotePlugins' }
 
 " great plugin for creating commits in vim. just type :Magit
 " get help in the new window by pressing ?
