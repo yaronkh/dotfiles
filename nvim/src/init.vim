@@ -261,7 +261,7 @@ set spell
 
 " Gruvbox
 set background=dark
-let g:gruvbox_contrast_datk = 'medium'
+let g:gruvbox_contrast_dark = 'hard'
 color gruvbox
 hi Normal ctermbg=none
 
@@ -365,8 +365,7 @@ function! RestoreSess()
 endfunction
 
 function! SaveSess()
-    echom "do_save_session=" . g:do_save_session
-    call KillDbgBuf()
+    " call KillDbgBuf()
     if g:do_save_session > 0 && IsProj()
         exec ":mks! " . GetLastSessionFn()
     endif
