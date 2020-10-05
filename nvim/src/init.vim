@@ -138,9 +138,6 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 "python linting
 " Check Python files with flake8 and pylint.
-"let b:ale_linters = ['flake8', 'pylint']
-"let g:ale_linters = { 'python': ['pylint', 'mypy']}
-" Fix Python files with autopep8 and yapf.
 let b:ale_fixers = ['autopep8', 'yapf']
 " Disable warnings about trailing whitespace for Python files.
 let b:ale_warn_about_trailing_whitespace = 0
@@ -168,7 +165,7 @@ let g:gutentags_modules = ['cscope', 'ctags', 'gtags_cscope']
 " config project root markers.
 let g:gutentags_project_root = ['.root', '.git']
 
-" generate datebases in my cache directory, prevent gtags files polluting my p                                                                                                             roject
+" generate datebases in my cache directory, prevent gtags files polluting my project
 let g:gutentags_cache_dir = expand('~/.cache/tags')
 
 " forbid gutentags adding gtags databases
@@ -501,6 +498,14 @@ augroup my_tmux
     "replace all occurences of the word under cursor
     :nnoremap <Leader>s :call ReplaceWordUnderCursor()<CR>
 augroup end
+
+augroup enhanced_quickfix
+     " in quickfix window pressing 4 and arrow will open the link in a new
+    " buffer according to the arrow direction
+    autocmd! Filetype qf nnoremap <silent> <buffer> 4<Right> <C-w><Enter><C-w>L | nnoremap <silent> <buffer> 4<Left> <C-w><Enter><C-w>H | nnoremap <silent> <buffer> 4<Up> <C-w><Enter><C-w>K | nnoremap <silent> <buffer> 4<Down> <C-w><Enter><C-w>J
+    autocmd Filetype qf wincmd J
+augroup end
+
 
 augroup brazil
     let g:brazilLastTest = ""
