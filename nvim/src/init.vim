@@ -258,7 +258,7 @@ set spell
 
 " Gruvbox
 set background=dark
-let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_dark = 'medium'
 color gruvbox
 hi Normal ctermbg=none
 
