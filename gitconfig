@@ -20,6 +20,7 @@
         grp = grep --line-number --heading --break
         fet = fetch --all --progress --verbose
         st = status --short --branch
+        fl = status -uno --short
         vd = difftool -y
         ds = diff --stat
         ff = pull --ff-only
@@ -33,6 +34,5 @@
         tool = meld2
 [difftool "meld2"]
         cmd = meld --diff $LOCAL $BASE
-
 [merge]
         tool = kdiff3
