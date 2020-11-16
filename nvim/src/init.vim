@@ -525,7 +525,7 @@ function! BrazilGetAllTests()
     let all_files = split(globpath("test/*", "test_*"), "\n") + split(globpath("test_integ", "test_*"), "\n")
     let fnd = 0
     for f in all_files
-        let tests = systemlist("grep -E '^def +test_.*\\(.*\\).*:' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/(.*).*://'")
+        let tests = systemlist("grep -E '^def +test_' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/\(.*//'")
         for test in tests
             let test_str = f . "::" . test
             if test_str != g:brazilLastTest
