@@ -518,6 +518,8 @@ augroup brazil
     autocmd USER AsyncRunStop call BrazilTestFinished()
     " :nnoremap <F1> :call RunMyPy()<CR>
 
+    au BufRead,BufNewFile 	Config	setfiletype perl
+
 augroup end
 
 function! BrazilGetAllTests()
