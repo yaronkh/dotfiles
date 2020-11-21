@@ -140,4 +140,7 @@ Plug 'aserebryakov/vim-todo-lists'
 " adds cpp competions with clang ide assistant (great)
 Plug 'justmao945/vim-clang'
 
+" aws smithy language syntax highlight
+Plug 'jasdel/vim-smithy'
+
 call plug#end()
