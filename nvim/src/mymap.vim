@@ -20,6 +20,13 @@ let pydict = { 'find_symbol':                {'key' : 's', 'f' : "jedi#goto"},
              \ 'find_files_including':       {'key' : 'i', 'f' : "ActionNotDefined"},
              \ 'where_this_symbol_is_assigned': {'key' : 'a', 'f' : "jedi#goto_assignments"}}
 
+let tsdict = { 'find_symbol':                {'key' : 's', 'f' : "TsuquyomiDefinition"},
+             \ 'find_definition':            {'key' : 'g', 'f' : "TsuquyomiDefinition"},
+             \ 'functions_called_by':        {'key' : 'd', 'f' : "ActionNotDefined"},
+             \ 'where_used':                 {'key' : 'c', 'f' : "TsuReferences"},
+             \ 'find_files_including':       {'key' : 'i', 'f' : "ActionNotDefined"},
+             \ 'where_this_symbol_is_assigned': {'key' : 'a', 'f' : "ActionNotDefined"}}
+
 function! CscopeQuery(option, ...)
     call inputsave()
     let query = input(a:option.query)
@@ -66,5 +73,14 @@ for action in items(pydict)
     let cAction = action[1]
     for ft in ['python']
         exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <leader>g' . cAction.key . ' :call PyscopeQuery(' . pyname . ', function("' . cAction.f . '"))<cr>')
+    endfor
+endfor
+
+for action in items(tsdict)
+    let tsname = action[0] . '_ts'
+    exe('let ' . tsname . ' = "_"')
+    let cAction = action[1]
+    for ft in ['typescript']
+        exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <leader>g' . cAction.key . ' :' . cAction.f . '<cr>')
     endfor
 endfor

@@ -143,4 +143,9 @@ Plug 'justmao945/vim-clang'
 " aws smithy language syntax highlight
 Plug 'jasdel/vim-smithy'
 
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+
+" typescript omnicomplete and goto definition
+Plug 'Quramy/tsuquyomi'
+
 call plug#end()
