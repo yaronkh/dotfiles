@@ -60,7 +60,6 @@ call CheckIfUpdateNeeded()
 exe ":source " . GetSourceFile("nvim/src/plugs.vim")
 
 " Generation Parameters
-let g:ctagsFilePatterns = '\.uml$|\.wiki$|\.c$|\.cc$|\.cpp$|\.yml|\.cxx$|\.h$|\.hh$|\.hpp$|\.py$|\.mk$|\.bash$|\.sh$|\.vim$|make|Make|\.json$|\.j2|.rc|\.java$'
 "let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsOptions = '-R --exclude=build --languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
@@ -98,7 +97,7 @@ function! ZGenerateAll()
     let l:gutctags = l:pr . '/' . '.gutctags'
     let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
     copen
-    exec ":AsyncRun cd '" . l:pr . "' && echo '" . g:ctagsOptions . "' > " . l:gutctags . " && sed -i 's/ /\\n/g' " . l:gutctags . " && ag -l -i -g '" . g:ctagsFilePatterns . "' > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
+    exec ":AsyncRun cd '" . l:pr . "' && echo '" . g:ctagsOptions . "' > " . l:gutctags . " && sed -i 's/ /\\n/g' " . l:gutctags . " && ag -l --all-types > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
 endfunction
 
 " Install Mapping
@@ -180,7 +179,7 @@ set rtp+=~/.fzf
 function DoShowFiles()
     let l:pr = GetProjectRoot()
     let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
-    let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat '" . l:cscope_files . "'; else ag -l '' '" . l:pr . "'; fi"
+    let $FZF_DEFAULT_COMMAND = "if [ -s '" . l:cscope_files . "' ]; then cat '" . l:cscope_files . "'; else find '' '" . l:pr . "'; fi"
     " Empty value to disable preview window altogether
     let g:fzf_preview_window = ''
     exec ":Files " . l:pr
