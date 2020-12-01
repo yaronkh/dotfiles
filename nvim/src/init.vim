@@ -498,6 +498,10 @@ augroup my_tmux
     :nnoremap <Leader>s :call ReplaceWordUnderCursor()<CR>
 augroup end
 
+augroup ts_config
+    let g:tsuquyomi_disable_quickfix = 1
+augroup end
+
 augroup enhanced_quickfix
      " in quickfix window pressing 4 and arrow will open the link in a new
     " buffer according to the arrow direction
