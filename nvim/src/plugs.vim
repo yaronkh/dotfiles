@@ -148,4 +148,7 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 " typescript omnicomplete and goto definition
 Plug 'Quramy/tsuquyomi'
 
+" Vim plugin for insert mode completion of words in adjacent tmux panes
+Plug 'wellle/tmux-complete.vim'
+
 call plug#end()
