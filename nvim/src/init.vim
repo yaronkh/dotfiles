@@ -140,7 +140,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let b:ale_fixers = ['autopep8', 'yapf']
 " Disable warnings about trailing whitespace for Python files.
 let b:ale_warn_about_trailing_whitespace = 0
-let g:ale_python_pylint_executable = 'python3'
+let g:ale_python_pylint_executable = 'python'
 let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
