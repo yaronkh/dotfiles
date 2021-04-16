@@ -776,7 +776,7 @@ function AgThat(t)
     :set errorformat=%f:%l:%m
     copen
     let l:pr = GetProjectRoot()
-    let cmd = ":AsyncRun git grep -n \"" . a:t . "\""
+    let cmd = ":AsyncRun git grep -n \"" . a:t . "\" -- " . l:pr
     exec cmd
 endfunction
 
