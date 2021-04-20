@@ -22,7 +22,7 @@ try:
       if curr_tree != printed_tree:
           subprocess.check_call(['tput', 'clear'])
           printed_tree = curr_tree
-          print (place_begin + printed_tree + invi)
+          print ((place_begin + printed_tree + invi).decode('utf-8'))
       time.sleep(2)
 finally:
     subprocess.check_output(['stty', 'echo'])
