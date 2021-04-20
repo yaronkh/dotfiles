@@ -242,7 +242,7 @@ class VimComm(object):
         if m != None:
             fl, server = m.groups()
             server = int(server)
-            print server
+            print (server)
             if server in  self.vims:
                 self.vims[server].select(fl)
 
@@ -283,4 +283,4 @@ if sys.argv[1] == "move":
     v.move_file()
     exit(0)
 if sys.argv[1] == "display":
-    print v.get_selection_list()
+    print (v.get_selection_list())
