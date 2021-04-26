@@ -18,7 +18,7 @@ class TmuxPane(object):
         self.session_id = session_id
 
     def focus(self):
-        #current_session = check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
+        # current_session = check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
         subprocess.check_call(['tmux', 'selectw', '-t', self.window])
         subprocess.check_call(['tmux', 'selectp', '-Z', '-t', self.id])
 
@@ -33,7 +33,7 @@ class TmuxCom(object):
         TmuxCom.server_pid = check_output(['tmux', 'display-message', '-p', '#{pid}'])
         TmuxCom.server_pid = int(TmuxCom.server_pid, 10)
         TmuxCom.current_session = check_output(['tmux', 'display-message', '-p', '$#S']).split('\n')[0]
-        pane_list = check_output(['tmux','list-panes','-a','-F',"#{session_id} #{pane_pid} #{pane_id} #{window_id}"])[:-1].split('\n')
+        pane_list = check_output(['tmux', 'list-panes', '-a', '-F', "#{session_id} #{pane_pid} #{pane_id} #{window_id}"])[:-1].split('\n')
         for p in pane_list:
             session_id, pane_pid, pane_id, window_index = p.split()
             t = TmuxPane(session_id, pane_pid, pane_id, window_index)
@@ -49,6 +49,7 @@ class TmuxCom(object):
 
 class VimFile(object):
     desc_re = re.compile("^ *([0-9]+) +([^ ]*) +([^ ]*) *\"(.*)\" +line ([0-9]+)$")
+
     def __init__(self, desc, editor):
 
         desc_match = VimFile.desc_re.match(desc)
@@ -60,7 +61,7 @@ class VimFile(object):
         self.editor = editor
 
     def show(self):
-        #check if the current buffer is in edit mode
+        '''check if the current buffer is in edit mode'''
         if self.editor.is_buff_in_edit_mode() and self.fn != self.editor.get_active_buf_name():
             subprocess.check_call([VimComm.vim_client, '--servername', self.editor.name, '--remote-expr', 'execute("tabnew {0}")'.format(self.fn)])
         else:
@@ -79,8 +80,8 @@ class VimInstance(object):
         self.tmux_pane = None
         self.pane_pid = -1
         self.check_tmux_vim()
-        for l in self.get_file_list():
-            vfile = VimFile(l, self)
+        for ll in self.get_file_list():
+            vfile = VimFile(ll, self)
             if vfile.fn == '[No Name]':
                 continue
             self.files[vfile.fn] = vfile

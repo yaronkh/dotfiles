@@ -91,6 +91,10 @@ function! GetProjectRoot()
     return gutentags#get_project_root(GetBufferDirectory())
 endfunction
 
+function! GetprojectRf(pat)
+    return gutentags#get_project_root(a:pat)
+endfunction
+
 " Generate All
 function! ZGenerateAll()
     let l:pr = GetProjectRoot()
@@ -98,6 +102,42 @@ function! ZGenerateAll()
     let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
     copen
     exec ":AsyncRun cd '" . l:pr . "' && echo '" . g:ctagsOptions . "' > " . l:gutctags . " && sed -i 's/ /\\n/g' " . l:gutctags . " && ag -l --all-types > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
+endfunction
+
+let g:projects = {}
+
+function! UpdateProjectMap()
+    let l:pr = GetProjectRoot()
+    if l:pr == ""
+        return
+    endif
+
+    if !has_key(g:projects, l:pr)
+        let g:projects[l:pr] = 0
+    endif
+
+    let g:projects[l:pr] = g:projects[l:pr] + 1
+endfunction
+
+function! UnrefProject()
+    let l:pat = shellescape(expand("<afile>:h"))
+    if l:pat == "" || isdirectory(l:pat) == 0
+        return
+    endif
+    echom "path:" . l:pat
+    let l:pr =  gutentags#get_project_root(l:pat)
+
+    echom l:pr
+    if l:pr == ""
+        return
+    endif
+
+    if has_key(g:projects, l:pr)
+        let g:projects[l:pr] = g:projects[l:pr] - 1
+        if g:projects[l:pr] == 0
+            unlet g:projects[l:pr]
+        endif
+    endif
 endfunction
 
 " Install Mapping
@@ -132,16 +172,14 @@ nnoremap <C-L> :NERDTreeToggle<CR>:wincmd w<CR>:TagbarToggle<CR>
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-"neovim python
-" let g:python3_host_prog="/home/ANT.AMAZON.COM/kahayaro/.pyenv/shims/python"
-
 "python linting
 " Check Python files with flake8 and pylint.
 let b:ale_fixers = ['autopep8', 'yapf']
 " Disable warnings about trailing whitespace for Python files.
 let b:ale_warn_about_trailing_whitespace = 0
-let g:ale_python_pylint_executable = 'python'
+let g:ale_python_pylint_executable = 'pylint'
 let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
+let g:ale_python_flake8_options = '--config ' . GetSourceFile('flake8.cfg')
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
@@ -474,6 +512,8 @@ augroup my_tmux
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.sh,*.java,*.j2,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
+    autocmd BufRead * : call UpdateProjectMap()
+    autocmd BufDelete * : call UnrefProject()
     autocmd VimLeave * call SaveSess()
     autocmd VimLeavePre * :tabdo NERDTreeClose
     autocmd VimLeavePre * :tabdo TagbarClose

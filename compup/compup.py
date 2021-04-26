@@ -40,7 +40,7 @@ def process_new_line():
   line = sys.stdin.readline()
   if line == "":
      return -1
-  print line[:-1]
+  print (line[:-1])
   comp_line_res = comp_line.match(line)
   if comp_line_res == None:
      return 0

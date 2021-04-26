@@ -1,12 +1,57 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
 # If not running interactively, don't do anything
 case $- in
-    *i*) INTERACTIVE='yes' ;;
+    *i*) ;;
       *) return;;
 esac
+
+export PATH=/usr/local/bin:$PATH
+
+if [[ -z "$TMUX" ]]; then
+    if [ -z "$DISPLAY" ]; then
+        echo "X DISPLAY not available"
+        sleep 3
+    fi
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    export session=$(tmux list-sessions -F "#{session_id}" | sort -n | tail -1 2>/dev/null)
+    tmux new-session -s "ssh_tmux$session"
+fi
+
+#option to set per-pane variable
+
+function classic_pylint {
+    /home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/scripts/dev/.env-pylint/bin/python2 ./scripts/dev/.env-pylint/bin/pylint -j 0 --rcfile /home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/.pylintrc --output-format=colorized $1
+}
+
+
+  function set_tmux_opt {
+    tmux set -q "@$1_$TMUX_PANE" "$2"
+  }
+
+  function get_tmux_opt {
+    tmux show -v "@$1_$2"
+  }
+
+function to_pack() {
+    export PYTHONPATH=$(brazil-path build.pythonpath.python3.6):$(brazil-path testlib.pythonpath.python3.6)
+    for f in $(brazil-path lib.src); do if [[ "$f" == *"CloudEndure"* ]];then export PYTHONPATH=$f/src:$PYTHONPATH; fi; done
+}
+
+function branch() {
+    for d in *;do (cd $d; printf '%-35s %-20s\n' $d: $(git rev-parse --abbrev-ref HEAD)); done
+}
+
+function sshh() {
+    ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=2 -o ForwardX11=yes -i ~/.ssh/dev2.pem $1
+}
+
+#NOTE we use Virtualenv to run python in a preconfigured box!!
+#export PYTHONPATH=$HOME/dev/CloudEndure/Management/src
+
+export HISTCONTROL=erasedups
+export HISTSIZE=10000
+shopt -s histappend
+
+export PIP_DOWNLOAD_CACHE=$HOME/.pip_download_cache
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -30,11 +75,6 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
@@ -56,81 +96,134 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-#option to set per-pane variable
-function set_tmux_opt {
-  tmux set -q "@$1_$TMUX_PANE" "$2"
-}
-
-function get_tmux_opt {
-  tmux show -v "@$1_$2"
-}
-PS1='\[\033]2$PWD\033\033$(set_tmux_opt hide_border "" && ~/dotfiles/tmux/hide_border.sh $TMUX_PANE)\]'
-#PS1='\[\033]2$PWD\033\033k$(hostname)$(tmux set pane-border-status bottom)\]'
+#PS1="\[\033]2$PWD\033\033k$(hostname)\]$(tmux set pane-border-status bottom)$PS1"
+#PS1='\[\033]2$PWD\033\033$(set_tmux_opt hide_border "" && ~/dotfiles/tmux/hide_border.sh $TMUX_PANE)\]'
+PS1='\[\033]2$PWD\033\033\]'
 if [ "$color_prompt" = yes ]; then
-    PS1=$PS1'${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1="$PS1\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
 else
-    PS1='$PS1${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='$PS1\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-        ;;
-    *)
-        ;;
-    esac
+    PS1="\[\e]0;\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
 
-    # enable color support of ls and also add handy aliases
-    if [ -x /usr/bin/dircolors ]; then
-        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-        alias ls='ls --color=auto'
-        #alias dir='dir --color=auto'
-        #alias vdir='vdir --color=auto'
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-        alias grep='grep --color=auto'
-        alias fgrep='fgrep --color=auto'
-        alias egrep='egrep --color=auto'
-    fi
-
-    # colored GCC warnings and errors
-    #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-    # some more ls aliases
-    alias ll='ls -alF'
-    alias la='ls -A'
-    alias l='ls -CF'
-
-    # Add an "alert" alias for long running commands.  Use like so:
-    #   sleep 10; alert
-    alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-    # Alias definitions.
-    # You may want to put all your additions into a separate file like
-    # ~/.bash_aliases, instead of adding them here directly.
-    # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-    if [ -f ~/.bash_aliases ]; then
-        . ~/.bash_aliases
-    fi
-
-    # enable programmable completion features (you don't need to enable
-    # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-    # sources /etc/bash.bashrc).
-    if ! shopt -oq posix; then
-      if [ -f /usr/share/bash-completion/bash_completion ]; then
-        . /usr/share/bash-completion/bash_completion
-      elif [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
-      fi
-    fi
-
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-    #source ~/.bash_completion/alacritty
-    #source /home/local/MAGICLEAP/ykahanovitch/alacritty/extra/completions/alacritty.bash
-    #source /home/local/MAGICLEAP/ykahanovitch/extra/completions/alacritty.bash
-    if [ -z "$TMUX" ] && [ ${UID} != 0 ]
-    then
-        tmux #new-window -A -s main
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+alias bastion_command=~/workspace/CloudEndureMG/src/CloudEndureMgDev/scripts/bastion_command.py
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+if [ -e /usr/bin/aws_completer ]; then
+    complete -C '/usr/bin/aws_completer' aws
+fi
+
+ # if the command-not-found package is installed, use it
+if [ -x /usr/lib/command-not-found -o -x /usr/share/command-not-found/command-not-found ]; then
+    function command_not_found_handle {
+        # check because c-n-f could've been removed in the meantime
+        if [ -x /usr/lib/command-not-found ]; then
+	   /usr/lib/command-not-found -- "$1"
+           return $?
+        elif [ -x /usr/share/command-not-found/command-not-found ]; then
+	   /usr/share/command-not-found/command-not-found -- "$1"
+           return $?
+	else
+	   printf "%s: command not found\n" "$1" >&2
+	   return 127
+	fi
+    }
+fi
+
+if [ -e "/apollo/env/SDETools/bin" ]; then
+        export PATH="/apollo/env/SDETools/bin:$PATH"
+fi
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias mark="pwd > ~/.sd"
+alias port='cd $(cat ~/.sd)'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+#alias ly='~/dev/CloudEndure/scripts/dev/.env-pylint/bin/pylint  --reports=no --output-format=colorized --rcfile ~/dev/CloudEndure/.pylintrc'
+#export PYTHONPATH="/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/Management/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/installer/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure:$PYTHONPATH"
+export OP_SESSION_cloudendure="GDqzU98GynjFvl2jk9Wh8Y_I41LSq_RXRL2uIU-tCdI"
+
+export PATH=$HOME/.toolbox/bin:$PATH
+
+#brazil aliases:
+alias bb='brazil-build'
+alias bbr='brazil-build release'
+alias bbrec='brazil-recursive-cmd brazil-build'
+alias bbc='brazil-build clean'
+alias bbf='brazil-build format'
+
+NVIMCMD=$(which nvim)
+
+function nvim() {
+    (
+      export PYTHONPATH=$(python -c "import site; print(':'.join(site.getsitepackages()))"):$PYTHONPATH
+      source ~/dotfiles/.env/bin/activate
+      $NVIMCMD $@
+    )
+}
+
+
+function find-broken-links {
+  find . -type l ! -exec test -e {} \; -print
+}
+
+alias brazil-octane='/apollo/env/OctaneBrazilTools/bin/brazil-octane'
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
