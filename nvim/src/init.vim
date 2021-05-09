@@ -75,10 +75,6 @@ function! ZInstall()
                 \ & sed -i \"s/'String',[ \\t]*s\\:green/'String', \\['\\#d78787', 174\\]/\" ~/.vim/plugged/gruvbox/colors/gruvbox.vim"
 endfunction
 
-function! GetGutctagsFN()
-    return gutentags#get_cachefile(gutentags#get_project_root($PWD), 'LASTSESSION.vim')
-endfunction
-
 function! GetBufferDirectory()
     let l:path = expand("%:p:h")
     if l:path == ""
@@ -89,10 +85,6 @@ endfunction
 
 function! GetProjectRoot()
     return gutentags#get_project_root(GetBufferDirectory())
-endfunction
-
-function! GetprojectRf(pat)
-    return gutentags#get_project_root(a:pat)
 endfunction
 
 " Generate All
@@ -107,7 +99,11 @@ endfunction
 let g:projects = {}
 
 function! UpdateProjectMap()
-    let l:pr = GetProjectRoot()
+    try
+        let l:pr = GetProjectRoot()
+    catch /.*/
+        return
+    endtry
     if l:pr == ""
         return
     endif
