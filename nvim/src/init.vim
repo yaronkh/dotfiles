@@ -532,7 +532,7 @@ augroup my_tmux
     :map <Leader>tt <Plug>VimwikiToggleListItem
     "replace all occurences of the word under cursor
     :nnoremap <Leader>s :call ReplaceWordUnderCursor()<CR>
-
+    autocmd FileType sh setlocal shiftwidth=2 softtabstop=2 expandtab
     "remap p in visual mode so the yanked  text will replace the marked text
     xnoremap p "_dP
 augroup end
