@@ -20,6 +20,7 @@ install_distro_linters() {
         cd ~
         sudo yum install -y pcre-devel
         sudo yum install -y xz-devel
+        sudo yum install -y automake
         [ -d the_silver_searcher ] && sudo rm -rf the_silver_searcher
         git clone https://github.com/ggreer/the_silver_searcher.git
         cd the_silver_searcher
@@ -36,6 +37,7 @@ install_distro_nvim() {
             set -e
             cd ~
             sudo yum install -y  cmake
+            sudo yum install -y libtool
             git clone https://github.com/neovim/neovim.git || exit 255
             cd neovim
             git checkout v0.4.4

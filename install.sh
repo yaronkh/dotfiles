@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/bin/bash -x
 
 PYVER=3.6.9
-VENV_ROOT=~/.config/dotfiles/venv
 PYENV=~/.pyenv/bin/pyenv
 
 BASHRC=$(mktemp)
@@ -59,7 +58,7 @@ if [ ! -d ~/.pyenv ]; then
     if ! git clone https://github.com/pyenv/pyenv.git ~/.pyenv; then echo "COULD NOT DOWNLOAD penv"; exit 255; fi
     write_to_shrc 'export PYENV_ROOT="$HOME/.pyenv"'
     write_to_shrc 'export PATH="$PYENV_ROOT/bin:$PATH"'
-    write_to_shrc 'if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init -)";fi'
+    write_to_shrc 'if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init --path)";fi'
 fi
 
 export PATH=~/.pyenv/bin:$PATH
@@ -70,17 +69,26 @@ if ! ($PYENV versions | grep -qF $PYVER); then
     if ! $PYENV install -k -s $PYVER; then echo "COULD NOT INSTALL PYTHON"; exit 255; fi
 fi
 
-mkdir -p $VENV_ROOT || exit 255
+if ! [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then
+  git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+  write_to_shrc 'eval "$(pyenv virtualenv-init -)"'
+fi
 
 source $BASHRC
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+cd ~/dotfiles; pyenv local $PYVER || exit 255
+cd ~/dotfiles; pyenv virtualenv "$PYVER" nvim
+cd ~/dotfiles; pip install --upgrade pip || exit 255
+pyenv activate nvim || exit 255;
+python -m pip install --upgrade pip || exit 255
+pip list
+pip install jedi psutil pylint flake8 astroid pynvim neovim-remote || exit 255
 
-(cd ~/dotfiles; $PYENV local $PYVER) || exit 255
-(cd ~/dotfiles; pip install --upgrade pip; pip install virtualenv) || exit 255
-(cd ~/dotfiles; python -m venv $VENV_ROOT) || exit 255
-(cd ~/dotfiles; source $VENV_ROOT/bin/activate; pip install jedi psutil pylint flake8 astroid pynvim neovim-remote) || exit 255
-(source $VENV_ROOT/bin/activate; pip install --upgrade pip)
-
-if ! which ctags > /dev/null
+if ! ctags --version > /dev/null 2>&1
 then
     (
         set -e
@@ -108,11 +116,8 @@ install_distro_linters
 
 if ! mkdir -p ~/.config/nvim; then echo "cannot create nvim configuration directory"; exit 255; fi
 if ! cp -R -u -p nvim ~/.config/; then echo "Cannot copy nvim configuration files"; exit 255; fi
-if [ -z "$NVIM_BASHRC" ] ; then
-    write_to_shrc "source ~/dotfiles/local/nvim_bashrc"
-fi
-source $BASHRC
-nvim +PlugInstall +PlugUpdate +qa
+echo "let g:python3_host_prog = \"$(pyenv which python)\"" >> ~/.config/nvim/init.vim
+nvim +PlugInstall +qa
 
 echo
 echo "PLEASE RUN source ~/.bashrc, in order for changes to take effect"
