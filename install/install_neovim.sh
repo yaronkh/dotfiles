@@ -1,26 +1,124 @@
-#!/usr/bin/env bash
+#!/bin/bash -x
 
-if ! command -v nvim > /dev/null; then
-        sudo add-apt-repository ppa:neovim-ppa/stable || die "cannot add neovim repo"
-        sudo apt-get update || die "cannot update repositories database"
-        sudo apt-get install -y neovim || die "could not install neovim"
-fi
+PYVER=3.6.9
+PYENV=~/.pyenv/bin/pyenv
 
-[ -d ~/.config/nvim ] || mkdir -p "~/.config/nvim" || die "cannot create .config/nvim directory"
-if [ -f ~/.config/nvim/init.vim ]; then
-        if ! grep -q dotfiles/nvim/src/init.vim ~/.config/nvim/init.vim; then
-                cat ~/dotfiles/nvim/init.vim >> ~/.config/nvim/init.vim || die "cannot prepare .config/nvim/init.vim"
+BASHRC=$(mktemp)
+touch $BASHRC
+
+function install_distro_funcs()
+{
+    if grep -q "ID=ubuntu" /etc/os-release
+    then
+        source ~/dotfiles/install/distro/ubuntu.sh
+        return
+    elif grep -q rhel /etc/os-release
+    then
+        source ~/dotfiles/install/distro/rhel.sh
+        return
+    fi
+    echo "DISTRO NOT SUPPORTED"
+    exit 255
+}
+
+function atexit_handler() {
+    rm $BASHRC
+}
+
+function write_to_shrc() {
+    for f in ~/.bashrc ~/.zshrc $BASHRC
+    do
+        if [ -f "$f" ]; then
+            echo "write to $f"
+            if ! grep -q "$1" $f; then
+                echo $1 >> "$f"
+            fi
         fi
-else
-        cp ~/dotfiles/nvim/init.vim ~/.config/nvim/init.vim || die "cannot deploy nvim init.vim"
+    done
+    eval $1
+}
+
+# run sudo to generate sudo credentials
+sudo echo ""
+
+function ensure_build_tools() {
+    if ! which cc > /dev/null
+    then
+        install_distro_build_tools
+    fi
+}
+
+function install_zlib() {
+   install_distro_zlib
+}
+
+install_distro_funcs
+
+if [ ! -d ~/.pyenv ]; then
+    if ! git clone https://github.com/pyenv/pyenv.git ~/.pyenv; then echo "COULD NOT DOWNLOAD penv"; exit 255; fi
+    write_to_shrc 'export PYENV_ROOT="$HOME/.pyenv"'
+    write_to_shrc 'export PATH="$PYENV_ROOT/bin:$PATH"'
+    write_to_shrc 'if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init --path)";fi'
 fi
 
-[ -d ~/.config/nvim/after/plugin] && rm -rf ~/.config//nvim/after/plugin
-cp -r ~/dotfiles/nvim/after ~/.config/nvim/ || die "cannot deploy nvim after files"
-! [ -d ~/.config/nvim/autoload ] && mkdir ~/.config/nvim/autoload
-if ! [ -f ~/.config/nvim/autoload/plug.vim]; then
-        cp ~/dotfiles/nvim/autoload/plug.vim ~/.config/nvim/autoload/ || die "cannot deploy plug.vim"
+export PATH=~/.pyenv/bin:$PATH
+
+if ! ($PYENV versions | grep -qF $PYVER); then
+    ensure_build_tools
+    install_zlib
+    if ! $PYENV install -k -s $PYVER; then echo "COULD NOT INSTALL PYTHON"; exit 255; fi
 fi
 
-sudo apt install silversearcher-ag exuberant-ctags cscope global codesearch -y || die "cannot install vim depended packages"
-nvim +PlugInstall +qall || die "cannot install vim plugins"
+if ! [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then
+  git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+  write_to_shrc 'eval "$(pyenv virtualenv-init -)"'
+fi
+
+source $BASHRC
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+cd ~/dotfiles; pyenv local $PYVER || exit 255
+cd ~/dotfiles; pyenv virtualenv "$PYVER" nvim
+cd ~/dotfiles; pip install --upgrade pip || exit 255
+pyenv activate nvim || exit 255;
+python -m pip install --upgrade pip || exit 255
+pip list
+pip install jedi psutil pylint flake8 astroid pynvim neovim-remote || exit 255
+
+if ! ctags --version > /dev/null 2>&1
+then
+    (
+        set -e
+        cd ~
+        mkdir stuff
+        cd stuff
+        git clone https://github.com/rentalcustard/exuberant-ctags.git
+        cd exuberant-ctags
+        if ! ./configure; then echo "cannot build cscope"; exit 255; fi
+        ./configure && make
+        sudo make install
+        cd
+        rm -rf ~/stuff/exuberant-ctags
+    ) || exit 255
+fi
+
+update_distro_db
+install_distro_linters
+
+#install neovim
+(
+    set -e
+    install_distro_nvim
+)
+
+if ! mkdir -p ~/.config/nvim; then echo "cannot create nvim configuration directory"; exit 255; fi
+if ! cp -R -u -p nvim ~/.config/; then echo "Cannot copy nvim configuration files"; exit 255; fi
+echo "let g:python3_host_prog = \"$(pyenv which python)\"" >> ~/.config/nvim/init.vim
+nvim +PlugInstall +qa
+
+echo
+echo "PLEASE RUN source ~/.bashrc, in order for changes to take effect"
+
