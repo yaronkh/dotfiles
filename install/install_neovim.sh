@@ -85,8 +85,7 @@ cd ~/dotfiles; pyenv virtualenv "$PYVER" nvim
 cd ~/dotfiles; pip install --upgrade pip || exit 255
 pyenv activate nvim || exit 255;
 python -m pip install --upgrade pip || exit 255
-pip list
-pip install jedi psutil pylint flake8 astroid pynvim neovim-remote || exit 255
+pip install jedi mypy psutil pylint flake8 astroid pynvim neovim-remote || exit 255
 
 if ! ctags --version > /dev/null 2>&1
 then
@@ -116,7 +115,11 @@ install_distro_linters
 
 if ! mkdir -p ~/.config/nvim; then echo "cannot create nvim configuration directory"; exit 255; fi
 if ! cp -R -u -p nvim ~/.config/; then echo "Cannot copy nvim configuration files"; exit 255; fi
-echo "let g:python3_host_prog = \"$(pyenv which python)\"" >> ~/.config/nvim/init.vim
+PY_EXE=$(pyenv which python)
+VENV_DIR=$(dirname "$(dirname "$PY_EXE")")
+echo "let g:python3_host_prog = \"$PY_EXE\"" >> ~/.config/nvim/init.vim
+echo "let g:ale_virtualenv_dir_names = [\"$VENV_DIR\"]" >> ~/.config/nvim/init.vim
+
 nvim +PlugInstall +qa
 
 echo
