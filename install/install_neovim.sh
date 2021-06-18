@@ -115,10 +115,6 @@ install_distro_linters
 
 if ! mkdir -p ~/.config/nvim; then echo "cannot create nvim configuration directory"; exit 255; fi
 if ! cp -R -u -p nvim ~/.config/; then echo "Cannot copy nvim configuration files"; exit 255; fi
-PY_EXE=$(pyenv which python)
-VENV_DIR=$(dirname "$(dirname "$PY_EXE")")
-echo "let g:python3_host_prog = \"$PY_EXE\"" >> ~/.config/nvim/init.vim
-echo "let g:ale_virtualenv_dir_names = [\"$VENV_DIR\"]" >> ~/.config/nvim/init.vim
 
 nvim +PlugInstall +qa
 

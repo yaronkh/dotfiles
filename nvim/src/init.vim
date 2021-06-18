@@ -136,6 +136,7 @@ function! UnrefProject()
     endif
 endfunction
 
+
 " Install Mapping
 nnoremap <leader>zi :call ZInstall()<CR>
 
@@ -165,6 +166,12 @@ let g:NERDTreeAutoCenter = 0
 let g:tagbar_width=23
 nnoremap <C-L> :NERDTreeToggle<CR>:wincmd w<CR>:TagbarToggle<CR>
 
+
+function! PreparePythonAle()
+    let g:python3_host_prog = trim(system("pyenv which python"))
+    let g:ale_virtualenv_dir_names = [fnamemodify(g:python3_host_prog, ":h:h")]
+endfunction`
+
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
@@ -176,6 +183,8 @@ let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'pylint'
 let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
 let g:ale_python_flake8_options = '--config ' . GetSourceFile('flake8.cfg')
+let g:ale_linters = {"python": ["flake8", "pylint"]}
+call PreparePythonAle()
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
