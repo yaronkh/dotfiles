@@ -1,6 +1,17 @@
 PYVER=3.6.9
 PYENV=~/.pyenv/bin/pyenv
 
+function ensure_build_tools() {
+    if ! which cc > /dev/null
+    then
+        install_distro_build_tools
+    fi
+}
+
+function install_zlib() {
+   install_distro_zlib
+}
+
 write_to_shrc() {
     for f in ~/.bashrc ~/.zshrc $BASHRC
     do

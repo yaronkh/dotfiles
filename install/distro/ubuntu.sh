@@ -1,3 +1,15 @@
+install_tmux_compilation_prereq() {
+  sudo apt-get install -y pkg-config
+  sudo apt-get install -y build-essential
+  sudo apt-get install -y gcc
+  sudo apt-get install -y bison
+  sudo apt-get install -y libevent-dev
+  sudo apt-get install -y autotools-dev
+  sudo apt-get install -y automake
+  sudo apt-get install -y libncurses5-dev libncursesw5-dev
+}
+
+
 update_distro_db() {
     sudo apt-get update
 }

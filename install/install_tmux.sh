@@ -16,17 +16,16 @@ if command -v tmux > /dev/null; then
                 exit 0
         fi
 fi
-sudo apt-get update
-sudo apt-get install -y pkg-config
-sudo apt-get install -y build-essential
-sudo apt-get install -y gcc
-sudo apt-get install -y bison
-sudo apt-get install -y libevent-dev
-sudo apt-get install -y autotools-dev
-sudo apt-get install -y automake
-sudo apt-get install -y libncurses5-dev libncursesw5-dev
 
-pyenv activate nvim # it is assumed that neovim is installed
+source ~/dotfiles/install/utils/select_distro_funcs.sh
+install_tmux_compilation_prereq
+
+# our tmux installation requires python inside private virtualenv
+source ~/dotfiles/install/utils/install_python.sh
+
+
+update_distro_db
+
 pip install curses-menu
 pip install psutil
 pip install curses-util

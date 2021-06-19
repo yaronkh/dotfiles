@@ -1,20 +1,6 @@
 #!/bin/bash -x
 
-function install_distro_funcs()
-{
-    if grep -q "ID=ubuntu" /etc/os-release
-    then
-        source ~/dotfiles/install/distro/ubuntu.sh
-        return
-    elif grep -q rhel /etc/os-release
-    then
-        source ~/dotfiles/install/distro/rhel.sh
-        return
-    fi
-    echo "DISTRO NOT SUPPORTED"
-    exit 255
-}
-
+source ~/dotfiles/install/utils/select_distro_funcs.sh
 
 # run sudo to generate sudo credentials
 sudo echo ""
