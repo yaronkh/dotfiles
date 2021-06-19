@@ -5,17 +5,6 @@ source ~/dotfiles/install/utils/select_distro_funcs.sh
 # run sudo to generate sudo credentials
 sudo echo ""
 
-function ensure_build_tools() {
-    if ! which cc > /dev/null
-    then
-        install_distro_build_tools
-    fi
-}
-
-function install_zlib() {
-   install_distro_zlib
-}
-
 install_distro_funcs
 
 # make sure python is installed
@@ -53,6 +42,8 @@ if ! mkdir -p ~/.config/nvim; then echo "cannot create nvim configuration direct
 if ! cp -R -u -p nvim ~/.config/; then echo "Cannot copy nvim configuration files"; exit 255; fi
 
 nvim +PlugInstall +qa
+
+write_to_shrc 'alias nvim="(pyenv activate nvim && command nvim && pyenv deactivate)"'
 
 echo
 echo "PLEASE RUN source ~/.bashrc, in order for changes to take effect"

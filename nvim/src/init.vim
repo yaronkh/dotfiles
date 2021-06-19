@@ -170,7 +170,7 @@ nnoremap <C-L> :NERDTreeToggle<CR>:wincmd w<CR>:TagbarToggle<CR>
 function! PreparePythonAle()
     let g:python3_host_prog = trim(system("pyenv which python"))
     let g:ale_virtualenv_dir_names = [fnamemodify(g:python3_host_prog, ":h:h")]
-endfunction`
+endfunction
 
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'

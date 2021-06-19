@@ -1,14 +1,14 @@
 PYVER=3.6.9
 PYENV=~/.pyenv/bin/pyenv
 
-function ensure_build_tools() {
+ensure_build_tools() {
     if ! which cc > /dev/null
     then
         install_distro_build_tools
     fi
 }
 
-function install_zlib() {
+install_zlib() {
    install_distro_zlib
 }
 
@@ -30,6 +30,7 @@ if [ ! -d ~/.pyenv ]; then
     write_to_shrc 'export PYENV_ROOT="$HOME/.pyenv"'
     write_to_shrc 'export PATH="$PYENV_ROOT/bin:$PATH"'
     write_to_shrc 'if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init --path)";fi'
+    write_to_shrc 'eval "$(pyenv init -)"'
 fi
 
 export PATH=~/.pyenv/bin:$PATH
