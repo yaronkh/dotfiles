@@ -1,3 +1,13 @@
+install_tmux_compilation_prereq() {
+  sudo yum install -y gcc
+  sudo yum install -y bison
+  sudo yum install -y libevent-devel
+  sudo yum install -y autoconf
+  sudo yum install -y automake
+  sudo yum install -y ncurses-devel
+}
+
+
 update_distro_db() {
     echo "refreshing yum db"
     sudo yum -y check-update > /dev/null
