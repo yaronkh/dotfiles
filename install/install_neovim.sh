@@ -43,7 +43,7 @@ if ! cp -R -u -p nvim ~/.config/; then echo "Cannot copy nvim configuration file
 
 nvim +PlugInstall +qa
 
-write_to_shrc 'alias nvim="(pyenv activate nvim && command nvim && pyenv deactivate)"'
+write_to_shrc 'source ~/dotfiles/local/nvim.bash'
 
 echo
 echo "PLEASE RUN source ~/.bashrc, in order for changes to take effect"

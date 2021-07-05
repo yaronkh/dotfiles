@@ -27,10 +27,6 @@ write_to_shrc() {
 
 if [ ! -d ~/.pyenv ]; then
     if ! git clone https://github.com/pyenv/pyenv.git ~/.pyenv; then echo "COULD NOT DOWNLOAD penv"; exit 255; fi
-    write_to_shrc 'export PYENV_ROOT="$HOME/.pyenv"'
-    write_to_shrc 'export PATH="$PYENV_ROOT/bin:$PATH"'
-    write_to_shrc 'if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init --path)";fi'
-    write_to_shrc 'eval "$(pyenv init -)"'
 fi
 
 export PATH=~/.pyenv/bin:$PATH
@@ -43,7 +39,6 @@ fi
 
 if ! [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then
   git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv"
-  write_to_shrc 'eval "$(pyenv virtualenv-init -)"'
 fi
 
 export PYENV_ROOT="$HOME/.pyenv"
