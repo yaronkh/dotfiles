@@ -183,7 +183,7 @@ let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'pylint'
 let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
 let g:ale_python_flake8_options = '--config ' . GetSourceFile('flake8.cfg')
-let g:ale_linters = {"python": ["flake8", "pylint"]}
+let g:ale_linters = {"python": ["flake8", "pylint", "black"]}
 call PreparePythonAle()
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
@@ -198,6 +198,8 @@ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 "" automatically open and close the popup menu / preview window
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
+
+autocmd FileType java setlocal omnifunc=javacomplete2#Complete
 
 " GutenTags
 
@@ -544,6 +546,9 @@ augroup my_tmux
     autocmd FileType sh setlocal shiftwidth=2 softtabstop=2 expandtab
     "remap p in visual mode so the yanked  text will replace the marked text
     xnoremap p "_dP
+    "map "quote this word
+    :nnoremap <Leader>w" ciw""<Esc>P
+    :nnoremap <Leader>T" ciW""<Esc>P
 augroup end
 
 augroup ts_config
