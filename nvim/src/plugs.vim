@@ -103,7 +103,7 @@ Plug 'kshenoy/vim-signature'
 
 " detect linux kernel code and mark code that
 " violates linux coding style
-Plug 'vivien/vim-linux-coding-style'
+" Plug 'vivien/vim-linux-coding-style'
 
 " code completer for python, that uses jedi library
 " I've exanded that to include 'goto-definition' and

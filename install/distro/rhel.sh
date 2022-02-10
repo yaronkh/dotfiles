@@ -41,7 +41,14 @@ install_distro_linters() {
 }
 
 install_distro_nvim() {
+    target_nvim_ver="0.6.1"
     if ! which nvim
+    then
+        nvim_ver='0'
+    else
+        nvim_ver=$( nvim --version | head -1 | cut -d ' ' -f 2)
+    fi
+    if [ "$nvim_ver" != "$target_nvim_ver" ]
     then
         (
             set -e
@@ -50,7 +57,7 @@ install_distro_nvim() {
             sudo yum install -y libtool
             git clone https://github.com/neovim/neovim.git || exit 255
             cd neovim
-            git checkout v0.4.4
+            git checkout "v$target_nvim_ver"
             make -j CMAKE_BUILD_TYPE=RelWithDebInfo || exit 255
             sudo make install
         ) || exit 255
