@@ -186,7 +186,7 @@ key_bindings:
   - { key: U,        mods: Control | Shift, chars: "\x1b[5;30017~"       }
   - { key: T,        mods: Control | Shift, chars: "\x1b[5;30018~"       }
   - { key: Y,        mods: Control | Shift, chars: "\x1b[5;30019~"       }
-  - { key: Subtract,  mods: Control | Alt,   chars: "\x1b[5;30020~"       }
+  - { key: Minus,  mods: Control | Alt,   chars: "\x1b[5;30020~"       }
   - { key: Backslash, mods: Control | Alt,   chars: "\x1b[5;30021~"       }
   - { key: Delete,   mods: Control,         chars: "\x1b[3;5~"           }
   - { key: Insert,   mods: Shift,   action: PasteSelection               }
@@ -211,22 +211,23 @@ key_bindings:
   - { key: End,      mods: Control, chars: "\x1b[1;5F"                   }
   - { key: Left,     mods: Shift,   chars: "\x1b[1;2D"                   }
   - { key: Left,     mods: Control, chars: "\x1b[1;5D"                   }
-  - { key: Left,     mods: Alt,     chars: "\x1b[1;3D"                   }
+  - { key: Left,     mods: Alt,     chars: "\x1b[2;3D"                   }
   - { key: Left,                    chars: "\x1b[D",   mode: ~AppCursor  }
   - { key: Left,                    chars: "\x1bOD",   mode: AppCursor   }
   - { key: Right,    mods: Shift,   chars: "\x1b[1;2C"                   }
   - { key: Right,    mods: Control, chars: "\x1b[1;5C"                   }
-  - { key: Right,    mods: Alt,     chars: "\x1b[1;3C"                   }
+    #- { key: Right,    mods: Alt,     chars: "\x1b[2;3C"                   }
+  - { key: Right,    mods: Alt,     chars: "\x1b[2"                   }
   - { key: Right,                   chars: "\x1b[C",   mode: ~AppCursor  }
   - { key: Right,                   chars: "\x1bOC",   mode: AppCursor   }
   - { key: Up,       mods: Shift,   chars: "\x1b[1;2A"                   }
   - { key: Up,       mods: Control, chars: "\x1b[1;5A"                   }
-  - { key: Up,       mods: Alt,     chars: "\x1b[1;3A"                   }
+  - { key: Up,       mods: Alt,     chars: "\x1b[2;3A"                   }
   - { key: Up,                      chars: "\x1b[A",   mode: ~AppCursor  }
   - { key: Up,                      chars: "\x1bOA",   mode: AppCursor   }
   - { key: Down,     mods: Shift,   chars: "\x1b[1;2B"                   }
   - { key: Down,     mods: Control, chars: "\x1b[1;5B"                   }
-  - { key: Down,     mods: Alt,     chars: "\x1b[1;3B"                   }
+  - { key: Down,     mods: Alt,     chars: "\x1b[2;3B"                   }
   - { key: Down,                    chars: "\x1b[B",   mode: ~AppCursor  }
   - { key: Down,                    chars: "\x1bOB",   mode: AppCursor   }
   - { key: Tab,      mods: Shift,   chars: "\x1b[Z"                      }
@@ -322,7 +323,7 @@ scrolling:
   # scrolling for applications like `man`.
   #
   # To disable this completely, set `faux_multiplier` to 0.
-  faux_multiplier: 3
+  #faux_multiplier: 3
 
   # Automatically scroll to the bottom when new text is written
   # to the terminal.
