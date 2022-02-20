@@ -6,5 +6,5 @@ eval "$(pyenv virtualenv-init -)"
 
 nvim() (
   pyenv activate nvim > /dev/null 2>&1
-  exec nvim "$@"
+  exec command nvim "$@"
 )
