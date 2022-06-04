@@ -10,6 +10,7 @@ install_distro_funcs
 # make sure python is installed
 source ~/dotfiles/install/utils/install_python.sh
 
+pip install --upgrade setuptools
 pip install jedi==0.17.2 mypy psutil pylint flake8 astroid pynvim neovim-remote || exit 255
 
 if ! ctags --version > /dev/null 2>&1
