@@ -57,8 +57,11 @@ install_distro_nvim() {
             sudo yum install -y libtool
             git clone https://github.com/neovim/neovim.git || exit 255
             cd neovim
+	    pyenv local nvim
+	    pyenv activate nvim
+	    pip install cmake
             git checkout "v$target_nvim_ver"
-            make -j CMAKE_BUILD_TYPE=RelWithDebInfo || exit 255
+            make CMAKE_BUILD_TYPE=RelWithDebInfo || exit 255
             sudo make install
         ) || exit 255
     fi
