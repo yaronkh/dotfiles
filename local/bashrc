@@ -32,7 +32,7 @@ function classic_pylint {
   }
 
 function to_pack() {
-    export PYTHONPATH=$(brazil-path build.pythonpath.python3.6):$(brazil-path testlib.pythonpath.python3.6)
+    export PYTHONPATH=$(brazil-path build.pythonpath.python3.8):$(brazil-path testlib.pythonpath.python3.8)
     for f in $(brazil-path lib.src); do if [[ "$f" == *"CloudEndure"* ]];then export PYTHONPATH=$f/src:$PYTHONPATH; fi; done
 }
 
