@@ -42,7 +42,7 @@ install_distro_linters
 if ! mkdir -p ~/.config/nvim; then echo "cannot create nvim configuration directory"; exit 255; fi
 if ! cp -R -u -p nvim ~/.config/; then echo "Cannot copy nvim configuration files"; exit 255; fi
 
-nvim +PlugInstall2 +qa
+nvim +PlugInstall2 +UpdateRemotePlugins +qa
 
 write_to_shrc 'source ~/dotfiles/local/nvim.bash'
 
