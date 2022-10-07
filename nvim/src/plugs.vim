@@ -36,7 +36,7 @@ Plug 'tomtom/tlib_vim'
 Plug 'vim-scripts/AutoComplPop'
 
 " manages tag files under ~/.cache/tags
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'ludovicchabant/vim-gutentags', { 'do': 'chmod a+x ./plat/unix/*.sh' }
 
 " expands vim-gutentags so files from multiple projects
 Plug 'skywind3000/gutentags_plus'
@@ -150,5 +150,8 @@ Plug 'Quramy/tsuquyomi'
 
 " Vim plugin for insert mode completion of words in adjacent tmux panes
 Plug 'wellle/tmux-complete.vim'
+
+" Semshi provides semantic highlighting for Python in Neovim
+Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()

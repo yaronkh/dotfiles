@@ -12,8 +12,11 @@ let g:sp_plug_sha_file = get(g:, "sp_config_dir", g:HomePath . "/.config/nvim") 
 function! UpdatePlugins(chsum)
     " let l:psid = GetPlugSID()
     try
-        PlugInstall --sync
-        PlugUpdate --sync
+        call system("bash -c 'for d in ~/.local/share/nvim/plugged/*; do pushd $d; git stash; popd; done'")
+        PlugInstall1 --sync
+        PlugUpdate1 --sync
+        UpdateRemotePlugins
+        call system("bash -c 'for d in ~/.local/share/nvim/plugged/*; do pushd $d; git stash pop; popd; done'")
         call writefile([a:chsum], g:sp_plug_sha_file, 'b')
     catch
         echom "plug update failed"
