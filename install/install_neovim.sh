@@ -30,6 +30,12 @@ then
     ) || exit 255
 fi
 
+if ! which xclip
+then
+    echo "xlip is not installed, installing it"
+    install_distro_xclip
+fi
+
 update_distro_db
 install_distro_linters
 

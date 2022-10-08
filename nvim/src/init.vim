@@ -298,6 +298,7 @@ nnoremap <C-t> :tabnew<CR>
 noremap <F5> :set nu!<CR>:set paste!<CR>
 set spelllang=en
 "enable ddd  working with the mouse
+" this command enables to mark visual selection with mouse
 set mouse=a
 set noerrorbells visualbell t_vb=
 "enable spell checking

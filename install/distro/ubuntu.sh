@@ -37,3 +37,6 @@ install_distro_nvim() {
     sudo apt-get install -y neovim
 }
 
+install_distro_xclip() {
+    sudo apt-get install -y xclip xauth
+}

@@ -66,3 +66,16 @@ install_distro_nvim() {
         ) || exit 255
     fi
 }
+
+install_distro_xclip() (
+    set -e
+    sudo yum install -y libXmu-devel xauth
+    git clone https://github.com/astrand/xclip.git
+    pushd xclip
+    ./bootstrap
+    ./configure
+    make
+    sudo make install
+    popd
+)
+
