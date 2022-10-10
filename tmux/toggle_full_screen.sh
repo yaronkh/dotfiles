@@ -17,7 +17,7 @@ if [ "$2" = "toggle" ]; then
 fi
 
 #echo "get_tmux_opt hide_border $1-->$(get_tmux_opt hide_border $1)" >> /tmp/yaron.$1
-if [ ! -z "$(get_tmux_opt hide_border $1)" ]; then
+if [ -n "$(tmux show -svq @transparent)" ] || [ -n "$(get_tmux_opt hide_border $1)" ]; then
 #        echo "hide" >> /tmp/yaron.$1
         tmux set-option -t $1 pane-border-status off
         tmux set status off

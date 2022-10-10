@@ -1,4 +1,11 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash 
+
+set -x
+if [ -z "$1"]; 
+then
+	echo "specify installation type: [client/laptop/server]" 1>&2
+	exit 255
+fi
 
 TMUX_VER=3.3a
 STUFF_DIR=~/stuff
@@ -23,6 +30,7 @@ install_tmux_compilation_prereq
 # our tmux installation requires python inside private virtualenv
 source ~/dotfiles/install/utils/install_python.sh
 
+[ -d ~/.tmux ] && rm -rf ~/.tmux
 
 update_distro_db
 
@@ -45,12 +53,16 @@ sh autogen.sh || die "cannot prepare compilation files"
 ./configure && make -j || die "tmux compilation failed"
 sudo make install || die "tmux installation problem"
 
-if ! [ -f ~/.tmux.conf ];then
-        cp ~/dotfiles/tmux.conf ~/.tmux.conf || die "could deploy .tmux.conf"
-else
-        if ! grep -q dotfiles/tmux_impl.conf; then
-                cat ~/dotfiles/tmux.conf >> ~/.tmux.conf || die "could not prepare .tmux.conf"
-        fi
-fi
+[ -f ~/.tmux.conf ] && rm ~/.tmux.conf
+cp ~/dotfiles/tmux.conf ~/.tmux.conf || die "could deploy .tmux.conf"
 
+[ -d "~/.tmux/plugins/tpm" ] && rm -rf "~/.tmux/plugins/tpm"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ "$1" = "server" ]; then
+	cat <<EOT >> ~/.tmux.conf
+set -s @transparent yes
+set -g pane-border-style fg=yellow
+set -g pane-active-border-style fg=brightyellow
+EOT
+fi
+    
