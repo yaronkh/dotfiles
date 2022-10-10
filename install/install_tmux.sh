@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TMUX_VER=3.2
+TMUX_VER=3.3a
 STUFF_DIR=~/stuff
 SOURCE_DIR=$STUFF_DIR/tmux
 
@@ -9,13 +9,13 @@ die() {
   exit 255
 }
 
-if command -v tmux > /dev/null; then
-        ver=$(tmux -V | tr -d -c 0-9\.)
-        if (( $(echo "$ver >= 3.1" | bc -l) )); then
-                echo "tmux already installed"
-                exit 0
-        fi
-fi
+# if command -v tmux > /dev/null; then
+#         ver=$(tmux -V | tr -d -c 0-9\.)
+#         if (( $(echo "$ver >= 3.1" | bc -l) )); then
+#                 echo "tmux already installed"
+#                 exit 0
+#         fi
+# fi
 
 source ~/dotfiles/install/utils/select_distro_funcs.sh
 install_tmux_compilation_prereq
@@ -52,3 +52,5 @@ else
                 cat ~/dotfiles/tmux.conf >> ~/.tmux.conf || die "could not prepare .tmux.conf"
         fi
 fi
+
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
