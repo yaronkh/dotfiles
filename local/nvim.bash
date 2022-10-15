@@ -13,5 +13,7 @@ nvim() (
       export PYTHONPATH="$TOP_DIR/$p:$PYTHONPATH"
     done < "$TOP_DIR/.py_include"
   fi
+
+  [ -n "$ZSH_VERSION" ] && exec command nvim "$@"
   exec $(which nvim) "$@"
 )
