@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 PANE_ID=$1
 PACK_DIR_RE="^\/.*\/site-packages\/"
