@@ -154,4 +154,7 @@ Plug 'wellle/tmux-complete.vim'
 " Semshi provides semantic highlighting for Python in Neovim
 Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 
+" Peekaboo will show you the contents of the registers on the sidebar when you hit " or @ in normal mode
+Plug 'junegunn/vim-peekaboo'
+
 call plug#end()
