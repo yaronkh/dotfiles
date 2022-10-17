@@ -14,7 +14,7 @@ function! UpdatePlugins(chsum)
     try
         call system("bash -c 'for d in ~/.local/share/nvim/plugged/*; do pushd $d; git stash; popd; done'")
         PlugInstall1 --sync
-        PlugUpdate1 --sync
+        PlugUpdate4 --sync
         UpdateRemotePlugins
         call system("bash -c 'for d in ~/.local/share/nvim/plugged/*; do pushd $d; git stash pop; popd; done'")
         call writefile([a:chsum], g:sp_plug_sha_file, 'b')
