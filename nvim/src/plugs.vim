@@ -157,4 +157,7 @@ Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 " Peekaboo will show you the contents of the registers on the sidebar when you hit " or @ in normal mode
 Plug 'junegunn/vim-peekaboo'
 
+" Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more
+Plug 'tpope/vim-surround'
+
 call plug#end()
