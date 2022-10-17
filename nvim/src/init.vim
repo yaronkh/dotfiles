@@ -175,6 +175,8 @@ function! PreparePythonAle()
     let g:ale_virtualenv_dir_names = [fnamemodify(g:python3_host_prog, ":h:h")]
 endfunction
 
+let g:peekaboo_delay = 10
+
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
