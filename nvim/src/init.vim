@@ -177,6 +177,24 @@ endfunction
 
 let g:peekaboo_delay = 10
 
+" smart expand
+let g:expand_region_text_objects = get(g:, 'expand_region_text_objects', {
+          \ 'iw'  :0,
+          \ 'iW'  :0,
+          \ 'i"'  :0,
+          \ 'i''' :0,
+          \ 'i]'  :2,
+          \ 'a>'  :2,
+          \ 'i}'  :2,
+          \ 'ib'  :1,
+          \ 'iB'  :1,
+          \ 'il'  :0,
+          \ 'at'  :5,
+          \ 'ip'  :0,
+          \ 'ie'  :0,
+          \})
+
+
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
