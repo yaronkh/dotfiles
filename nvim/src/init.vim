@@ -181,7 +181,7 @@ let g:peekaboo_delay = 10
 let g:expand_region_text_objects = get(g:, 'expand_region_text_objects', {
           \ 'iw'  :0,
           \ 'iW'  :0,
-          \ 'i"'  :0,
+          \ 'a"'  :0,
           \ 'i''' :0,
           \ 'i]'  :2,
           \ 'a>'  :2,
@@ -354,6 +354,12 @@ function! UpdateX11Clipboard()
     call system('xclip -i -sel primary', @")
     call system('xclip -i -sel secondary', @")
 endfunction
+
+augroup clipboard
+    autocmd!
+    vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
+    autocmd TextYankPost * if v:event.operator ==# 'y' | call UpdateX11Clipboard() | endif
+augroup End
 
 function! RemoveWhiteSpacesFromGitHunks()
     execute(":mark '")
@@ -553,7 +559,6 @@ augroup my_tmux
     autocmd VimEnter * nested call SetGuttentagsEnable()
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
-    vnoremap <silent> <LeftRelease> y <Bar> :call UpdateX11Clipboard()<CR>
     noremap <silent> <RightMouse> :Maps<CR>
     "execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
     nnoremap z= :call FzfSpell()<CR>
