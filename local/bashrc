@@ -11,9 +11,7 @@ if [[ -z "$TMUX" ]]; then
         echo "X DISPLAY not available"
         sleep 3
     fi
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-    export session=$(tmux list-sessions -F "#{session_id}" | sort -n | tail -1 2>/dev/null)
-    tmux new-session -s "ssh_tmux$session"
+    tmux new-session
 fi
 
 #option to set per-pane variable
