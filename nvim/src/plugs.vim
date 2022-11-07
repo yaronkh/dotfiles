@@ -160,4 +160,7 @@ Plug 'junegunn/vim-peekaboo'
 " Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more
 Plug 'tpope/vim-surround'
 
+" maven syntax highlight (for pom.xml files)
+Plug 'NLKNguyen/vim-maven-syntax'
+
 call plug#end()
