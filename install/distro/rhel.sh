@@ -1,10 +1,14 @@
 install_tmux_compilation_prereq() {
+  sudo yum install epel-release -y
+  sudo yum update -y
   sudo yum install -y gcc
   sudo yum install -y bison
   sudo yum install -y libevent-devel
   sudo yum install -y autoconf
   sudo yum install -y automake
   sudo yum install -y ncurses-devel
+  sudo yum install -y jq
+  sudo yum install -y curl
 }
 
 
