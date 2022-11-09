@@ -1,4 +1,4 @@
-PYVER=3.9.4
+PYVER=3.11.0
 PYENV=~/.pyenv/bin/pyenv
 
 ensure_build_tools() {

@@ -9,6 +9,7 @@ install_tmux_compilation_prereq() {
   sudo apt-get install -y libncurses5-dev libncursesw5-dev
   sudo apt-get install -y jq
   sudo apt-get install -y curl
+  sudo apt-get install -y xclip
 }
 
 
