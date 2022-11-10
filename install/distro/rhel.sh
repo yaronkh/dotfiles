@@ -9,6 +9,12 @@ install_tmux_compilation_prereq() {
   sudo yum install -y ncurses-devel
   sudo yum install -y jq
   sudo yum install -y curl
+  install_distro_xclip
+}
+
+install_distro_ffi() {
+    sudo yum -y install openssl11-devel
+    sudo yum -y install libffi-devel
 }
 
 
@@ -22,7 +28,7 @@ install_distro_build_tools() {
 }
 
 install_distro_zlib() {
-    sudo yum -y install zlib-devel openssl-devel
+    sudo yum -y install zlib-devel openssl11-devel
 }
 
 install_distro_linters() {

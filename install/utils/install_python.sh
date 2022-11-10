@@ -29,12 +29,16 @@ if [ ! -d ~/.pyenv ]; then
     if ! git clone https://github.com/pyenv/pyenv.git ~/.pyenv; then echo "COULD NOT DOWNLOAD penv"; exit 255; fi
 fi
 
+cd ~
+
 export PATH=~/.pyenv/bin:$PATH
 
 if ! ($PYENV versions | grep -qF $PYVER); then
     ensure_build_tools
+    install_distro_ffi
     install_zlib
-    if ! $PYENV install -k -s $PYVER; then echo "COULD NOT INSTALL PYTHON"; exit 255; fi
+    export PATH=~/.pyenv/versions/3.11.0/bin:$PATH
+    if ! CONFIGURE_OPTS='--with-system-ffi' $PYENV install -k -s $PYVER; then echo "COULD NOT INSTALL PYTHON"; exit 255; fi
 fi
 
 if ! [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then

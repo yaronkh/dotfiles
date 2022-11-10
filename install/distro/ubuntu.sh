@@ -9,12 +9,16 @@ install_tmux_compilation_prereq() {
   sudo apt-get install -y libncurses5-dev libncursesw5-dev
   sudo apt-get install -y jq
   sudo apt-get install -y curl
-  sudo apt-get install -y xclip
+  install_distro_xclip
 }
 
 
 update_distro_db() {
     sudo apt-get update
+}
+
+install_distro_ffi() {
+    sudo apt-get install -y libffi-dev || exit 255
 }
 
 install_distro_build_tools() {
