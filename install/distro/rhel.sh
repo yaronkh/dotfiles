@@ -31,6 +31,14 @@ install_distro_zlib() {
     sudo yum -y install zlib-devel openssl11-devel
 }
 
+verify_prereq() {
+    if rpm -q openssl-devel > /dev/null 2>&1; then
+        echo "Error: need to remove old openssl-devel. Please run \"rpm -e openssl-devel\""
+        return 1
+    fi
+    return 0
+}
+
 install_distro_linters() {
     sudo yum -y install clang cscope
     # install ag (silver-searcher) from source

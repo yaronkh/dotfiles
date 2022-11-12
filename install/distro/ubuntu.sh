@@ -21,6 +21,10 @@ install_distro_ffi() {
     sudo apt-get install -y libffi-dev || exit 255
 }
 
+verify_prereq() {
+    return 0
+}
+
 install_distro_build_tools() {
     sudo apt-get install -y build-essential || exit 255
 }

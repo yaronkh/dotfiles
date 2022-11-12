@@ -1,5 +1,13 @@
+set -e
+
 PYVER=3.11.0
 PYENV=~/.pyenv/bin/pyenv
+
+if ! verify_prereq; then
+    ee=$?
+    echo "canno install python, please fix the above error, and re-execute the scripts"
+    exit $ee
+fi
 
 ensure_build_tools() {
     if ! which cc > /dev/null
