@@ -21,6 +21,9 @@ command=$(echo "$cmd_info" | tr -s ' ' | cut -d ' ' -f 1)
 my_pid=$(echo "$cmd_info"  | tr -s ' ' | cut -d ' ' -f 2)
 # my_pwd=$(readlink -e "/proc/$my_pid/cwd")
 my_args=$(tr '\0' ' ' < "/proc/$my_pid/cmdline")
+elapsed="0"
+ela=$(ps -o etimes -p $$ 2>/dev/null | tail -n +2 | xargs)
+[ -n "$ela" ] && elapsed=$ela
 if [ -n "$my_args" ]; then
     if [[ "$my_args" = "$command"* ]]; then
         command="$my_args"
@@ -41,8 +44,9 @@ function notify() {
 			--arg hostname "$(uname -n)" \
 			--arg output "" \
 			--arg pwd "" \
-			--arg result "" \
-			'{command: $command, hostname: $hostname, output: $output, pwd: $pwd, result: $result}'
+            --arg elapsed "$elapsed" \
+            --arg result 0 \
+			'{command: $command, hostname: $hostname, output: $output, pwd: $pwd, elapsed: $elapsed, result: $result}'
 		)
 		curl -X POST "$slack_url" -H "Content-Type:application/json" -s --data "$json" -o /tmp/yaron
   fi
@@ -57,8 +61,11 @@ fi
 
 while true; do
     lines=$(ps -f --ppid $2 | wc -l)
+    ela=$(ps -o etimes -p "$my_pid" 2>/dev/null | tail -n +2 | xargs)
+    [ -n "$ela" ] && elapsed=$ela
     if [ "$lines" -le 1 ]; then
         notify
     fi
+    echo -ne "$elapsed seconds\033[0K\r"
     sleep 1
 done
