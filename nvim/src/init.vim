@@ -139,7 +139,6 @@ function! UnrefProject()
     endif
 endfunction
 
-
 " Install Mapping
 nnoremap <leader>zi :call ZInstall()<CR>
 
@@ -420,6 +419,19 @@ function! SetGuttentagsEnable()
         let g:gutentags_enabled = 0
     endif
 endfunction
+
+"vim-airline configuration
+"let g:airline_section_c_only_filename = 1
+"let g:airline_stl_path_style = 'short'
+let g:airline_section_y = ""
+let g:airline_section_x = ""
+let g:airline_extensions = [] "don't load any extension. this is a disaster
+let g:airline#extensions#default#section_truncate_width = {
+      \ 'a': 80,
+      \ 'z': 80,
+      \ 'warning': 80,
+      \ 'error': 80,
+      \ }
 
 function! RestoreSess()
     try

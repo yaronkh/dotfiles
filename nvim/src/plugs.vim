@@ -52,6 +52,7 @@ Plug 'vim-scripts/a.vim'
 
 " fancy tabline and statusline that light according to edit mode
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " run things asynchronous
 Plug 'skywind3000/asyncrun.vim'
