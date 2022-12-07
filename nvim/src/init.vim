@@ -420,9 +420,28 @@ function! SetGuttentagsEnable()
     endif
 endfunction
 
-"vim-airline configuration
-"let g:airline_section_c_only_filename = 1
-"let g:airline_stl_path_style = 'short'
+"AirLine configuration.
+"I wanted that to do the best effort to show files names in the title.
+"so, first priority is to show the full path. If that's not possible, source
+"it in short wat, and if that's not possible, show only the file name without
+"it's path
+function! GetFileNameForBuffer()
+    let l:fn = expand('%')
+    let l:len = len(l:fn)
+    let l:width = airline#util#winwidth() - 10
+    if l:len < l:width
+        return l:fn
+    endif
+
+    let l:fn = pathshorten(l:fn)
+    if len(l:fn) < l:width
+        return l:fn
+    endif
+
+    return expand('%:t')
+endfunction
+
+let g:airline_section_c = "%{GetFileNameForBuffer()}"
 let g:airline_section_y = ""
 let g:airline_section_x = ""
 let g:airline_extensions = [] "don't load any extension. this is a disaster
@@ -432,6 +451,10 @@ let g:airline#extensions#default#section_truncate_width = {
       \ 'warning': 80,
       \ 'error': 80,
       \ }
+
+function! UpdateAirlineFileneames()
+     " echom "resized"
+endfunction
 
 function! RestoreSess()
     try
@@ -569,6 +592,7 @@ augroup my_tmux
     autocmd VimLeavePre * :tabdo cclose
     autocmd VimEnter * nested call RestoreSess()
     autocmd VimEnter * nested call SetGuttentagsEnable()
+    autocmd VimResized * : call UpdateAirlineFileneames()
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap <silent> <leader>p :call PasteFromX11() <CR>
     noremap <silent> <RightMouse> :Maps<CR>
