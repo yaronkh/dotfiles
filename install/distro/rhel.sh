@@ -40,7 +40,7 @@ verify_prereq() {
 }
 
 install_distro_linters() {
-    sudo yum -y install clang cscope
+    sudo yum -y install clang clang-tools-extra cscope
     # install ag (silver-searcher) from source
     if ! which ag > /dev/null
     then

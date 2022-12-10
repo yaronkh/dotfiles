@@ -205,7 +205,13 @@ let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'pylint'
 let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
 let g:ale_python_flake8_options = '--config ' . GetSourceFile('flake8.cfg')
-let g:ale_linters = {"python": ["flake8", "pylint", "black"]}
+let g:ale_c_clangd_executable = 'clangd'
+let g:ale_linters = {
+            \  'python': ['flake8', 'pylint', 'black'],
+            \ 'vim' :['vint'],
+            \ 'cpp': ['clangd'],
+            \ 'c': ['clangd']
+            \}
 call PreparePythonAle()
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
@@ -428,7 +434,7 @@ endfunction
 function! GetFileNameForBuffer()
     let l:fn = expand('%')
     let l:len = len(l:fn)
-    let l:width = airline#util#winwidth() - 10
+    let l:width = airline#util#winwidth() - 28
     if l:len < l:width
         return l:fn
     endif
@@ -444,13 +450,17 @@ endfunction
 let g:airline_section_c = "%{GetFileNameForBuffer()}"
 let g:airline_section_y = ""
 let g:airline_section_x = ""
-let g:airline_extensions = [] "don't load any extension. this is a disaster
+let g:airline_extensions = ["ale", "searchcount"]
 let g:airline#extensions#default#section_truncate_width = {
       \ 'a': 80,
       \ 'z': 80,
       \ 'warning': 80,
       \ 'error': 80,
       \ }
+let g:airline#extensions#default#layout = [
+      \ [ 'a', 'b', 'c'],
+      \ ['z', 'error']
+      \ ]
 
 function! UpdateAirlineFileneames()
      " echom "resized"

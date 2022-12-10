@@ -34,7 +34,7 @@ install_distro_zlib() {
 }
 
 install_distro_linters() {
-    sudo apt-get install -y clang
+    sudo apt-get install -y clang clangd
     sudo apt-get install -y cscope aptitude global silversearcher-ag || exit 255
 }
 

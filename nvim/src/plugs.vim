@@ -41,6 +41,8 @@ Plug 'ludovicchabant/vim-gutentags', { 'do': 'chmod a+x ./plat/unix/*.sh' }
 " expands vim-gutentags so files from multiple projects
 Plug 'skywind3000/gutentags_plus'
 
+Plug 'joereynolds/gtags-scope'
+
 " enable fzf functions in vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'

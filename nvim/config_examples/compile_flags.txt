@@ -1,0 +1,4 @@
+-Wall
+-Isrc/
+-Isrc/linux
+-I/home/ANT.AMAZON.COM/kahayaro/stuff/linux/include
