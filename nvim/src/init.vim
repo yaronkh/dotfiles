@@ -1,4 +1,4 @@
-let g:sp_home = expand("<sfile>:p:h") . "/../../"
+let g:sp_home = expand('<sfile>:p:h') . '/../../'
 function! GetSourceFile(file)
     return g:sp_home . a:file
 endfunction
@@ -25,11 +25,11 @@ endfunction
 
 "return the sid of the script nvim/src/plug.vim
 function! GetPlugSID()
-    let l:fp = expand(g:sp_plug_source . ":p")
+    let l:fp = expand(g:sp_plug_source . ':p')
     redir => out | silent! scriptnames | redir END
     let l:i = 0
     for l in split(out, "\n")
-        let l:j = strridx(l, "nvim/src/plug.vim")
+        let l:j = strridx(l, 'nvim/src/plug.vim')
         if l:j >= 0
             return l:i + 1
         endif
@@ -40,17 +40,17 @@ endfunction
 
 function CheckIfUpdateNeeded()
     if !filereadable(g:sp_plug_target)
-        call writefile([g:sp_plug_source, "\n"], g:sp_plug_target, 'b')
-        call writefile([system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))], g:sp_plug_sha_file, 'b')
-        let g:chsum = system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))
+        call writefile([g:sp_plug_source, '\n'], g:sp_plug_target, 'b')
+        call writefile([system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))], g:sp_plug_sha_file, 'b')
+        let g:chsum = system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))
         autocmd VimEnter * call UpdatePlugins(g:chsum)
     elseif !filereadable(g:sp_plug_sha_file)
-        call writefile([system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))], g:sp_plug_sha_file, 'b')
-        let g:chsum = system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))
+        call writefile([system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))], g:sp_plug_sha_file, 'b')
+        let g:chsum = system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))
         autocmd VimEnter * call UpdatePlugins(g:chsum)
     else
         let g:echsum = readfile(g:sp_plug_sha_file)[0]
-        let g:chsum = system("md5sum " . GetSourceFile("nvim/src/plugs.vim"))
+        let g:chsum = system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))
         if g:chsum != g:echsum
             call writefile([g:chsum], g:sp_plug_sha_file, 'b')
             autocmd VimEnter * call UpdatePlugins(g:chsum)
@@ -69,13 +69,9 @@ let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=f
 highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
 set cursorline
 " Install
+
 function! ZInstall()
-    copen
-    exec ":AsyncRun sudo apt install silversearcher-ag exuberant-ctags cscope global codesearch -y
-                \ & sed -i 's/ autochdir/ noautochdir/' ~/.vim/plugged/SrcExpl/plugin/srcexpl.vim
-                \ & sed -i 's/silent execute \"perl/silent execute \"!perl/' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
-                \ & sed -i 's@ . redraw!@\ . \" > /dev/null\"@' ~/.vim/plugged/cscope_dynamic/plugin/cscope_dynamic.vim
-                \ & sed -i \"s/'String',[ \\t]*s\\:green/'String', \\['\\#d78787', 174\\]/\" ~/.vim/plugged/gruvbox/colors/gruvbox.vim"
+     let g:sp_plug_source = 'source ' . GetSourceFile('nvim/src/plug.vim')
 endfunction
 
 function! GetBufferDirectory()
@@ -87,16 +83,39 @@ function! GetBufferDirectory()
 endfunction
 
 function! GetProjectRoot()
-    return gutentags#get_project_root(GetBufferDirectory())
+    return ProjectRootGuess(GetBufferDirectory())
+endfunction
+
+function! GetCacheFileName(fn)
+
 endfunction
 
 " Generate All
 function! ZGenerateAll()
+    call system('touch ' . GetLastSessionFn())
     let l:pr = GetProjectRoot()
-    let l:gutctags = l:pr . '/' . '.gutctags'
     let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
+    echom l:cscope_files
     copen
-    exec ":AsyncRun cd '" . l:pr . "' && echo '" . g:ctagsOptions . "' > " . l:gutctags . " && sed -i 's/ /\\n/g' " . l:gutctags . " && ag -l --all-types > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
+    exec ":AsyncRun cd '" . l:pr . "' && ag -l --all-types > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
+    let l:vim_things = l:pr . '/.vim'
+    if ! isdirectory(l:vim_things)
+        call mkdir(l:pr . '/.vim')
+    endif
+    let l:coc_settings_local_config = l:vim_things . '/coc-settings.json'
+    if ! filereadable(l:coc_settings_local_config)
+        let l:lines = []
+        call add(l:lines, '{')
+        call add(l:lines, '"clangd.arguments" : ["-compile-commands-dir=' . l:vim_things . '"]')
+        call add(l:lines, '}')
+        call writefile(l:lines, l:coc_settings_local_config)
+    endif
+    let l:compile_flags_fn = 'compile_flags.txt'
+    let l:compile_flags = l:vim_things . '/' . l:compile_flags_fn
+    if ! filereadable(l:compile_flags)
+        call system('/bin/cp ' . g:HomePath . '/dotfiles/etc_clang/' . l:compile_flags_fn . ' ' . l:compile_flags)
+    endif
+
 endfunction
 
 let g:projects = {}
@@ -124,7 +143,7 @@ function! UnrefProject()
         return
     endif
     echom "path:" . l:pat
-    let l:pr =  gutentags#get_project_root(l:pat)
+    let l:pr =  ProjectRootGuess(l:pat)
 
     echom l:pr
     if l:pr == ""
@@ -138,9 +157,6 @@ function! UnrefProject()
         endif
     endif
 endfunction
-
-" Install Mapping
-nnoremap <leader>zi :call ZInstall()<CR>
 
 " Generate All Mapping
 nnoremap <leader>zg :call ZGenerateAll()<CR>
@@ -205,7 +221,7 @@ let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'pylint'
 let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
 let g:ale_python_flake8_options = '--config ' . GetSourceFile('flake8.cfg')
-let g:ale_c_clangd_executable = 'clangd'
+"let g:ale_c_clangd_executable = 'clangd'
 let g:ale_linters = {
             \  'python': ['flake8', 'pylint', 'black'],
             \ 'vim' :['vint'],
@@ -213,6 +229,15 @@ let g:ale_linters = {
             \ 'c': ['clangd']
             \}
 call PreparePythonAle()
+
+function! PrepareClangdCOptions()
+    let b:ale_c_clangd_options = '-compile-commands-dir=' . GetProjectRoot() . '/.vim'
+endfunction
+
+augroup ALE_things
+    au!
+    autocmd FileType,BufEnter * call PrepareClangdCOptions()
+augroup END
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
@@ -231,22 +256,26 @@ autocmd FileType java setlocal omnifunc=javacomplete2#Complete
 
 " GutenTags
 
-" enable gtags module
-let g:gutentags_modules = ['cscope', 'ctags', 'gtags_cscope']
-
-" config project root markers.
+" " enable gtags module
+let g:gutentags_modules = []
+"
+" " config project root markers.
 let g:gutentags_project_root = ['.root', '.git']
-
-" generate datebases in my cache directory, prevent gtags files polluting my project
+"
+" " generate datebases in my cache directory, prevent gtags files polluting my project
 let g:gutentags_cache_dir = expand('~/.cache/tags')
-
-" forbid gutentags adding gtags databases
-let g:gutentags_auto_add_gtags_cscope = 1
-
-let g:gutentags_plus_nomap = 1
-set statusline+=%{gutentags#statusline()}
-let g:gutentags_define_advanced_commands = 1
+"
+" " forbid gutentags adding gtags databases
+" let g:gutentags_auto_add_gtags_cscope = 1
+"
+" let g:gutentags_plus_nomap = 1
+" set statusline+=%{gutentags#statusline()}
+" let g:gutentags_define_advanced_commands = 1
 " Fzf
+"
+" disable gutentags, we don't need tags anymore, only some functions
+let g:gutentags_enabled = 0
+
 set rtp+=~/.fzf
 
 function DoShowFiles()
@@ -417,7 +446,7 @@ function! GetLastSessionFn()
 endfunction
 
 function! IsProj()
-    return g:gutentags_enabled || filereadable(GetLastSessionFn())
+    return isdirectory(GetProjectRoot() . '/.vim')
 endfunction
 
 function! SetGuttentagsEnable()
@@ -598,8 +627,8 @@ augroup my_tmux
     autocmd BufDelete * : call UnrefProject()
     autocmd VimLeave * call SaveSess()
     autocmd VimLeavePre * :tabdo NERDTreeClose
-    autocmd VimLeavePre * :tabdo TagbarClose
-    autocmd VimLeavePre * :tabdo cclose
+    "autocmd VimLeavePre * :tabdo TagbarClose
+    "autocmd VimLeavePre * :tabdo cclose
     autocmd VimEnter * nested call RestoreSess()
     autocmd VimEnter * nested call SetGuttentagsEnable()
     autocmd VimResized * : call UpdateAirlineFileneames()

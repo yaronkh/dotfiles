@@ -6,6 +6,9 @@ call plug#begin()
 "easy window navigation and duplicate buffers across windows
 Plug 'yaronkh/vim-winmanip'
 
+" find and manage project root
+Plug 'dbakker/vim-projectroot'
+
 "
 " vimspector - debugger front end for debugger. In particular it is used for
 " gdb and debugpy
@@ -26,7 +29,7 @@ Plug 'wesleyche/Trinity'
 
 " cpp completions with ctags database (created in gutentags and
 " gutentags_plus)
-Plug 'vim-scripts/OmniCppComplete'
+"Plug 'vim-scripts/OmniCppComplete'
 
 " function libraries used by other plugins
 Plug 'tomtom/tlib_vim'
@@ -39,9 +42,7 @@ Plug 'vim-scripts/AutoComplPop'
 Plug 'ludovicchabant/vim-gutentags', { 'do': 'chmod a+x ./plat/unix/*.sh' }
 
 " expands vim-gutentags so files from multiple projects
-Plug 'skywind3000/gutentags_plus'
-
-Plug 'joereynolds/gtags-scope'
+" Plug 'skywind3000/gutentags_plus'
 
 " enable fzf functions in vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -141,7 +142,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'aserebryakov/vim-todo-lists'
 
 " adds cpp competions with clang ide assistant (great)
-Plug 'justmao945/vim-clang'
+"Plug 'justmao945/vim-clang'
 
 " aws smithy language syntax highlight
 Plug 'jasdel/vim-smithy'
@@ -166,4 +167,5 @@ Plug 'tpope/vim-surround'
 " maven syntax highlight (for pom.xml files)
 Plug 'NLKNguyen/vim-maven-syntax'
 
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-clangd'}
 call plug#end()
