@@ -34,18 +34,35 @@ install_distro_zlib() {
 }
 
 install_distro_linters() {
-    sudo apt-get install -y clang clangd
-    sudo apt-get install -y cscope aptitude global silversearcher-ag || exit 255
+#    sudo apt-get update && sudo apt-get install -y yarn
+#    curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+    sudo apt-get install -y aptitude global silversearcher-ag || exit 255
 }
 
 install_distro_nvim() {
-    if grep -q 'VERSION="14.04.5' /etc/os-release; then
-        sudo add-apt-repository ppa:neovim-ppa/unstable
+    target_nvim_ver="0.7.2"
+    if ! which nvim
+    then
+        nvim_ver='0'
     else
-        sudo add-apt-repository -y ppa:neovim-ppa/stable
+        nvim_ver=$( nvim --version | head -1 | cut -d ' ' -f 2)
     fi
-    sudo apt-get update
-    sudo apt-get install -y neovim
+    if [ "$nvim_ver" != "$target_nvim_ver" ]
+    then
+        (
+            set -e
+            cd ~
+            sudo apt-get install -y libtool libtool-bin zip gettext
+            git clone https://github.com/neovim/neovim.git || exit 255
+            cd neovim
+	    pyenv local nvim
+	    pyenv activate nvim
+	    pip install cmake
+            git checkout "v$target_nvim_ver"
+            make CMAKE_BUILD_TYPE=RelWithDebInfo || exit 255
+            sudo make install
+        ) || exit 255
+    fi
 }
 
 install_distro_xclip() {

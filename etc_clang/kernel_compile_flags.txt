@@ -1,0 +1,4 @@
+-Wall
+-I../include/generated/uapi
+-I../include
+-D__KERNEL__

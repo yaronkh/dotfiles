@@ -4,10 +4,27 @@ function! GetSourceFile(file)
 endfunction
 
 " Plug
-let g:sp_plug_source = "source " . GetSourceFile("nvim/src/plug.vim")
+let g:sp_plug_source = 'source ' . GetSourceFile('nvim/src/plug.vim')
 
-let g:sp_plug_target = get(g:, "sp_config_dir", g:HomePath . "/.config/nvim") . "/autoload/plug.vim"
-let g:sp_plug_sha_file = get(g:, "sp_config_dir", g:HomePath . "/.config/nvim") . "/plugs_sha"
+let g:sp_plug_target = stdpath('config') . '/autoload/plug.vim'
+let g:sp_plug_sha_file = get(g:, 'sp_config_dir', stdpath('config') . '/.config/nvim') . '/plugs_sha'
+
+let g:update_clangd_fn = stdpath('config') . '/clangd_ver_ok'
+
+function! CheckCocExtensions()
+    if ! isdirectory(expand('~/.config/coc/extensions/node_modules/coc-clangd'))
+        CocInstall coc-clangd
+    endif
+    if ! isdirectory(expand('~/.config/coc/extensions/node_modules/coc-json'))
+        CocInstall coc-json
+    endif
+endfunction
+
+augroup coc
+        au!
+        autocmd VimEnter * call CheckCocExtensions()
+augroup End
+
 
 function! UpdatePlugins(chsum)
     " let l:psid = GetPlugSID()
@@ -16,6 +33,12 @@ function! UpdatePlugins(chsum)
         PlugInstall1 --sync
         PlugUpdate4 --sync
         UpdateRemotePlugins
+        CocInstall coc-clangd
+        CocInstall coc-json
+        CocUpdate
+        if filereadable(g:update_clangd_fn)
+            call delete(g:update_clangd_fn)
+        endif
         call system("bash -c 'for d in ~/.local/share/nvim/plugged/*; do pushd $d; git stash pop; popd; done'")
         call writefile([a:chsum], g:sp_plug_sha_file, 'b')
     catch
@@ -209,9 +232,10 @@ let g:expand_region_text_objects = get(g:, 'expand_region_text_objects', {
           \ 'ie'  :0,
           \})
 
-
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ale_floating_preview = 1
+let g:ale_hover_to_preview = 1
 
 "python linting
 " Check Python files with flake8 and pylint.
@@ -221,23 +245,21 @@ let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'pylint'
 let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
 let g:ale_python_flake8_options = '--config ' . GetSourceFile('flake8.cfg')
-"let g:ale_c_clangd_executable = 'clangd'
 let g:ale_linters = {
             \  'python': ['flake8', 'pylint', 'black'],
             \ 'vim' :['vint'],
-            \ 'cpp': ['clangd'],
-            \ 'c': ['clangd']
             \}
+let g:ale_linters_ignore = ['clangd']
 call PreparePythonAle()
 
-function! PrepareClangdCOptions()
-    let b:ale_c_clangd_options = '-compile-commands-dir=' . GetProjectRoot() . '/.vim'
-endfunction
-
-augroup ALE_things
-    au!
-    autocmd FileType,BufEnter * call PrepareClangdCOptions()
-augroup END
+" function! PrepareClangdCOptions()
+"     let b:ale_c_clangd_options = '-compile-commands-dir=' . GetProjectRoot() . '/.vim'
+" endfunction
+"
+" augroup ALE_things
+"     au!
+"     autocmd FileType,BufEnter * call PrepareClangdCOptions()
+" augroup END
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
@@ -288,7 +310,7 @@ function DoShowFiles()
 endfunction
 
 nnoremap <C-p> :call DoShowFiles()<CR>
-nnoremap <C-n> :Tags<CR>
+" nnoremap <C-n> :Tags<CR>
 
 "setting the default browser
 let g:netrw_browsex_viewer="google-chrome-stable"
@@ -602,6 +624,13 @@ augroup debug
      noremap ;` :call KillDbgBuf()
 augroup end
 
+function! CheckClang()
+    if ! filereadable(g:update_clangd_fn)
+        echom 'consider running "CocCommand clangd.Install"'
+        call system('touch ' . g:update_clangd_fn )
+    endif
+endfunction
+
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -624,6 +653,7 @@ augroup my_tmux
     autocmd InsertLeave *.c,*.sh,*.java,*.j2,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     autocmd BufRead * : call UpdateProjectMap()
+    autocmd BufRead *.c,*.h,*.hpp : call CheckClang()
     autocmd BufDelete * : call UnrefProject()
     autocmd VimLeave * call SaveSess()
     autocmd VimLeavePre * :tabdo NERDTreeClose

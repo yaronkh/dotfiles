@@ -168,4 +168,5 @@ Plug 'tpope/vim-surround'
 Plug 'NLKNguyen/vim-maven-syntax'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-clangd'}
+
 call plug#end()

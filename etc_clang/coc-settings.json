@@ -1,0 +1,6 @@
+{
+    "json.enable": true,
+    "coc.preferences.useQuickfixForLocations": true,
+    "diagnostic.virtualText": false,
+    "diagnostic.checkCurrentLine": true
+}

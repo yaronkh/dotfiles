@@ -1,5 +1,3 @@
-set -e
-
 PYVER=3.11.0
 PYENV=~/.pyenv/bin/pyenv
 
