@@ -23,6 +23,7 @@ my_pid=$(echo "$cmd_info"  | tr -s ' ' | cut -d ' ' -f 2)
 my_args=$(tr '\0' ' ' < "/proc/$my_pid/cmdline")
 elapsed="0"
 ela=$(ps -o etimes -p $$ 2>/dev/null | tail -n +2 | xargs)
+pane_id=$1
 [ -n "$ela" ] && elapsed=$ela
 if [ -n "$my_args" ]; then
     if [[ "$my_args" = "$command"* ]]; then
@@ -38,11 +39,17 @@ function notify() {
   tput bel
   slack_url=$(tmux show -gv "@slack_url" 2> /dev/null)
   if [ -n "$slack_url" ]; then
+        fn=$(mktemp)
+        tmux capture-pane -S -5 -t "$pane_id"; tmux save-buffer "$fn"; tmux delete-buffer
+        sed -i '/^ *$/d' "$fn"
+        output=$(tail -5 "$fn")
+        #rm "$fn"
       	# Build the JSON request and POST it to the webhook
+        # --arg hostname "$(uname -n)" \
 		json=$(jq -n \
 			--arg command "$command" \
-			--arg hostname "$(uname -n)" \
-			--arg output "" \
+			--arg hostname "$output" \
+			--arg output "$output" \
 			--arg pwd "" \
             --arg elapsed "$elapsed" \
             --arg result 0 \

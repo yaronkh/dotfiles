@@ -649,6 +649,7 @@ augroup my_tmux
     noremap <Leader>% :call SplitVAndSwap()<cr>
     noremap <Leader>" :call SplitAndSwap()<cr>
     noremap <Leader>b :bufdo bd<cr>
+    noremap <Leader>r <Plug>(coc-rename)
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.sh,*.java,*.j2,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
     autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
