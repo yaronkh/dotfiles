@@ -8,10 +8,7 @@ if ! verify_prereq; then
 fi
 
 ensure_build_tools() {
-    if ! which cc > /dev/null
-    then
-        install_distro_build_tools
-    fi
+    install_distro_build_tools
 }
 
 install_zlib() {

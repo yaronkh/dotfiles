@@ -2,6 +2,23 @@
 
 source ~/dotfiles/install/utils/select_distro_funcs.sh
 
+if ! node -v; then
+  echo "nodejs is not installed. please install latest nodejs"
+  echo "to instsall:"
+  echo "for rhel:"
+  echo "========="
+  echo "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -"
+  echo "sudo yum install nodejs"
+
+  echo "for ubuntu:"
+  echo "========="
+  echo "curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -"
+  echo "sudo apt install nodejs"
+  exit 255
+fi
+
+install_dev_tools
+
 # run sudo to generate sudo credentials
 sudo echo ""
 
@@ -41,7 +58,7 @@ install_distro_linters
 
 #install neovim
 (
-    set -e
+    echo installing neovim
     install_distro_nvim
 )
 

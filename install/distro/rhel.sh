@@ -24,7 +24,7 @@ update_distro_db() {
 }
 
 install_distro_build_tools() {
-    sudo yum -y group install "Development Tools"
+    sudo yum -y groupinstall "Development Tools"
 }
 
 install_distro_zlib() {
@@ -68,10 +68,11 @@ install_distro_nvim() {
     if [ "$nvim_ver" != "$target_nvim_ver" ]
     then
         (
-            set -e
             cd ~
             sudo yum install -y  cmake
             sudo yum install -y libtool
+	    echo "and the directory is $(pwd)"
+            [ -d neovim ] && rm -rf neovim
             git clone https://github.com/neovim/neovim.git || exit 255
             cd neovim
 	    pyenv local nvim
@@ -85,8 +86,8 @@ install_distro_nvim() {
 }
 
 install_distro_xclip() (
-    set -e
     sudo yum install -y libXmu-devel xauth
+    [ -d xclip ] && rm -rf xclip
     git clone https://github.com/astrand/xclip.git
     pushd xclip
     ./bootstrap
