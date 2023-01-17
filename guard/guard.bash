@@ -42,7 +42,8 @@ function notify() {
         fn=$(mktemp)
         tmux capture-pane -S -5 -t "$pane_id"; tmux save-buffer "$fn"; tmux delete-buffer
         sed -i '/^ *$/d' "$fn"
-        output=$(tail -5 "$fn")
+        echo ":" >> "$fn"
+        output=$(tail -6 "$fn")
         #rm "$fn"
       	# Build the JSON request and POST it to the webhook
         # --arg hostname "$(uname -n)" \
