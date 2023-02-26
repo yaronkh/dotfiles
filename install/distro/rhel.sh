@@ -58,7 +58,7 @@ install_distro_linters() {
 }
 
 install_distro_nvim() {
-    target_nvim_ver="0.7.2"
+    target_nvim_ver="0.8.0"
     if ! which nvim
     then
         nvim_ver='0'
