@@ -25,6 +25,12 @@ augroup coc
         autocmd VimEnter * call CheckCocExtensions()
 augroup End
 
+augroup ymason
+    au!
+    autocmd VimEnter * source ~/dotfiles/nvim/lua/init.lua
+"    autocmd VimEnter * lua require("mason").setup()
+augroup End
+
 
 function! UpdatePlugins(chsum)
     " let l:psid = GetPlugSID()

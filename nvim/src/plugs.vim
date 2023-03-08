@@ -133,13 +133,10 @@ Plug 'dense-analysis/ale'
 " great plugin for creating commits in vim. just type :Magit
 " get help in the new window by pressing ?
 Plug 'jreybert/vimagit'
-Plug 'artur-shaik/vim-javacomplete2'
+" Plug 'artur-shaik/vim-javacomplete2'
 
 " presonal wiki for vim. similar to emacs org
 Plug 'vimwiki/vimwiki'
-
-" adds todo funcionality for vimwiki
-Plug 'aserebryakov/vim-todo-lists'
 
 " adds cpp competions with clang ide assistant (great)
 "Plug 'justmao945/vim-clang'
@@ -168,5 +165,7 @@ Plug 'tpope/vim-surround'
 Plug 'NLKNguyen/vim-maven-syntax'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-clangd'}
+
+Plug 'williamboman/mason.nvim'
 
 call plug#end()
