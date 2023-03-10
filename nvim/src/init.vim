@@ -3,12 +3,6 @@ function! GetSourceFile(file)
     return g:sp_home . a:file
 endfunction
 
-" Plug
-let g:sp_plug_source = 'source ' . GetSourceFile('nvim/src/plug.vim')
-
-let g:sp_plug_target = stdpath('config') . '/autoload/plug.vim'
-let g:sp_plug_sha_file = get(g:, 'sp_config_dir', stdpath('config') . '/.config/nvim') . '/plugs_sha'
-
 let g:update_clangd_fn = stdpath('config') . '/clangd_ver_ok'
 
 function! CheckCocExtensions()
@@ -31,25 +25,26 @@ augroup ymason
 "    autocmd VimEnter * lua require("mason").setup()
 augroup End
 
+source ~/dotfiles/nvim/src/plugs.lua
 
-function! UpdatePlugins(chsum)
-    " let l:psid = GetPlugSID()
-    try
-        call system("bash -c 'for d in ~/.local/share/nvim/plugged/*; do pushd $d; git stash; popd; done'")
-        PlugInstall1 --sync
-        PlugUpdate4 --sync
-        UpdateRemotePlugins
-        CocInstall coc-clangd
-        CocInstall coc-json
-        CocUpdate
-        if filereadable(g:update_clangd_fn)
-            call delete(g:update_clangd_fn)
-        endif
-        call system("bash -c 'for d in ~/.local/share/nvim/plugged/*; do pushd $d; git stash pop; popd; done'")
-        call writefile([a:chsum], g:sp_plug_sha_file, 'b')
-    catch
-        echom "plug update failed"
-    endtry
+function! Cocplugs()
+    CocPlugInstall
+    UpdateRemotePlugins
+endfunction
+
+augroup coc
+    autocmd User CocNvimInit * call Cocplugs()
+augroup end
+
+function! UpdatePlugins()
+    PackerInstall
+    call coc_plug#begin()
+        CocPlug 'coc-clangd'
+        CocPlug 'coc-json'
+    call coc_plug#end()
+    if filereadable(g:update_clangd_fn)
+        call delete(g:update_clangd_fn)
+    endif
 endfunction
 
 "return the sid of the script nvim/src/plug.vim
@@ -68,28 +63,11 @@ function! GetPlugSID()
 endfunction
 
 function CheckIfUpdateNeeded()
-    if !filereadable(g:sp_plug_target)
-        call writefile([g:sp_plug_source, '\n'], g:sp_plug_target, 'b')
-        call writefile([system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))], g:sp_plug_sha_file, 'b')
-        let g:chsum = system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))
-        autocmd VimEnter * call UpdatePlugins(g:chsum)
-    elseif !filereadable(g:sp_plug_sha_file)
-        call writefile([system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))], g:sp_plug_sha_file, 'b')
-        let g:chsum = system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))
-        autocmd VimEnter * call UpdatePlugins(g:chsum)
-    else
-        let g:echsum = readfile(g:sp_plug_sha_file)[0]
-        let g:chsum = system('md5sum ' . GetSourceFile('nvim/src/plugs.vim'))
-        if g:chsum != g:echsum
-            call writefile([g:chsum], g:sp_plug_sha_file, 'b')
-            autocmd VimEnter * call UpdatePlugins(g:chsum)
-        endif
-    endif
+        autocmd VimEnter * call UpdatePlugins()
 endfunction
 
 call CheckIfUpdateNeeded()
 
-exe ":source " . GetSourceFile("nvim/src/plugs.vim")
 
 " Generation Parameters
 "let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'

@@ -1,6 +1,6 @@
 local DEFAULT_SETTINGS = {
     -- The directory in which to install packages.
-    -- install_root_dir = path.concat { vim.fn.stdpath("data"), "mason" },
+    install_root_dir = vim.fn.stdpath("data") .. "/mason",
 
     -- Where Mason should put its bin location in your PATH. Can be one of:
     -- - "prepend" (default, Mason's bin location is put first in PATH)
