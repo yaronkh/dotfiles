@@ -6,19 +6,6 @@ let ccommmondict = { 'find_this_text_string':      {'id' : '4', 'query' : 'Text:
                    \ 'egrep':                      {'id' : '6', 'query' : 'Egrep:',               'key' : 'e'},
                    \  'find_this_file':            {'id' : '7', 'query' : 'File:',                'key' : 'f'}}
 
-" let csdict = { 'find_symbol':                {'id' : '0', 'query' : 'C symbol:',            'key' : 's'},
-"              \ 'find_definition':            {'id' : '1', 'query' : 'Definition:',          'key' : 'g'},
-"              \ 'functions_called_by':        {'id' : '2', 'query' : 'Functions called by:', 'key' : 'd'},
-"              \ 'where_used':                 {'id' : '3', 'query' : 'Functions calling:',   'key' : 'c'},
-"              \ 'find_files_including':       {'id' : '8', 'query' : 'Files #including:',    'key' : 'i'},
-"              \ 'where_this_symbol_is_assigned': {'id' : '9', 'query' : 'Assignments to:',      'key' : 'a'}}
-
-let csdict = { 'find_symbol':                {'key' : 's', 'f' : 'ActionNotDefined'},
-             \ 'find_definition':            {'key' : 'g', 'f' : 'jumpDefinition'},
-             \ 'functions_called_by':        {'key' : 'd', 'f' : 'ActionNotDefined'},
-             \ 'where_used':                 {'key' : 'c', 'f' : 'jumpReferences'},
-             \ 'implementation':       {'key' : 'i', 'f' : 'jumpImplementation'},
-             \ 'where_this_symbol_is_assigned': {'key' : 'a', 'f' : 'ActionNotDefined'}}
 
 let pydict = { 'find_symbol':                {'key' : 's', 'f' : 'jedi#goto'},
              \ 'find_definition':            {'key' : 'g', 'f' : 'jedi#goto'},
@@ -26,13 +13,6 @@ let pydict = { 'find_symbol':                {'key' : 's', 'f' : 'jedi#goto'},
              \ 'where_used':                 {'key' : 'c', 'f' : 'jedi#usages'},
              \ 'find_files_including':       {'key' : 'i', 'f' : 'ActionNotDefined'},
              \ 'where_this_symbol_is_assigned': {'key' : 'a', 'f' : 'jedi#goto_assignments'}}
-
-let tsdict = { 'find_symbol':                {'key' : 's', 'f' : 'TsuquyomiDefinition'},
-             \ 'find_definition':            {'key' : 'g', 'f' : 'TsuquyomiDefinition'},
-             \ 'functions_called_by':        {'key' : 'd', 'f' : 'ActionNotDefined'},
-             \ 'where_used':                 {'key' : 'c', 'f' : 'TsuReferences'},
-             \ 'find_files_including':       {'key' : 'i', 'f' : 'ActionNotDefined'},
-             \ 'where_this_symbol_is_assigned': {'key' : 'a', 'f' : 'ActionNotDefined'}}
 
 function! CscopeQuery(option, ...)
     call inputsave()
@@ -62,27 +42,11 @@ for action in items(ccommmondict)
     exe('nnoremap <silent> <Leader><Leader>c' . action[1].key . ' :call CscopeQuery(csdict.' . action[0] . ', 1)<CR>')
 endfor
 
-for action in items(csdict)
-    let cAction = action[1]
-    for ft in ['c', 'cpp']
-        exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <leader>g' . cAction.key . ' :call CocActionAsync("' . cAction.f . '")<cr>')
-    endfor
-endfor
-
 for action in items(pydict)
     let pyname = action[0] . '_py'
     exe('let ' . pyname . ' = "_"')
     let cAction = action[1]
     for ft in ['python']
         exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <leader>g' . cAction.key . ' :call PyscopeQuery(' . pyname . ', function("' . cAction.f . '"))<cr>')
-    endfor
-endfor
-
-for action in items(tsdict)
-    let tsname = action[0] . '_ts'
-    exe('let ' . tsname . ' = "_"')
-    let cAction = action[1]
-    for ft in ['typescript']
-        exe('autocmd FileType ' . ft . ' nnoremap <buffer> <silent> <leader>g' . cAction.key . ' :' . cAction.f . '<cr>')
     endfor
 endfor

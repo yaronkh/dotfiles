@@ -21,8 +21,21 @@ packer.init({
   },
 })
 packer.startup(function(use)
+    use {
+        "folke/which-key.nvim",
+        config = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+            require("which-key").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
     use 'rstacruz/vim-closer'
     use 'wbthomason/packer.nvim'
+    use 'WhoIsSethDaniel/mason-tool-installer.nvim'
     -- window manipulation plugin,
     -- enable to move buffers between tabs,
     -- exchange buffers between windows,
@@ -59,7 +72,7 @@ packer.startup(function(use)
     -- use 'rdolgushin/snipMate-acp'
 
     --  opens completion popup when certain characters are typed
-    use 'vim-scripts/AutoComplPop'
+    -- use 'vim-scripts/AutoComplPop'
 
     --  manages tag files under ~/.cache/tags
     use { 'ludovicchabant/vim-gutentags', run =  'chmod a+x ./plat/unix/*.sh' }
@@ -117,7 +130,7 @@ packer.startup(function(use)
 
     --  spelling plugin. spells comments and strings in code
     --  to fix words, place the cursor on a problematic word and press z=
-    use 'me-vlad/spellfiles.vim'
+    -- use 'me-vlad/spellfiles.vim'
     -- use 'sakhnik/nvim-gdbm'
 
     --  plugin around gdb, this plugin is deprecated in favor
@@ -168,17 +181,11 @@ packer.startup(function(use)
 
     use { 'Shougo/vimproc.vim', run = 'make'}
 
-    --  typescript omnicomplete and goto definition
-    use 'Quramy/tsuquyomi'
-
     --  Vim plugin for insert mode completion of words in adjacent tmux panes
     use 'wellle/tmux-complete.vim'
 
     --  Semshi provides semantic highlighting for Python in Neovim
-    use {'numirias/semshi', cmd = 'UpdateRemotePlugins' }
-
-    --  Peekaboo will show you the contents of the registers on the sidebar when you hit " or @ in normal mode
-    use 'junegunn/vim-peekaboo'
+    use {'numirias/semshi' }
 
     --  Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more
     use 'tpope/vim-surround'
@@ -186,12 +193,14 @@ packer.startup(function(use)
     --  maven syntax highlight (for pom.xml files)
     use 'NLKNguyen/vim-maven-syntax'
 
-    use {'neoclide/coc.nvim', branch = 'release'}
-    use 'theoremoon/coc-plug'
+    -- use {'neoclide/coc.nvim', branch = 'release'}
+    -- use 'theoremoon/coc-plug'
     -- use {'neoclide/coc.nvim',branch = 'release', cmd = 'CocInstall coc-clangd'}
 
-    use 'williamboman/mason.nvim'
-
-    use 'neovim/nvim-lspconfig'
+    use {
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        "neovim/nvim-lspconfig",
+    }
 end)
 

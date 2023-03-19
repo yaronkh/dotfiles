@@ -1,3 +1,27 @@
+local lsp_items = {
+    { mason_name = "jdtls", lspc_name = "jdtls", cfg = {cmd = {'jdtls', }, }, },
+    { mason_name = "bash-language-server", lspc_name = "bashls", cfg = { cmd = {"bash-language-server", }}},
+    { mason_name = "typescript-language-server", lspc_name = "tsserver", cfg = {}},
+    -- { mason_name = "pyright", lspc_name = "pyright", cfg = {}},
+    { mason_name = "python-lsp-server", lspc_name = "pylsp", cfg = {
+        settings = {
+            pylsp = {
+                plugins = {
+                    pylint = {enabled = false, },
+                    pyls_mypy = { enabled = false,},
+                    black = { enabled = false },
+                    pyls_flake8 = { enabled = false },
+                    autopep8 = { enabled = false },
+                    pycodestyle = { enabled = false },
+                    pyflakes = { enabled = false },
+                }
+            }
+        }
+    }},
+    { mason_name = "clangd", lspc_name = "clangd", cfg = {}},
+
+}
+
 local DEFAULT_SETTINGS = {
     -- The directory in which to install packages.
     install_root_dir = vim.fn.stdpath("data") .. "/mason",
@@ -98,3 +122,85 @@ local DEFAULT_SETTINGS = {
     },
 }
 require("mason").setup(DEFAULT_SETTINGS)
+require("mason-lspconfig").setup()
+require("which-key").setup {}
+
+
+-- Global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+    callback = function(ev)
+        local whichkey = require("which-key")
+        -- Enable completion triggered by <c-x><c-o>
+        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+        -- Buffer local mappings.
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        local opts = { buffer = ev.buf }
+        local keymap_g = {
+            name = "Goto",
+            d = { "<Cmd>lua vim.lsp.buf.definition()<CR>", "Definition" },
+            D = { "<Cmd>lua vim.lsp.buf.declaration()<CR>", "Declaration" },
+            s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
+            I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation" },
+            t = { "<cmd>lua vim.lsp.buf.type_definition()<CR>", "Goto Type Definition" },
+            c = { "<cmd>lua vim.lsp.buf.references()<CR>", "find all references" },
+            r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "rename"}
+        }
+        keymap_f = {
+            name = "code actions",
+            SPC = {
+                name = "even more actions",
+                c = {
+                    name = "code",
+                    a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "code actions"},
+                }
+            }
+        }
+        whichkey.register(keymap_g, { buffer = ev.buf, prefix = "g" })
+
+        -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+        -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+        vim.keymap.set('n', '<space>wl', function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+        end, opts)
+        vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+        vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
+        -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        vim.keymap.set('n', '<space>f', function()
+            vim.lsp.buf.format { async = true }
+        end, opts)
+    end,
+})
+
+
+-- some code t hat verifies that all packages (server side) are installed by mason
+local mason_tool = require('mason-tool-installer')
+local ensured = {}
+for _, v in pairs(lsp_items) do
+    table.insert(ensured, {v.mason_name, auto_update = true})
+end
+local setup_data = {
+    ensure_installed = ensured,
+    run_on_start = true,
+}
+mason_tool.setup(setup_data)
+local lspconfig = require'lspconfig'
+
+for _, v in pairs(lsp_items) do
+    lspconfig[v.lspc_name].setup(v.cfg)
+end

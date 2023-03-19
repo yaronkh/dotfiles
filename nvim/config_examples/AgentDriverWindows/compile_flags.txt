@@ -1,4 +1,3 @@
--nostdinc
 -ibuiltininc
 -Wall
 -I../AgentDriver

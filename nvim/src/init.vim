@@ -5,47 +5,15 @@ endfunction
 
 let g:update_clangd_fn = stdpath('config') . '/clangd_ver_ok'
 
-function! CheckCocExtensions()
-    if ! isdirectory(expand('~/.config/coc/extensions/node_modules/coc-clangd'))
-        CocInstall coc-clangd
-    endif
-    if ! isdirectory(expand('~/.config/coc/extensions/node_modules/coc-json'))
-        CocInstall coc-json
-    endif
-endfunction
-
-augroup coc
-        au!
-        autocmd VimEnter * call CheckCocExtensions()
-augroup End
-
 augroup ymason
     au!
     autocmd VimEnter * source ~/dotfiles/nvim/lua/init.lua
 "    autocmd VimEnter * lua require("mason").setup()
 augroup End
 
+
+source ~/dotfiles/nvim/lua/ensure_packer.lua
 source ~/dotfiles/nvim/src/plugs.lua
-
-function! Cocplugs()
-    CocPlugInstall
-    UpdateRemotePlugins
-endfunction
-
-augroup coc
-    autocmd User CocNvimInit * call Cocplugs()
-augroup end
-
-function! UpdatePlugins()
-    PackerInstall
-    call coc_plug#begin()
-        CocPlug 'coc-clangd'
-        CocPlug 'coc-json'
-    call coc_plug#end()
-    if filereadable(g:update_clangd_fn)
-        call delete(g:update_clangd_fn)
-    endif
-endfunction
 
 "return the sid of the script nvim/src/plug.vim
 function! GetPlugSID()
@@ -61,12 +29,6 @@ function! GetPlugSID()
     endfor
     return 0
 endfunction
-
-function CheckIfUpdateNeeded()
-        autocmd VimEnter * call UpdatePlugins()
-endfunction
-
-call CheckIfUpdateNeeded()
 
 
 " Generation Parameters
@@ -233,7 +195,8 @@ let g:ale_linters = {
             \  'python': ['flake8', 'pylint', 'black'],
             \ 'vim' :['vint'],
             \}
-let g:ale_linters_ignore = ['clangd']
+" clancd and javac are taken from other places
+let g:ale_linters_ignore = ['clangd', 'javac']
 call PreparePythonAle()
 
 " function! PrepareClangdCOptions()
@@ -258,7 +221,7 @@ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
-autocmd FileType java setlocal omnifunc=javacomplete2#Complete
+" autocmd FileType java setlocal omnifunc=javacomplete2#Complete
 
 " GutenTags
 
@@ -291,6 +254,10 @@ function DoShowFiles()
     " Empty value to disable preview window altogether
     let g:fzf_preview_window = ''
     exec ":Files " . l:pr
+endfunction
+
+function MyUpdateRemotePlugins()
+    call remote#host#UpdateRemotePlugins()
 endfunction
 
 nnoremap <C-p> :call DoShowFiles()<CR>
@@ -506,9 +473,8 @@ function! RestoreSess()
         if argc() > 0
             let g:do_save_session = 0
         endif
-
         if g:do_restore_last_session > 0 && argc() == 0 && IsProj() && filereadable(GetLastSessionFn())
-            exec "source " . GetLastSessionFn()
+             exe 'source ' . GetLastSessionFn()
         endif
     catch /.*/
         let g:do_save_session = 0
