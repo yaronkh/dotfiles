@@ -30,23 +30,6 @@ source ~/dotfiles/install/utils/install_python.sh
 pip install --upgrade setuptools
 pip install jedi==0.17.2 mypy psutil pylint flake8 astroid pynvim neovim-remote || exit 255
 
-# if ! ctags --version > /dev/null 2>&1
-# then
-#     (
-#         set -e
-#         cd ~
-#         mkdir stuff
-#         cd stuff
-#         git clone https://github.com/rentalcustard/exuberant-ctags.git
-#         cd exuberant-ctags
-#         if ! ./configure; then echo "cannot build cscope"; exit 255; fi
-#         ./configure && make
-#         sudo make install
-#         cd
-#         rm -rf ~/stuff/exuberant-ctags
-#     ) || exit 255
-# fi
-
 if ! which xclip
 then
     echo "xlip is not installed, installing it"
@@ -65,11 +48,10 @@ install_distro_linters
 if ! mkdir -p ~/.config/nvim; then echo "cannot create nvim configuration directory"; exit 255; fi
 if ! cp -R -u -p nvim ~/.config/; then echo "Cannot copy nvim configuration files"; exit 255; fi
 
-write_to_shrc 'source ~/dotfiles/local/nvim.bash'
+# install bootstrap nvim packages and quit
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
-if ! [ -e ~/.config/nvim/coc-settings.json ]; then
-    cp ~/dotfiles/etc_clang/coc-settings.json ~/.config/nvim/coc-settings.json
-fi
+write_to_shrc 'source ~/dotfiles/local/nvim.bash'
 
 echo
 echo "PLEASE RUN source ~/.bashrc, in order for changes to take effect"
