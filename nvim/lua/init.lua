@@ -1,6 +1,5 @@
 local lsp_items = {
     { mason_name = "jdtls", lspc_name = "jdtls", cfg = {cmd = {'jdtls', }, }, },
-    { mason_name = "bash-language-server", lspc_name = "bashls", cfg = { cmd = {"bash-language-server", }}},
     { mason_name = "typescript-language-server", lspc_name = "tsserver", cfg = {}},
     -- { mason_name = "pyright", lspc_name = "pyright", cfg = {}},
     { mason_name = "python-lsp-server", lspc_name = "pylsp", cfg = {
