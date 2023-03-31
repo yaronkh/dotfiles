@@ -140,7 +140,7 @@ packer.startup(function(use)
     use 'airblade/vim-gitgutter'
 
     --  This plugin causes all trailing whitespace characters to be highlighted.
-    use 'ntpeters/vim-better-whitespace'
+    -- use 'ntpeters/vim-better-whitespace'
 
     --  spelling plugin. spells comments and strings in code
     --  to fix words, place the cursor on a problematic word and press z=

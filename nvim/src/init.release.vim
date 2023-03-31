@@ -585,7 +585,7 @@ augroup my_tmux
     autocmd bufenter * call Panetitle()
     autocmd bufenter * call Escapeins()
     autocmd BufEnter * call LoadCursorShapes()
-    if v:servername == ""
+    if v:servername == ''
         call remote_startserver(getpid())
     endif
     noremap <silent> <Leader>bx :q<CR>
@@ -601,7 +601,7 @@ augroup my_tmux
     noremap <Leader>r <Plug>(coc-rename)
     "remove trailing white spaces in c, c++
     autocmd InsertLeave *.c,*.sh,*.java,*.j2,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
-    autocmd BufWritePre,BufUnload,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
+    autocmd BufWritePre,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     autocmd BufRead * : call UpdateProjectMap()
     autocmd BufRead *.c,*.h,*.hpp : call CheckClang()
     autocmd BufDelete * : call UnrefProject()
