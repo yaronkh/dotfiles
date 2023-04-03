@@ -1,7 +1,42 @@
 local lsp_items = {
     { mason_name = "jdtls", lspc_name = "jdtls", cfg = {cmd = {'jdtls', }, }, },
     { mason_name = "typescript-language-server", lspc_name = "tsserver", cfg = {}},
-    { mason_name = "vim-language-server", lspc_name = "vimls", cfg = {}},
+    { mason_name = "vim-language-server", lspc_name = "vimls", cfg = {
+        diagnostic = {
+            enable = true
+        },
+        indexes = {
+            count = 3,
+            gap = 100,
+            projectRootPatterns = { "runtime", "nvim", ".git", "autoload", "plugin" },
+            runtimepath = true
+        },
+        isNeovim = true,
+        iskeyword = "@,48-57,_,192-255,-#",
+        runtimepath = "",
+        suggest = {
+            fromRuntimepath = true,
+            fromVimruntime = true
+        },
+        vimruntime = ""
+    }},
+    { mason_name = "bash-language-server", lspc_name = "bashls", cfg = {}},
+    { mason_name = "lua-language-server", lspc_name = "lua_ls", cfg = {settings = {
+        Lua = {
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = {'vim'},
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
+            },
+        },
+    },}},
     { mason_name = "python-lsp-server", lspc_name = "pylsp", cfg = {
         settings = {
             pylsp = {
@@ -18,7 +53,6 @@ local lsp_items = {
         }
     }},
     { mason_name = "clangd", lspc_name = "clangd", cfg = {}},
-
 }
 
 local DEFAULT_SETTINGS = {
@@ -36,7 +70,14 @@ local DEFAULT_SETTINGS = {
     -- multiple registries, the registry listed first will be used.
     registries = {
         "lua:mason-registry.index",
+        "github:mason-org/mason-registry",
     },
+
+    -- if set to true this will check each tool for updates. If updates
+    -- are available the tool will be updated. This setting does not
+    -- affect :MasonToolsUpdate or :MasonToolsInstall.
+    -- Default: false
+    auto_update = true,
 
     -- Controls to which degree logs are written to the log file. It's useful to set this to vim.log.levels.DEBUG when
     -- debugging issues with package installations.

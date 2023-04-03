@@ -14,22 +14,6 @@ augroup End
 
 source ~/dotfiles/nvim/src/plugs.lua
 
-"return the sid of the script nvim/src/plug.vim
-function! GetPlugSID()
-    let l:fp = expand(g:sp_plug_source . ':p')
-    redir => out | silent! scriptnames | redir END
-    let l:i = 0
-    for l in split(out, "\n")
-        let l:j = strridx(l, 'nvim/src/plug.vim')
-        if l:j >= 0
-            return l:i + 1
-        endif
-        let l:i = l:i + 1
-    endfor
-    return 0
-endfunction
-
-
 " Generation Parameters
 "let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsOptions = '-R --exclude=build --languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
@@ -37,10 +21,6 @@ let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=f
 highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
 set cursorline
 " Install
-
-function! ZInstall()
-     let g:sp_plug_source = 'source ' . GetSourceFile('nvim/src/plug.vim')
-endfunction
 
 function! GetBufferDirectory()
     let l:path = expand("%:p:h")
@@ -52,10 +32,6 @@ endfunction
 
 function! GetProjectRoot()
     return ProjectRootGuess(GetBufferDirectory())
-endfunction
-
-function! GetCacheFileName(fn)
-
 endfunction
 
 " Generate All
