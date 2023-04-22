@@ -171,7 +171,7 @@ let g:ale_linters = {
             \ 'vim' :['vint'],
             \}
 " clancd and javac are taken from other places
-let g:ale_linters_ignore = ['clangd', 'javac']
+let g:ale_linters_ignore = ['gcc', 'clangd', 'javac']
 call PreparePythonAle()
 
 " function! PrepareClangdCOptions()

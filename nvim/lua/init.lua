@@ -1,6 +1,7 @@
 local lsp_items = {
     { mason_name = "jdtls", lspc_name = "jdtls", cfg = {cmd = {'jdtls', }, }, },
     { mason_name = "typescript-language-server", lspc_name = "tsserver", cfg = {}},
+    { mason_name = "smithy-language-server", lspc_name = "smithy_ls", cfg = {}},
     { mason_name = "vim-language-server", lspc_name = "vimls", cfg = {
         diagnostic = {
             enable = true
@@ -73,6 +74,7 @@ local DEFAULT_SETTINGS = {
         "github:mason-org/mason-registry",
     },
 
+
     -- if set to true this will check each tool for updates. If updates
     -- are available the tool will be updated. This setting does not
     -- affect :MasonToolsUpdate or :MasonToolsInstall.
@@ -108,7 +110,7 @@ local DEFAULT_SETTINGS = {
 
     pip = {
         -- Whether to upgrade pip to the latest version in the virtual environment before installing packages.
-        upgrade_pip = false,
+        upgrade_pip = true,
 
         -- These args will be added to `pip install` calls. Note that setting extra args might impact intended behavior
         -- and is not recommended.

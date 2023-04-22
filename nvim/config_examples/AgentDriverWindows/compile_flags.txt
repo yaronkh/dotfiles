@@ -1,8 +1,9 @@
+-nostdinc
 -ibuiltininc
 -Wall
+-I/home/ANT.AMAZON.COM/kahayaro/stuff/windows_kits
+-I/home/ANT.AMAZON.COM/kahayaro/stuff/ms_vs
 -I../AgentDriver
 -I../AgentDriver/src/
--I../AgentDriver/src/linux
--I/home/ANT.AMAZON.COM/kahayaro/stuff/linux/include/generated/uapi
--I/home/ANT.AMAZON.COM/kahayaro/stuff/linux/include
--D__KERNEL__
+-I../AgentDriver/src/common/windows
+-I../AgentDriver/src/common
