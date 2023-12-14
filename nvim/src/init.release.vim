@@ -1,4 +1,4 @@
-let g:sp_home = expand('<sfile>:p:h') . '/../../'
+let g:sp_home = expand('<sile>:p:h') . '/../../'
 function! GetSourceFile(file)
     return g:sp_home . a:file
 endfunction
@@ -145,6 +145,8 @@ let g:expand_region_text_objects = get(g:, 'expand_region_text_objects', {
           \ 'i]'  :2,
           \ 'a>'  :2,
           \ 'i}'  :2,
+          \ 'i)'  :2,
+          \ 'a)'  :2,
           \ 'ib'  :1,
           \ 'iB'  :1,
           \ 'il'  :0,
@@ -152,6 +154,7 @@ let g:expand_region_text_objects = get(g:, 'expand_region_text_objects', {
           \ 'ip'  :0,
           \ 'ie'  :0,
           \})
+
 
 " Ctrlp
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -164,8 +167,8 @@ let b:ale_fixers = ['autopep8', 'yapf']
 " Disable warnings about trailing whitespace for Python files.
 let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_pylint_executable = 'pylint'
-let g:ale_python_pylint_options = '--rcfile ' . GetSourceFile('pylint.rc')
-let g:ale_python_flake8_options = '--config ' . GetSourceFile('flake8.cfg')
+let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
+let g:ale_python_flake8_options = '--config ~/dotfiles/flake8.cfg'
 let g:ale_linters = {
             \  'python': ['flake8', 'pylint', 'black'],
             \ 'vim' :['vint'],

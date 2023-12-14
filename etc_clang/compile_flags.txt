@@ -5,4 +5,5 @@
 -I../AgentDriver/src/linux
 -I/home/ANT.AMAZON.COM/kahayaro/stuff/linux/include/generated/uapi
 -I/home/ANT.AMAZON.COM/kahayaro/stuff/linux/include
+-I/home/ANT.AMAZON.COM/kahayaro/stuff/linux/usr/include
 -D__KERNEL__

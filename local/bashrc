@@ -42,6 +42,10 @@ function sshh() {
     ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=2 -o ForwardX11=yes -i ~/.ssh/dev2.pem $1
 }
 
+function scpp() {
+    scp -i ~/.ssh/dev2.pem $1 $2
+}
+
 #NOTE we use Virtualenv to run python in a preconfigured box!!
 #export PYTHONPATH=$HOME/dev/CloudEndure/Management/src
 

@@ -41,7 +41,7 @@ install_distro_linters() {
 
 install_distro_nvim() {
     sudo apt-get install gettext
-    target_nvim_ver="v0.8.0"
+    target_nvim_ver="v0.9.0"
     if ! which nvim
     then
         nvim_ver='0'
