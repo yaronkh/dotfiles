@@ -219,5 +219,26 @@ packer.startup(function(use)
     if packer_bootstrap then
         require('packer').sync()
     end
+    use "nvim-lua/plenary.nvim"
+
+     use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate'
+    }
+
+
+    use {
+        'nvim-telescope/telescope.nvim', tag = '0.1.5',
+        requires = {
+            {'nvim-lua/plenary.nvim'},
+            { "nvim-telescope/telescope-live-grep-args.nvim" },
+            {"Marskey/telescope-sg"},
+        },
+        config = function()
+            require("telescope").load_extension("live_grep_args")
+        end
+    }
+    use 'Marskey/telescope-sg'
+
 end)
 
