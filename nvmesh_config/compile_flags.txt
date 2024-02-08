@@ -1,0 +1,8 @@
+-Wall
+-Ispdk.mellanox/include
+-Ispdk.mellanox/dpdk/lib/eal/include
+-Ispdk.mellanox/dpdk/build/include
+-Ispdk.mellanox/dpdk/config
+-Iapp
+-Iapp/framework
+-Iapp/common
