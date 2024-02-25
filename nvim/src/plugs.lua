@@ -156,7 +156,7 @@ packer.startup(function(use)
 
     --  detect linux kernel code and mark code that
     --  violates linux coding style
-    --  use 'vivien/vim-linux-coding-style'
+    -- use 'vivien/vim-linux-coding-style'
 
     --  code completer for python, that uses jedi library
     --  I've exanded that to include 'goto-definition' and
@@ -207,9 +207,7 @@ packer.startup(function(use)
     --  maven syntax highlight (for pom.xml files)
     use 'NLKNguyen/vim-maven-syntax'
 
-    -- use {'neoclide/coc.nvim', branch = 'release'}
-    -- use 'theoremoon/coc-plug'
-    -- use {'neoclide/coc.nvim',branch = 'release', cmd = 'CocInstall coc-clangd'}
+    use 'folke/tokyonight.nvim'
 
     use {
         "williamboman/mason.nvim",
@@ -225,7 +223,6 @@ packer.startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate'
     }
-
 
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.5',

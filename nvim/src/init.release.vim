@@ -260,6 +260,28 @@ let g:cpp_experimental_template_highlight = 1
 " QuickFix
 nnoremap <C-w>p :copen<CR>
 
+let g:linuxsty_patterns = [ "/kernel/", "/linux/", "/nvmeshum/"]
+function! GetMeIdent()
+    let apply_nvmeshstype = 0
+    if exists("g:linuxsty_patterns")
+        let path = expand('%:p')
+        for p in g:linuxsty_patterns
+            if path =~ p
+                let apply_nvmeshstype = 1
+                break
+            endif
+        endfor
+    endif
+    if apply_nvmeshstype
+        setlocal noexpandtab
+        setlocal tabstop=4
+    else
+        setlocal expandtab
+        setlocal shiftwidth=4
+    endif
+    setlocal cindent
+endfunction
+
 " Generic
 syntax on
 filetype plugin indent on
@@ -271,17 +293,16 @@ set smartcase
 set nocompatible
 set shellslash
 set autoindent
-autocmd filetype cpp setlocal cindent
-autocmd filetype c setlocal cindent
+autocmd filetype cpp  call GetMeIdent()
+autocmd filetype c call GetMeIdent()
 set cinoptions=g0N-s
 set backspace=indent,eol,start
 set ruler
 set showcmd
 set incsearch
 set hlsearch
-color desert
-"set shiftwidth=4
-"set tabstop=4
+" set shiftwidth=4
+set tabstop=4
 set cmdheight=1
 "set number
 set wildmode=list:longest,full
@@ -291,7 +312,8 @@ set nowrap
 nnoremap <C-q> <C-v>
 set shellslash
 map <C-w>w :q<CR>
-autocmd filetype make setlocal noexpandtab autoindent
+autocmd filetype make call GetMeIdent()
+"autocmd filetype c setlocal noexpandtab autoindent
 autocmd filetype sh setlocal expandtab
 " noremap <F1> <C-w><C-p>
 " noremap <F2> <C-w><C-w>
@@ -311,8 +333,35 @@ set spell
 
 " Gruvbox
 set background=dark
-let g:gruvbox_contrast_dark = 'medium'
-color gruvbox
+" let g:gruvbox_contrast_dark = 'high'
+" let g:gruvbox_contrast_dark="hard"
+"colorscheme dracula
+"colorscheme pablo
+colorscheme koehler
+hi WinSeparator guifg=white guibg=black
+hi SignColumn guibg=NONE
+hi NotifyInfoBorder guifg=white
+hi StatusLineNC guibg=white guifg=white
+hi String  guifg=#c7ea46
+" hi WinBarNC guifg=white
+" hi VertSplit guifg=white
+" hi StatusLineNC	 guifg=white
+"hi MsgSeparator guifg=white
+hi Visual  guifg=Black guibg=White gui=none
+" colorscheme gruvbox
+" colorscheme tokyonight-moon
+
+
+
+let g:fzf_colors =
+    \ {
+      \ 'border':  ['fg', 'Search'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
+
 hi Normal ctermbg=none
 
 function! Panetitle()
@@ -445,6 +494,12 @@ let g:airline#extensions#default#layout = [
 function! UpdateAirlineFileneames()
      " echom "resized"
 endfunction
+let g:airline_focuslost_inactive = 1
+let g:airline_inactive_alt_sep=0
+let g:airline_inactive_collapse=1
+
+let g:airline_theme = "sierra"
+let g:airline_base16_improved_contrast = 1
 
 function! RestoreSess()
     try
@@ -597,7 +652,6 @@ augroup my_tmux
     "execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
     nnoremap z= :call FzfSpell()<CR>
     inoremap <Leader>li :LinuxCodingStyle<cr>
-    let g:linuxsty_patterns = [ "/kernel/", "/linux/"]
     nnoremap <C-d> :call InsertDate()<cr>
     " nnoremap <F10> :call LaunchIpythonInTmux()<CR>
     nnoremap <F1> :call OpenVimTmuxTerm()<CR>
@@ -612,6 +666,7 @@ augroup my_tmux
     "map "quote this word
     :nnoremap <Leader>w" ciw""<Esc>P
     :nnoremap <Leader>T" ciW""<Esc>P
+    nnoremap <C-h> :ClangdSwitchSourceHeader<CR>
 augroup end
 
 augroup ts_config
@@ -957,16 +1012,48 @@ function! s:ag_handler(lines)
     endif
 endfunction
 
-command! -nargs=* Ag call fzf#run({
+function! s:get_visual_selection()
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - 2]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
+
+
+function! Uty(text)
+        let l:gtext = a:text
+        if empty(a:text)
+            let l:gtext = s:get_visual_selection()
+            echom l:gtext
+        endif
+        call fzf#run({
             \ 'source':  printf('ag --nogroup --column --color "%s"',
-            \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-            \ 'sink*':    function('<sid>ag_handler'),
+            \                   escape(empty(l:gtext) ? '^(?=.)' : l:gtext, '"\')),
+            \ 'sink*':    function('s:ag_handler'),
             \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
             \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
             \            '--color hl:68,hl+:110',
             \ 'down':    '50%'
             \ })
+endfunction
 
+" command! -nargs=* -range Ag call fzf#run({
+"             \ 'source':  printf('ag --nogroup --column --color "%s"',
+"             \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+"             \ 'sink*':    function('<sid>ag_handler'),
+"             \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+"             \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+"             \            '--color hl:68,hl+:110',
+"             \ 'down':    '50%'
+"             \ })
+
+
+command! -range -nargs=* Ag call Uty(<q-args>)
 "detectIndent stuff
 "==================
 " autocmd BufReadPost * :DetectIndent
