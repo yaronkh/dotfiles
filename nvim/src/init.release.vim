@@ -274,6 +274,7 @@ function! GetMeIdent()
     endif
     if apply_nvmeshstype
         setlocal noexpandtab
+        setlocal shiftwidth=4
         setlocal tabstop=4
     else
         setlocal expandtab
@@ -339,10 +340,10 @@ set background=dark
 "colorscheme pablo
 colorscheme koehler
 hi WinSeparator guifg=white guibg=black
-hi SignColumn guibg=NONE
-hi NotifyInfoBorder guifg=white
-hi StatusLineNC guibg=white guifg=white
-hi String  guifg=#c7ea46
+"hi SignColumn guibg=NONE
+"hi NotifyInfoBorder guifg=white
+"hi StatusLineNC guibg=white guifg=white
+"hi String  guifg=#c7ea46
 " hi WinBarNC guifg=white
 " hi VertSplit guifg=white
 " hi StatusLineNC	 guifg=white
