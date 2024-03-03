@@ -18,8 +18,8 @@ source ~/dotfiles/nvim/src/plugs.lua
 "let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsOptions = '-R --exclude=build --languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
 let g:ctagsEverythingOptions = '--c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
-highlight CursorLineNr cterm=NONE ctermbg=15 ctermfg=8 gui=NONE guibg=#ffffff guifg=#d70000
-set cursorline
+"hi CursorLineNr cterm=NONE ctermbg=00 ctermfg=0 gui=NONE guibg=#ffffff guifg=#000000
+"set cursorline
 " Install
 
 function! GetBufferDirectory()
@@ -296,6 +296,8 @@ set shellslash
 set autoindent
 autocmd filetype cpp  call GetMeIdent()
 autocmd filetype c call GetMeIdent()
+autocmd filetype bash call GetMeIdent()
+autocmd filetype sh call GetMeIdent()
 set cinoptions=g0N-s
 set backspace=indent,eol,start
 set ruler
@@ -315,7 +317,6 @@ set shellslash
 map <C-w>w :q<CR>
 autocmd filetype make call GetMeIdent()
 "autocmd filetype c setlocal noexpandtab autoindent
-autocmd filetype sh setlocal expandtab
 " noremap <F1> <C-w><C-p>
 " noremap <F2> <C-w><C-w>
 nnoremap <Tab> :tabnext<CR>
@@ -661,7 +662,6 @@ augroup my_tmux
     :map <Leader>tt <Plug>VimwikiToggleListItem
     "replace all occurences of the word under cursor
     :nnoremap <Leader>s :call ReplaceWordUnderCursor()<CR>
-    autocmd FileType sh setlocal shiftwidth=2 softtabstop=2 expandtab
     "remap p in visual mode so the yanked  text will replace the marked text
     xnoremap p "_dP
     "map "quote this word
