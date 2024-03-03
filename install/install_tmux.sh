@@ -7,7 +7,7 @@ then
 	exit 255
 fi
 
-TMUX_VER=3.3a
+TMUX_VER=3.4
 STUFF_DIR=~/stuff
 SOURCE_DIR=$STUFF_DIR/tmux
 
