@@ -31,7 +31,7 @@ function! GetBufferDirectory()
 endfunction
 
 function! GetProjectRoot()
-    return ProjectRootGuess(GetBufferDirectory())
+    return ProjectRootGuess(getcwd())
 endfunction
 
 " Generate All
@@ -204,10 +204,11 @@ set completeopt=menuone,menu,longest,preview
 " GutenTags
 
 " " enable gtags module
-let g:gutentags_modules = []
+"let g:gutentags_modules = []
 "
 " " config project root markers.
-let g:gutentags_project_root = ['.root', '.git']
+"let g:gutentags_project_root = ['.root', '.git']
+
 "
 " " generate datebases in my cache directory, prevent gtags files polluting my project
 let g:gutentags_cache_dir = expand('~/.cache/tags')
@@ -280,7 +281,6 @@ function! GetMeIdent()
         setlocal expandtab
         setlocal shiftwidth=4
     endif
-    setlocal cindent
 endfunction
 
 " Generic
@@ -945,7 +945,8 @@ function AgThat(t)
     :set errorformat=%f:%l:%m
     copen
     let l:pr = GetProjectRoot()
-    let cmd = ":AsyncRun git grep -n \"" . a:t . "\" -- " . l:pr
+    let cmd = ":AsyncRun ag " . a:t . " " . l:pr
+    "let cmd = ":AsyncRun git grep -n \"" . a:t . "\" -- " . l:pr
     exec cmd
 endfunction
 
