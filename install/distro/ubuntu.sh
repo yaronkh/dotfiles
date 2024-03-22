@@ -9,7 +9,6 @@ install_tmux_compilation_prereq() {
   sudo apt-get install -y libncurses5-dev libncursesw5-dev
   sudo apt-get install -y jq
   sudo apt-get install -y curl
-  install_distro_xclip
 }
 
 
@@ -66,6 +65,3 @@ install_distro_nvim() {
     fi
 }
 
-install_distro_xclip() {
-    sudo apt-get install -y xclip xauth
-}

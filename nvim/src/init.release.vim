@@ -353,7 +353,7 @@ hi Visual  guifg=Black guibg=White gui=none
 " colorscheme gruvbox
 " colorscheme tokyonight-moon
 
-
+vnoremap Y y:call SendViaOSC52(getreg('"'))<CR>
 
 let g:fzf_colors =
     \ {
@@ -375,20 +375,11 @@ function! Panetitle()
 endfunction
 
 function! CopyToX11Clipboard()
-    call system('xclip -i -sel clipboard', @y)
-    call system('xclip -i -sel primary', @y)
-    call system('xclip -i -sel secondary', @y)
-endfunction
-
-function! PasteFromX11()
-    let @y = system('xsel', '-o')
-    normal! "ypl
+    call SendViaOSC52(getreg('y'))
 endfunction
 
 function! UpdateX11Clipboard()
-    call system('xclip -i -sel clipboard', @")
-    call system('xclip -i -sel primary', @")
-    call system('xclip -i -sel secondary', @")
+    call SendViaOSC52(getreg('"'))
 endfunction
 
 augroup clipboard
@@ -649,7 +640,7 @@ augroup my_tmux
     autocmd VimEnter * nested call SetGuttentagsEnable()
     autocmd VimResized * : call UpdateAirlineFileneames()
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
-    nnoremap <silent> <leader>p :call PasteFromX11() <CR>
+    "nnoremap <silent> <leader>p :call PasteFromX11() <CR>
     noremap <silent> <RightMouse> :Maps<CR>
     "execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
     nnoremap z= :call FzfSpell()<CR>

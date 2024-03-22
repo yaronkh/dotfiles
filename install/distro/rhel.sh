@@ -9,7 +9,6 @@ install_tmux_compilation_prereq() {
   sudo yum install -y ncurses-devel
   sudo yum install -y jq
   sudo yum install -y curl
-  install_distro_xclip
 }
 
 install_distro_ffi() {
@@ -84,16 +83,3 @@ install_distro_nvim() {
         ) || exit 255
     fi
 }
-
-install_distro_xclip() (
-    sudo yum install -y libXmu-devel xauth
-    [ -d xclip ] && rm -rf xclip
-    git clone https://github.com/astrand/xclip.git
-    pushd xclip
-    ./bootstrap
-    ./configure
-    make
-    sudo make install
-    popd
-)
-

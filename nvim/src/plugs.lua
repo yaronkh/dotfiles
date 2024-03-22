@@ -139,6 +139,9 @@ packer.startup(function(use)
     -- A Vim plugin which shows a git diff in the sign column
     use 'airblade/vim-gitgutter'
 
+    -- vim osc52 support (copy/paste)
+    use 'ShikChen/osc52.vim'
+
     --  This plugin causes all trailing whitespace characters to be highlighted.
     -- use 'ntpeters/vim-better-whitespace'
 

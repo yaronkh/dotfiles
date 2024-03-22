@@ -66,8 +66,6 @@ You will need to install tmux on your remote machine
 1. After installing tmux, copy my tmux configuration file:
  `cp ~/dotfiles/tmux.conf ~/.tmux.conf`
 
-1. make sure that you have xclip on the station that runs tmux.
-
 1. In order to use my script (``CTRL-b` `` `CTRL-bv` and `CTRL-bm`) make sure that you have python3.x and pstree.
  you can use yum to install those utilities
 
