@@ -165,35 +165,60 @@ local DEFAULT_SETTINGS = {
 }
 require("mason").setup(DEFAULT_SETTINGS)
 require("mason-lspconfig").setup()
+dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/telescope.lua")
 require("which-key").setup {}
 
-local lga_actions = require("telescope-live-grep-args.actions")
-
-require('telescope').setup {
-    extensions = {
-        ast_grep = {
-            command = {
-                "sg",
-                "--json=stream",
-            }, -- must have --json=stream
-            grep_open_files = false, -- search in opened files
-            lang = nil, -- string value, specify language for ast-grep `nil` for default
-        },
-        live_grep_args = {
-            auto_quoting = true, -- enable/disable auto-quoting
-            -- define mappings, e.g.
-            mappings = { -- extend mappings
-            i = {
-                ["<C-k>"] = lga_actions.quote_prompt(),
-                ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-            },
-        },
-        -- ... also accepts theme settings, for example:
-        -- theme = "dropdown", -- use dropdown theme
-        -- theme = { }, -- use own theme spec
-        -- layout_config = { mirror=true }, -- mirror preview pane
-       },
-    }
+require'nvim-web-devicons'.setup {
+ -- your personnal icons can go here (to override)
+ -- you can specify color or cterm_color instead of specifying both of them
+ -- DevIcon will be appended to `name`
+ override = {
+  zsh = {
+    icon = "",
+    color = "#428850",
+    cterm_color = "65",
+    name = "Zsh"
+  }
+ };
+ -- globally enable different highlight colors per icon (default to true)
+ -- if set to false all icons will have the default icon's color
+ color_icons = true;
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+ -- globally enable "strict" selection of icons - icon will be looked up in
+ -- different tables, first by filename, and if not found by extension; this
+ -- prevents cases when file doesn't have any extension but still gets some icon
+ -- because its name happened to match some extension (default to false)
+ strict = true;
+ -- same as `override` but specifically for overrides by filename
+ -- takes effect when `strict` is true
+ override_by_filename = {
+  [".gitignore"] = {
+    icon = "",
+    color = "#f1502f",
+    name = "Gitignore"
+  }
+ };
+ -- same as `override` but specifically for overrides by extension
+ -- takes effect when `strict` is true
+ override_by_extension = {
+  ["log"] = {
+    icon = "",
+    color = "#81e043",
+    name = "Log"
+  }
+ };
+ -- same as `override` but specifically for operating system
+ -- takes effect when `strict` is true
+ override_by_operating_system = {
+  ["apple"] = {
+    icon = "",
+    color = "#A2AAAD",
+    cterm_color = "248",
+    name = "Apple",
+  },
+ };
 }
 
 -- Global mappings.
@@ -227,17 +252,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
             c = { "<cmd>lua vim.lsp.buf.references()<CR>", "find all references" },
             r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "rename"}
         }
-        keymap_f = {
-            name = "code actions",
-            SPC = {
-                name = "even more actions",
-                c = {
-                    name = "code",
-                    a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "code actions"},
-                }
-            }
+        local keymap_f = {
+                name = "telescope features",
+                -- f = {"<cmd> lua builtin.find_files<CR>", "Find Files"}
         }
         whichkey.register(keymap_g, { buffer = ev.buf, prefix = "g" })
+        whichkey.register(keymap_f, { buffer = ev.buf, prefix = "f" })
 
         -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -258,6 +278,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end, opts)
     end,
 })
+
+require('telescope')
 
 
 -- some code t hat verifies that all packages (server side) are installed by mason

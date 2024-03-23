@@ -35,7 +35,7 @@ install_distro_zlib() {
 install_distro_linters() {
 #    sudo apt-get update && sudo apt-get install -y yarn
 #    curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
-    sudo apt-get install -y aptitude global silversearcher-ag || exit 255
+    sudo apt-get install -y aptitude global silversearcher-ag ripgrep fd-find || exit 255
 }
 
 install_distro_nvim() {

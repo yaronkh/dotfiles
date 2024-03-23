@@ -207,10 +207,14 @@ packer.startup(function(use)
     --  Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more
     use 'tpope/vim-surround'
 
+    use "stevearc/dressing.nvim"
+
     --  maven syntax highlight (for pom.xml files)
     use 'NLKNguyen/vim-maven-syntax'
 
     use 'folke/tokyonight.nvim'
+
+    use "kevinhwang91/nvim-bqf"
 
     use {
         "williamboman/mason.nvim",
@@ -227,12 +231,20 @@ packer.startup(function(use)
         run = ':TSUpdate'
     }
 
+    use 'nvim-tree/nvim-web-devicons'
+    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+    use {'nvim-telescope/telescope-ui-select.nvim' }
+
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.5',
         requires = {
             {'nvim-lua/plenary.nvim'},
             { "nvim-telescope/telescope-live-grep-args.nvim" },
             {"Marskey/telescope-sg"},
+            {"debugloop/telescope-undo.nvim"},
+            {"AckslD/nvim-neoclip.lua"},
+            {"aaronhallaert/advanced-git-search.nvim"},
+            {"folke/noice.nvim"},
         },
         config = function()
             require("telescope").load_extension("live_grep_args")

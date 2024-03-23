@@ -40,6 +40,7 @@ verify_prereq() {
 
 install_distro_linters() {
     # install ag (silver-searcher) from source
+    sudo yum install -y ripgrep fd-find
     if ! which ag > /dev/null
     then
     (

@@ -7,12 +7,14 @@ let g:update_clangd_fn = stdpath('config') . '/clangd_ver_ok'
 
 augroup ymason
     au!
+    "autocmd VimEnter * source ~/dotfiles/nvim/src/telescope.lua
     autocmd VimEnter * source ~/dotfiles/nvim/lua/init.lua
 "    autocmd VimEnter * lua require("mason").setup()
 augroup End
 
 
 source ~/dotfiles/nvim/src/plugs.lua
+
 
 " Generation Parameters
 "let g:ctagsOptions = '--languages=C,C++,Vim,Python,Make,Sh,JavaScript,java --c++-kinds=+p --fields=+iaS --extra=+q --sort=foldcase --tag-relative'
@@ -239,7 +241,8 @@ function MyUpdateRemotePlugins()
     call remote#host#UpdateRemotePlugins()
 endfunction
 
-nnoremap <C-p> :call DoShowFiles()<CR>
+"nnoremap <C-p> :call DoShowFiles()<CR>
+nnoremap <C-p> :Telescope find_files<CR>
 " nnoremap <C-n> :Tags<CR>
 
 "setting the default browser
@@ -688,58 +691,6 @@ augroup brazil
 
 augroup end
 
-function! BrazilGetAllTests()
-    let res = []
-    let all_files = split(globpath("test/*", "test_*"), "\n") + split(globpath("test_integ", "test_*"), "\n")
-    let fnd = 0
-    for f in all_files
-        let tests = systemlist("grep -E '^def +test_' " . f  . " | sed 's/^ *def *test_/test_/' | sed 's/\(.*//'")
-        for test in tests
-            let test_str = f . "::" . test
-            if test_str != g:brazilLastTest
-                let res = add(res, test_str)
-            else
-                let fnd = 1
-            endif
-        endfor
-    endfor
-    if g:brazilLastTest != "" && fnd == 1
-        let res = add(res, g:brazilLastTest)
-    endif
-    let res = reverse(res)
-    return res
-endfunction
-
-function! BrazilRunTest()
-    let y = BrazilGetAllTests()
-    let g:brazilTesting = 1
-    let l = len(y) + 2
-    if l > 15
-        let l = 15
-    endif
-    call fzf#run({'source': y, 'sink': function('BrazilTest'), 'down': l})
-endfunction
-
-function! BrazilTestFinished()
-    if g:brazilTesting != 0
-        let g:brazilTesting = 0
-        "let v:errorformat = g:brazilSavedEf
-    endif
-endfunction
-
-function! BrazilBuild()
-    copen
-    call BrazilSetErrFormat()
-    :wincmd J
-    :AsyncRun brazil-build
-endfunction
-
-function! BrazilBuildRelease()
-    copen
-    call BrazilSetErrFormat()
-    exec ":AsyncRun bash -c \"brazil-build release 2>&1 | " . GetSourceFile("vimmux/replace_top_dir.sh") . "\""
-endfunction
-
 function! RunMyPy()
     let fname = expand('%:p')
     copen
@@ -752,19 +703,6 @@ function! BrazilSetErrFormat()
     :set errorformat+=\%*\\sFile\ \"%f\"\\,\ line\ %l,
     ":set errorformat+=%f:%l%.%#
     :set errorformat+=%f:%l%m
-endfunction
-
-function! BrazilTest(testName)
-    copen
-    let g:brazilSavedEf = &errorformat
-    "the next errorformat match python interpreter error
-    ":set errorformat=\ %#File\ \"%f\"\\,\ line\ %l\\,%m
-    call BrazilSetErrFormat()
-    "the next errorformat matches python traback printout
-
-    let g:brazilLastTest = a:testName
-    exec ":AsyncRun GEVENT_SUPPORT=True brazil-test-exec pytest -s -vv " . a:testName
-    "test/test_orchestration_component.py::test_get_update_replication_info
 endfunction
 
 function! BrazilRecuriseBuild()
@@ -821,14 +759,14 @@ function! CheckUpdate(timer)
     call timer_start(1000,'CheckUpdate')
    endfunction
 
-function! SelectBuffer()
-    let g:fzf_preview_window = 'right:50%'
-    execute ":Buffers"
-endfunction
+" function! SelectBuffer()
+"     let g:fzf_preview_window = 'right:50%'
+"     execute ":Buffers"
+" endfunction
 
 "cool buffer switcher"
 "nnoremap <silent> <Leader><Enter> :FzfPreviewBuffers<CR>
-nnoremap <silent> <Leader><Enter> :call SelectBuffer()<CR>
+"nnoremap <silent> <Leader><Enter> :call SelectBuffer()<CR>
 nnoremap <silent> <C-g>s :FzfPreviewGitStatus<CR>
 
 " Jump to tab: <Leader>t
@@ -897,11 +835,24 @@ function! Btags_sink(line)
     execute split(a:line, "\t")[2]
 endfunction
 
+"function! Btags()
+"    try
+"        call fzf#run({
+"                    \ 'source':  Btags_source(),
+"                    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+"                    \ 'down':    '40%',
+"                    \ 'sink':    function('Btags_sink')})
+"    catch
+"        echohl WarningMsg
+"        echom v:exception
+"        echohl None
+"    endtry
+"endfunction
+
 function! Btags()
     try
         call fzf#run({
                     \ 'source':  Btags_source(),
-                    \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
                     \ 'down':    '40%',
                     \ 'sink':    function('Btags_sink')})
     catch
@@ -913,50 +864,6 @@ endfunction
 
 command! BTags call Btags()
 nnoremap <silent> <F3> :call Btags()<CR>
-
-augroup AgGroup
-    nnoremap <C-A> :call AgWord()<CR>
-    vnoremap <C-A> :call AgVisual()<CR>
-augroup end
-function! Agg(t)
-    copen
-    exec ":AsyncRun ag " . shellescap(a:t)
-endfunction
-
-function AgWord()
-    if g:asyncrun_status == 'running'
-        :AsyncStop
-        throw "job is being executed in background, wait a second and try again"
-    endif
-    let wordUnderCursor = expand("<cword>")
-    call AgThat(wordUnderCursor)
-endfunction
-
-function AgThat(t)
-    :set errorformat=%f:%l:%m
-    copen
-    let l:pr = GetProjectRoot()
-    let cmd = ":AsyncRun ag " . a:t . " " . l:pr
-    "let cmd = ":AsyncRun git grep -n \"" . a:t . "\" -- " . l:pr
-    exec cmd
-endfunction
-
-function AgVisual()
-    if g:asyncrun_status == 'running'
-        :AsyncStop
-        throw "job is being executed in background, wait a second and try again"
-    endif
-    let line_start = getpos("'<")[1]
-    let line_end = getpos("'>")[1]
-    if line_start != line_end
-        throw "multi line search is not supported"
-    endif
-    let searchWord = s:get_visual_selection()
-    if searchWord == ""
-        return
-    endif
-    call AgThat(searchWord)
-endfunction
 
 function! s:get_visual_selection()
     " Why is this not a built-in Vim script function?!
@@ -977,33 +884,6 @@ function! Mgrep(t)
 endfunction
 
 command! -nargs=* Mg call Mgrep(<q-args>)
-"
-"narrow results with ag
-function! s:ag_to_qf(line)
-    let parts = split(a:line, ':')
-    return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
-                \ 'text': join(parts[3:], ':')}
-endfunction
-
-function! s:ag_handler(lines)
-    if len(a:lines) < 2 | return | endif
-
-    let cmd = get({'ctrl-x': 'split',
-                \ 'ctrl-v': 'vertical split',
-                \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-    let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
-
-    let first = list[0]
-    execute cmd escape(first.filename, ' %#\')
-    execute first.lnum
-    execute 'normal!' first.col.'|zz'
-
-    if len(list) > 1
-        call setqflist(list)
-        copen
-        wincmd p
-    endif
-endfunction
 
 function! s:get_visual_selection()
     let [line_start, column_start] = getpos("'<")[1:2]
@@ -1017,44 +897,6 @@ function! s:get_visual_selection()
     return join(lines, "\n")
 endfunction
 
-
-function! Uty(text)
-        let l:gtext = a:text
-        if empty(a:text)
-            let l:gtext = s:get_visual_selection()
-            echom l:gtext
-        endif
-        call fzf#run({
-            \ 'source':  printf('ag --nogroup --column --color "%s"',
-            \                   escape(empty(l:gtext) ? '^(?=.)' : l:gtext, '"\')),
-            \ 'sink*':    function('s:ag_handler'),
-            \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-            \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-            \            '--color hl:68,hl+:110',
-            \ 'down':    '50%'
-            \ })
-endfunction
-
-" command! -nargs=* -range Ag call fzf#run({
-"             \ 'source':  printf('ag --nogroup --column --color "%s"',
-"             \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-"             \ 'sink*':    function('<sid>ag_handler'),
-"             \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-"             \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
-"             \            '--color hl:68,hl+:110',
-"             \ 'down':    '50%'
-"             \ })
-
-
-command! -range -nargs=* Ag call Uty(<q-args>)
-"detectIndent stuff
-"==================
-" autocmd BufReadPost * :DetectIndent
-
-"Options:
-
-"To prefer 'expandtab' to 'noexpandtab' when no detection is possible:
-"let g:detectindent_preferred_expandtab = 1
 
 "To specify a preferred indent level when no detection is possible:
 let g:detectindent_preferred_indent = 4
