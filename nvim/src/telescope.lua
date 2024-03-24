@@ -1,6 +1,26 @@
 local builtin = require('telescope.builtin')
+
+function vim.getVisualSelection()
+	vim.cmd('noau normal! "vy"')
+	local text = vim.fn.getreg('v')
+	vim.fn.setreg('v', {})
+
+	text = string.gsub(text, "\n", "")
+	if #text > 0 then
+		return text
+	else
+		return ''
+	end
+end
+
 vim.keymap.set('n', 'ff', builtin.find_files, { desc = "Find Files"})
 vim.keymap.set('n', 'fg', "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = "Live Grep"})
+vim.keymap.set('v', 'fg',
+    function()
+            local text = vim.getVisualSelection()
+            builtin.live_grep({ default_text = text }) end,
+    { noremap = true, silent = true, desc = "Live Grep visual selected" }
+)
 vim.keymap.set('n', 'fc', '<cmd>lua require("telescope.builtin").live_grep({ glob_pattern = "!{spec,test}"})<CR>', { desc = "Live Grep Code"})
 vim.keymap.set('n', 'fb', builtin.buffers, { desc = "Find Buffers"})
 vim.keymap.set('n', '<leader><enter>', builtin.buffers, { desc = "Find Buffers"})
