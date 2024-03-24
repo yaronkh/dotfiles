@@ -166,6 +166,7 @@ local DEFAULT_SETTINGS = {
 require("mason").setup(DEFAULT_SETTINGS)
 require("mason-lspconfig").setup()
 dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/telescope.lua")
+dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/treesitter.lua")
 require("which-key").setup {}
 
 require'nvim-web-devicons'.setup {

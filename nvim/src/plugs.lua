@@ -70,12 +70,20 @@ packer.startup(function(use)
     --  enable tag search in all opened buffers
     use 'vim-scripts/taglist.vim'
 
+    use 'preservim/nerdtree'
+
+    use 'ryanoasis/vim-devicons'
+
+    use 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+    use 'Xuyuanp/nerdtree-git-plugin'
+
     --  file system explorer for vim editor
-    use 'scrooloose/nerdtree'
+    -- use 'scrooloose/nerdtree'
 
     --  manages nerdtree and taglist in single system ui
     --  presee C-L to toggle that view
-    use 'wesleyche/Trinity'
+    --  use 'wesleyche/Trinity'
 
     --  cpp completions with ctags database (created in gutentags and
     --  gutentags_plus)
