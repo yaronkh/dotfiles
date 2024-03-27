@@ -43,6 +43,9 @@ foreground = "0xeaeaea"
 # TERM = "xterm-256color"
 TERM = "tmux"
 
+[window]
+decorations = "None"
+
 [font]
 size = 11.0
 
