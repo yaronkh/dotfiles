@@ -234,6 +234,15 @@ packer.startup(function(use)
     end
     use "nvim-lua/plenary.nvim"
 
+    -- debugger interface
+    -- use "mfussenegger/nvim-dap.git"
+    use { "rcarriga/nvim-dap-ui",
+        requires = {
+                "mfussenegger/nvim-dap",
+                "nvim-neotest/nvim-nio",
+        }
+    }
+
      use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate'
@@ -242,6 +251,7 @@ packer.startup(function(use)
     use 'nvim-tree/nvim-web-devicons'
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
     use {'nvim-telescope/telescope-ui-select.nvim' }
+    use {'folke/trouble.nvim'}
 
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.5',
@@ -253,6 +263,7 @@ packer.startup(function(use)
             {"AckslD/nvim-neoclip.lua"},
             {"aaronhallaert/advanced-git-search.nvim"},
             {"folke/noice.nvim"},
+            {"fcying/telescope-ctags-outline.nvim"},
         },
         config = function()
             require("telescope").load_extension("live_grep_args")

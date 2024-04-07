@@ -9,6 +9,7 @@ augroup ymason
     au!
     "autocmd VimEnter * source ~/dotfiles/nvim/src/telescope.lua
     autocmd VimEnter * source ~/dotfiles/nvim/lua/init.lua
+    autocmd VimEnter * :TSEnable cpp<CR>
 "    autocmd VimEnter * lua require("mason").setup()
 augroup End
 
@@ -33,36 +34,38 @@ function! GetBufferDirectory()
 endfunction
 
 function! GetProjectRoot()
-    return ProjectRootGuess(getcwd())
+    let l:pr = getcwd()
+    return l:pr
+    "return ProjectRootGuess(getcwd())
 endfunction
 
 " Generate All
-function! ZGenerateAll()
-    call system('touch ' . GetLastSessionFn())
-    let l:pr = GetProjectRoot()
-    let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
-    echom l:cscope_files
-    copen
-    exec ":AsyncRun cd '" . l:pr . "' && ag -l --all-types > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
-    let l:vim_things = l:pr . '/.vim'
-    if ! isdirectory(l:vim_things)
-        call mkdir(l:pr . '/.vim')
-    endif
-    let l:coc_settings_local_config = l:vim_things . '/coc-settings.json'
-    if ! filereadable(l:coc_settings_local_config)
-        let l:lines = []
-        call add(l:lines, '{')
-        call add(l:lines, '"clangd.arguments" : ["-compile-commands-dir=' . l:vim_things . '"]')
-        call add(l:lines, '}')
-        call writefile(l:lines, l:coc_settings_local_config)
-    endif
-    let l:compile_flags_fn = 'compile_flags.txt'
-    let l:compile_flags = l:vim_things . '/' . l:compile_flags_fn
-    if ! filereadable(l:compile_flags)
-        call system('/bin/cp ' . g:HomePath . '/dotfiles/etc_clang/' . l:compile_flags_fn . ' ' . l:compile_flags)
-    endif
-
-endfunction
+" function! ZGenerateAll()
+"     call system('touch ' . GetLastSessionFn())
+"     let l:pr = GetProjectRoot()
+"     let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
+"     echom l:cscope_files
+"     copen
+"     exec ":AsyncRun cd '" . l:pr . "' && ag -l --all-types > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
+"     let l:vim_things = l:pr . '/.vim'
+"     if ! isdirectory(l:vim_things)
+"         call mkdir(l:pr . '/.vim')
+"     endif
+"     let l:coc_settings_local_config = l:vim_things . '/coc-settings.json'
+"     if ! filereadable(l:coc_settings_local_config)
+"         let l:lines = []
+"         call add(l:lines, '{')
+"         call add(l:lines, '"clangd.arguments" : ["-compile-commands-dir=' . l:vim_things . '"]')
+"         call add(l:lines, '}')
+"         call writefile(l:lines, l:coc_settings_local_config)
+"     endif
+"     let l:compile_flags_fn = 'compile_flags.txt'
+"     let l:compile_flags = l:vim_things . '/' . l:compile_flags_fn
+"     if ! filereadable(l:compile_flags)
+"         call system('/bin/cp ' . g:HomePath . '/dotfiles/etc_clang/' . l:compile_flags_fn . ' ' . l:compile_flags)
+"     endif
+"
+" endfunction
 
 let g:projects = {}
 
@@ -436,13 +439,16 @@ endfunction
 
 let g:do_restore_last_session = 1
 let g:do_save_session = 1
+if argc() > 0
+    let g:do_save_session = 0
+endif
 
 function! GetLastSessionFn()
-    return gutentags#get_cachefile(gutentags#get_project_root($PWD), 'LASTSESSION.vim')
+    return gutentags#get_cachefile(getcwd(), 'LASTSESSION.vim')
 endfunction
 
 function! IsProj()
-    return isdirectory(GetProjectRoot() . '/.vim')
+    return isdirectory(GetProjectRoot())
 endfunction
 
 function! SetGuttentagsEnable()
@@ -499,9 +505,6 @@ let g:airline_base16_improved_contrast = 1
 
 function! RestoreSess()
     try
-        if argc() > 0
-            let g:do_save_session = 0
-        endif
         if g:do_restore_last_session > 0 && argc() == 0 && IsProj() && filereadable(GetLastSessionFn())
              exe 'source ' . GetLastSessionFn()
         endif
@@ -902,25 +905,3 @@ endfunction
 let g:detectindent_preferred_indent = 4
 let g:detectindent_max_lines_to_analyse = 10
 let g:detectindent_preferred_when_mixed = 3
-
-"google compilation"
-function! MakeRoot()
-    copen
-    exec ":AsyncRun bash -ci \"cd $ANDROID_BUILD_TOP; m -j 16\""
-endfunction
-
-function! MM()
-    copen
-    exec "AsyncRun bash -ci \"cd $VIM_FILEPATH; mm -j\""
-endfunction
-
-function! MakeBootImage()
-    copen
-    exec "AsyncRun bash -ci \"croot; make bootimage -j\""
-endfunction
-
-augroup my_tmux
-    nnoremap <Leader>m :call MakeRoot()<CR>
-    nnoremap <Leader>mm :call MM()<CR>
-    nnoremap <Leader>mb :call MakeBootImage()<CR>
-augroup end

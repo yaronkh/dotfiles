@@ -1,4 +1,5 @@
 local builtin = require('telescope.builtin')
+local trouble = require("trouble.providers.telescope")
 
 function vim.getVisualSelection()
 	vim.cmd('noau normal! "vy"')
@@ -13,22 +14,28 @@ function vim.getVisualSelection()
 	end
 end
 
-vim.keymap.set('n', 'ff', builtin.find_files, { desc = "Find Files"})
-vim.keymap.set('n', 'fg', "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = "Live Grep"})
-vim.keymap.set('v', 'fg',
+vim.keymap.set('n', ',f', builtin.find_files, { desc = "Find Files"})
+vim.keymap.set('n', ',g', "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = "Live Grep"})
+vim.keymap.set('v', ',g',
     function()
             local text = vim.getVisualSelection()
             builtin.live_grep({ default_text = text }) end,
     { noremap = true, silent = true, desc = "Live Grep visual selected" }
 )
-vim.keymap.set('n', 'fc', '<cmd>lua require("telescope.builtin").live_grep({ glob_pattern = "!{spec,test}"})<CR>', { desc = "Live Grep Code"})
-vim.keymap.set('n', 'fb', builtin.buffers, { desc = "Find Buffers"})
+vim.keymap.set('n', ',c', '<cmd>lua require("telescope.builtin").live_grep({ glob_pattern = "!{spec,test}"})<CR>', { desc = "Live Grep Code"})
+vim.keymap.set('n', ',b', builtin.buffers, { desc = "Find Buffers"})
 vim.keymap.set('n', '<leader><enter>', builtin.buffers, { desc = "Find Buffers"})
-vim.keymap.set('n', 'fh', builtin.help_tags, { desc = "Find Help Tags"})
-vim.keymap.set('n', 'fs', builtin.lsp_document_symbols, { desc = "Find Symbols"})
-vim.keymap.set('n', 'fi', '<cmd>AdvancedGitSearch<CR>', { desc = "AdvancedGitSearch"})
-vim.keymap.set('n', 'fo', builtin.oldfiles, { desc = "Find Old Files"})
-vim.keymap.set('n', 'fw', builtin.grep_string, { desc = "Find Word under Cursor"})
+vim.keymap.set('n', ',<enter>', builtin.buffers, { desc = "Find Buffers"})
+vim.keymap.set('n', ',h', builtin.help_tags, { desc = "Find Help Tags"})
+vim.keymap.set('n', ',s', builtin.lsp_document_symbols, { desc = "Find Symbols"})
+vim.keymap.set('n', ',v', builtin.lsp_dynamic_workspace_symbols, { desc = "Symbols from all included"})
+vim.keymap.set('n', ',d', '<cmd>Telescope ctags_outline<CR>', { desc = "Show buffer symbols with ctags"})
+vim.keymap.set('n', ',x', '<cmd>Telescope tags<CR>', { desc = "Show symbols from all files recursively"})
+vim.keymap.set('n', ',i', '<cmd>AdvancedGitSearch<CR>', { desc = "AdvancedGitSearch"})
+vim.keymap.set('n', ',o', builtin.oldfiles, { desc = "Find Old Files"})
+vim.keymap.set('n', ',w', builtin.grep_string, { desc = "Find Word under Cursor"})
+vim.keymap.set('n', ',q', '<cmd>Telescope quickfix<CR>', { desc = "move quickfix content to telescope"})
+vim.keymap.set('n', ',a', '<cmd>Telescope quickfixhistory<CR>', { desc = "show quickfix history in telescope"})
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = "Search Git Commits"})
 vim.keymap.set('n', '<leader>gb', builtin.git_bcommits, { desc = "Search Git Commits for Buffer"})
 vim.keymap.set('n', '<leader>/', function()
