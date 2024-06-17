@@ -131,7 +131,16 @@ nnoremap <C-w>e :TrinityUpdateWindow<CR>
 let g:NERDTreeWinSize = 23
 let g:NERDTreeAutoCenter = 0
 let g:tagbar_width=23
-nnoremap <C-L> :NERDTreeToggle<CR>:wincmd w<CR>:TagbarToggle<CR>
+
+function! ToggleSideHelps()
+        "call NERDTreeCWD()
+        execute "NERDTreeFind"
+        execute "wincmd w"
+        call tagbar#ToggleWindow()
+        "TagbarToggle
+endfunction
+"nnoremap <C-L> :NERDTreeToggle<CR>:wincmd w<CR>:TagbarToggle<CR>
+nnoremap <C-L> :call ToggleSideHelps()<CR>
 
 
 function! PreparePythonAle()
@@ -339,14 +348,26 @@ set noerrorbells visualbell t_vb=
 "enable spell checking
 set spell
 
+function! ShowSynGroup()
+        echo synIDattr(synID(line("."), col("."), 1), "name")
+endfunction
+
 " Gruvbox
 set background=dark
-" let g:gruvbox_contrast_dark = 'high'
-" let g:gruvbox_contrast_dark="hard"
+let g:gruvbox_contrast_dark = 'high'
+let g:gruvbox_contrast_dark="hard"
 "colorscheme dracula
 "colorscheme pablo
-colorscheme koehler
-hi WinSeparator guifg=white guibg=black
+"colorscheme koehler
+"colorscheme desert
+" colorscheme seoul256
+colorscheme gruvbox
+
+"will ovveride gruvbox shitty gray background
+highlight Normal guibg=black guifg=white
+
+"hi WinSeparator guifg=white guibg=black
+"hi! link Statement CType
 "hi SignColumn guibg=NONE
 "hi NotifyInfoBorder guifg=white
 "hi StatusLineNC guibg=white guifg=white
@@ -355,7 +376,7 @@ hi WinSeparator guifg=white guibg=black
 " hi VertSplit guifg=white
 " hi StatusLineNC	 guifg=white
 "hi MsgSeparator guifg=white
-hi Visual  guifg=Black guibg=White gui=none
+"hi Visual  guifg=Black guibg=White gui=none
 " colorscheme gruvbox
 " colorscheme tokyonight-moon
 

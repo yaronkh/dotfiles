@@ -4,6 +4,8 @@ case $- in
       *) return;;
 esac
 
+export TERM=xterm-256color
+
 export PATH=/usr/local/bin:$PATH
 
 if [[ -z "$TMUX" ]]; then
@@ -15,6 +17,10 @@ if [[ -z "$TMUX" ]]; then
 fi
 
 #option to set per-pane variable
+
+function fzf {
+    ~/.fzf/bin/fzf --preview "batcat --color=always --style=numbers --line-range=:500 {}"
+}
 
 function classic_pylint {
     /home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/scripts/dev/.env-pylint/bin/python2 ./scripts/dev/.env-pylint/bin/pylint -j 0 --rcfile /home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/.pylintrc --output-format=colorized $1
@@ -229,3 +235,4 @@ alias brazil-octane='/apollo/env/OctaneBrazilTools/bin/brazil-octane'
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+source ~/dotfiles/local/nvim.bash

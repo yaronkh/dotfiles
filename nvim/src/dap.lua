@@ -28,9 +28,9 @@ vim.keymap.set('n', '<F5>', function() dap.continue() end, { desc = "debug conti
 vim.keymap.set('n', '<F10>', function() dap.step_over() end, { desc = "debug step over"})
 vim.keymap.set('n', '<Leader><F11>', function() dap.step_into() end, { desc = "debug step into"})
 vim.keymap.set('n', '<Leader><F12>', function() dap.step_out() end, { desc = "debug step out"})
-vim.keymap.set('n', '<Leader>b', function() dap.toggle_breakpoint() end, { desc = "debug toggle breakpoint"})
+-- vim.keymap.set('n', '<Leader>b', function() dap.toggle_breakpoint() end, { desc = "debug toggle breakpoint"})
 vim.keymap.set('n', '<Leader>db', function() dap.toggle_breakpoint() end, { desc = "debug toggle breakpoint"})
-vim.keymap.set('n', '<Leader>B', function() dap.set_breakpoint() end, { desc = "debug set breakpoint"})
+-- vim.keymap.set('n', '<Leader>B', function() dap.set_breakpoint() end, { desc = "debug set breakpoint"})
 vim.keymap.set('n', '<Leader>dB', function() dap.set_breakpoint() end, { desc = "debug set breakpoint"})
 vim.keymap.set('n', '<Leader>lp', function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end, { desc = "debug set log breakpoint"})
 vim.keymap.set('n', '<Leader>dr', function() dap.repl.open() end, { desc = "debug open repl"})
@@ -167,5 +167,18 @@ dap.configurations.c = {
 
 --codelldb manual: https://github.com/vadimcn/codelldb/blob/master/MANUAL.md
 
-vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakpoint',
+    {
+        text='', -- nerdfonts icon here
+        texthl='DapBreakpointSymbol',
+        linehl='DapBreakpoint',
+        numhl='DapBreakpoint'
+    })
+vim.fn.sign_define('DapStopped',
+    {
+        text='🔴', -- nerdfonts icon here
+        texthl='DapStoppedSymbol',
+        linehl='DapBreakpoint',
+        numhl='DapBreakpoint'
+    })
 require("dapui").setup()

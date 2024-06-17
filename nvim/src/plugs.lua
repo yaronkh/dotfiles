@@ -47,7 +47,8 @@ packer.startup(function(use)
             }
         end
     }
-    use 'rstacruz/vim-closer'
+    -- doorboy - doorboy.vim is a smart plugin that serves you around brackets((){}[]) and quotations('`").
+    use 'itmammoth/doorboy.vim'
     use 'wbthomason/packer.nvim'
     use 'WhoIsSethDaniel/mason-tool-installer.nvim'
     -- window manipulation plugin,
@@ -102,10 +103,9 @@ packer.startup(function(use)
     --  expands vim-gutentags so files from multiple projects
     --  use 'skywind3000/gutentags_plus'
 
-    use {
-        'junegunn/fzf.vim',
-        requires = { 'junegunn/fzf', run = ':call fzf#install()' }
-    }
+     use {
+         'junegunn/fzf.vim', run = ':call fzf#install()'
+     }
 
     --  open the corresponding h files in vertical split, just run :AV
     use 'vim-scripts/a.vim'
@@ -204,6 +204,8 @@ packer.startup(function(use)
     --  aws smithy language syntax highlight
     use 'jasdel/vim-smithy'
 
+    use 'junegunn/seoul256.vim'
+
     use { 'Shougo/vimproc.vim', run = 'make'}
 
     --  Vim plugin for insert mode completion of words in adjacent tmux panes
@@ -223,6 +225,8 @@ packer.startup(function(use)
     use 'folke/tokyonight.nvim'
 
     use "kevinhwang91/nvim-bqf"
+
+    use({'glepnir/nerdicons.nvim', cmd = 'NerdIcons', config = function() require('nerdicons').setup({}) end})
 
     use {
         "williamboman/mason.nvim",
