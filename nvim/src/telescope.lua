@@ -1,5 +1,4 @@
 local builtin = require('telescope.builtin')
-local trouble = require("trouble.providers.telescope")
 
 function vim.getVisualSelection()
 	vim.cmd('noau normal! "vy"')
@@ -31,6 +30,7 @@ vim.keymap.set('n', ',s', builtin.lsp_document_symbols, { desc = "Find Symbols"}
 vim.keymap.set('n', ',v', builtin.lsp_dynamic_workspace_symbols, { desc = "Symbols from all included"})
 vim.keymap.set('n', ',d', '<cmd>Telescope ctags_outline<CR>', { desc = "Show buffer symbols with ctags"})
 vim.keymap.set('n', ',x', '<cmd>Telescope tags<CR>', { desc = "Show symbols from all files recursively"})
+vim.keymap.set('n', ',e', '<cmd>Telescope diagnostics<CR>', { desc = "Show all code diagnostics problem"})
 vim.keymap.set('n', ',i', '<cmd>AdvancedGitSearch<CR>', { desc = "AdvancedGitSearch"})
 vim.keymap.set('n', ',o', builtin.oldfiles, { desc = "Find Old Files"})
 vim.keymap.set('n', ',w', builtin.grep_string, { desc = "Find Word under Cursor"})

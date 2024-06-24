@@ -3,6 +3,8 @@
 -Ispdk.mellanox/dpdk/lib/eal/include
 -Ispdk.mellanox/dpdk/build/include
 -Ispdk.mellanox/dpdk/config
+-I/usr/./lib/gcc/x86_64-linux-gnu/12/include
 -Iapp
 -Iapp/framework
 -Iapp/common
+-ferror-limit=0

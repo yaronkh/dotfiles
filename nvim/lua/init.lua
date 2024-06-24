@@ -166,8 +166,11 @@ local DEFAULT_SETTINGS = {
 require("mason").setup(DEFAULT_SETTINGS)
 require("mason-lspconfig").setup()
 dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/telescope.lua")
+dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/clangd.lua")
+dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/codeactions.lua")
 dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/treesitter.lua")
 dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/dap.lua")
+dofile(os.getenv( "HOME" ) .. "/dotfiles/nvim/src/trouble.lua")
 
 require("which-key").setup {
   plugins = {

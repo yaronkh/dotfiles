@@ -199,6 +199,13 @@ packer.startup(function(use)
     use 'vimwiki/vimwiki'
 
     --  adds cpp competions with clang ide assistant (great)
+    --
+    use {
+            "aznhe21/actions-preview.nvim",
+            config = function()
+                    vim.keymap.set({ "v", "n" }, "ge", require("actions-preview").code_actions)
+            end,
+    }
     -- use 'justmao945/vim-clang'
 
     --  aws smithy language syntax highlight
@@ -255,7 +262,6 @@ packer.startup(function(use)
     use 'nvim-tree/nvim-web-devicons'
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
     use {'nvim-telescope/telescope-ui-select.nvim' }
-    use {'folke/trouble.nvim'}
 
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.5',

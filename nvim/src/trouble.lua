@@ -1,0 +1,1 @@
+-- vim.api.nvim_buf_set_option('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', {desc = "Show buffer symbols with ctags"})
