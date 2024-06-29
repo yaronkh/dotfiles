@@ -1,0 +1,19 @@
+CompileFlags:
+  Add: [-ferror-limit=0]
+
+Diagnostics:
+  ClangTidy:
+    Add: [ '*']
+    Remove:
+      - google-readability*
+      - altera-unroll-loops
+      - readability-identifier-length
+      - readability-braces-around-statements
+      - readability-isolate-declaration
+      - cppcoreguidelines-init-variables
+      - altera*
+      - hicpp*
+      - bugprone-reserved-identifier
+      - readability-function-cognitive-complexity
+      - performance-no*
+      - llvmlibc-restrict-system-libc-headers

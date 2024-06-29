@@ -1,0 +1,25 @@
+Checks: "*,
+        linuxkernel-*,
+        clang-analyzer*,
+        -google-readability*,
+        -altera-unroll-loops,
+        -readability-identifier-length,
+        -readability-braces-around-statements,
+        -readability-isolate-declaration,
+        -cppcoreguidelines-init-variables,
+        -altera*,
+        -hicpp*,
+        -cert*,
+        -bugprone-reserved-identifier,
+        -readability-function-cognitive-complexity,
+        -performance-no*,
+        -llvmlibc-restrict-system-libc-headers,
+        -cppcoreguidelines*,
+        -bugprone*,
+        -readability*,
+        -misc*,
+        -clang-diagnostic-error,
+"
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     none

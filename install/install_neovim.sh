@@ -47,6 +47,41 @@ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 write_to_shrc 'source ~/dotfiles/local/nvim.bash'
 
+[ -f ~/.config/clangd ] || mkdir -p ~/.config/clangd
+
+(
+    pushd ~/.config/clangd
+    if [ -L config.yaml ] || [ -f config.yaml ]; then
+        mv config.yaml config.yaml.$$
+    fi
+    ln -s ~/dotfiles/nvidia/clangd-conf.yaml config.yaml
+    popd
+)
+(
+    pushd ~
+    if [ -L .clang-tidy ] || [ -f .clang-tidy ]; then
+        mv .clang-tidy .clang-tidy.$$
+    fi
+    ln -s dotfiles/nvidia/clang-tidy .clang-tidy
+    popd
+)
+(
+    pushd ~
+    if [ -L .clang-format ] || [ -f .clang-format ]; then
+        mv .clang-format .clang-format.$$
+    fi
+    ln -s dotfiles/nvidia/clang-format .clang-format
+    popd
+)
+(
+    pushd ~
+    if [ -L .bashrc ] || [ -f .bashrc ]; then
+        mv .bashrc .bashrc.$$
+    fi
+    ln -s dotfiles/nvidia/bashrc .bashrc
+    popd
+)
+
 echo
 echo "PLEASE RUN source ~/.bashrc, in order for changes to take effect"
 

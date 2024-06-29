@@ -14,10 +14,19 @@ if [[ -z "$TMUX" ]]; then
         sleep 3
     fi
     tmux new-session
-    exit
 fi
 
 #option to set per-pane variable
+
+function fzf {
+    if [ "${FUNCNAME[1]}" = "__fzf_select__" ];then
+        ~/.fzf/bin/fzf --preview "batcat --color=always --style=numbers --line-range=:500 {}"
+    else
+        ~/.fzf/bin/fzf
+    fi
+}
+
+export XDG_CONFIG_HOME=~/.config
 
 function classic_pylint {
     /home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/scripts/dev/.env-pylint/bin/python2 ./scripts/dev/.env-pylint/bin/pylint -j 0 --rcfile /home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/.pylintrc --output-format=colorized $1
