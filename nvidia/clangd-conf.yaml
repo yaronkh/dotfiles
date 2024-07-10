@@ -3,17 +3,25 @@ CompileFlags:
 
 Diagnostics:
   ClangTidy:
-    Add: [ '*']
+    Add: [ '*', 'readability-identifier-naming']
     Remove:
       - google-readability*
-      - altera-unroll-loops
+      - altera*
       - readability-identifier-length
       - readability-braces-around-statements
       - readability-isolate-declaration
+      - readability-function-cognitive-complexity
       - cppcoreguidelines-init-variables
       - altera*
       - hicpp*
       - bugprone-reserved-identifier
-      - readability-function-cognitive-complexity
       - performance-no*
       - llvmlibc-restrict-system-libc-headers
+    CheckOptions:
+      readability-identifier-naming.FunctionCase: lower_case
+      readability-identifier-naming.VariableCase: lower_case
+      readability-identifier-naming.EnumCase: lower_case
+      readability-identifier-naming.EnumConstantCase: UPPER_CASE
+      readability-identifier-naming.MacroDefinitionCase: UPPER_CASE
+      readability-identifier-naming.StructCase: lower_case
+

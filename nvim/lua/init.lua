@@ -358,7 +358,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
                 local keymap_gv = {
                         name = "Goto",
                         desc = "Example description 2",
-                        f = { "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", "format accroding to the project standards" },
+                        f = { "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", "style the code accroding to the project standards" },
                 }
                 whichkey.register(keymap_gv, { buffer = ev.buf, prefix = "g", mode = 'v' })
 

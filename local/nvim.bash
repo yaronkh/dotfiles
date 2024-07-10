@@ -10,6 +10,8 @@ nvim() (
   #export NVIM_COC_LOG_LEVEL=debug && export NVIM_COC_LOG_FILE=/tmp/coc.log
   export PATH=~/.config/coc/extensions/coc-clangd-data/install/15.0.6/clangd_15.0.6/bin:$PATH
   export XDG_CONFIG_HOME=~/.config
+  export export CC=clang
+  export CXX=g++
   TOP_DIR=$(git rev-parse --show-toplevel 2> /dev/null)
   if [ -n "$TOP_DIR" ] && [ -d "$TOP_DIR" ] && [ -f "$TOP_DIR/.py_include" ]; then
     while IFS="" read -r p
