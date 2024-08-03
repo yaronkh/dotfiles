@@ -146,18 +146,18 @@ let g:ale_hover_to_preview = 1
 
 "python linting
 " Check Python files with flake8 and pylint.
-let b:ale_fixers = ['autopep8', 'yapf']
-" Disable warnings about trailing whitespace for Python files.
-let b:ale_warn_about_trailing_whitespace = 0
-let g:ale_python_pylint_executable = 'pylint'
-let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
-let g:ale_python_flake8_options = '--config ~/dotfiles/flake8.cfg'
-let g:ale_linters = {
-            \  'python': ['flake8', 'pylint', 'black'],
-            \ 'vim' :['vint'],
-            \}
-" clancd and javac are taken from other places
-let g:ale_linters_ignore = ['gcc', 'clangd', 'javac']
+"let b:ale_fixers = ['autopep8', 'yapf']
+"" Disable warnings about trailing whitespace for Python files.
+"let b:ale_warn_about_trailing_whitespace = 0
+"let g:ale_python_pylint_executable = 'pylint'
+"let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
+"let g:ale_python_flake8_options = '--config ~/dotfiles/flake8.cfg'
+"let g:ale_linters = {
+"            \  'python': ['flake8', 'pylint', 'black'],
+"            \ 'vim' :['vint'],
+"            \}
+"" clancd and javac are taken from other places
+"let g:ale_linters_ignore = ['gcc', 'clangd', 'javac']
 call PreparePythonAle()
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")

@@ -57,7 +57,7 @@ install_distro_nvim() {
             cd neovim
 	    pyenv local nvim
 	    pyenv activate nvim
-	    pip install cmake
+        sudo apt install cmake
             git checkout "v$target_nvim_ver"
             make CMAKE_BUILD_TYPE=RelWithDebInfo || exit 255
             sudo make install

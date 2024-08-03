@@ -37,6 +37,7 @@ packer.init({
 packer.startup(function(use)
     use {
         "folke/which-key.nvim",
+        tag = "v2.1.0",
         config = function()
             vim.o.timeout = true
             vim.o.timeoutlen = 300
@@ -104,8 +105,9 @@ packer.startup(function(use)
     --  use 'skywind3000/gutentags_plus'
 
      use {
-         'junegunn/fzf.vim', run = ':call fzf#install()'
+         'junegunn/fzf', run = ':call fzf#install()'
      }
+     use "junegunn/fzf.vim"
 
     --  open the corresponding h files in vertical split, just run :AV
     use 'vim-scripts/a.vim'
@@ -260,7 +262,7 @@ packer.startup(function(use)
     }
 
     use 'nvim-tree/nvim-web-devicons'
-    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'bash -c "cd ~/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim && CC=gcc make > ~/.makeit"' }
     use {'nvim-telescope/telescope-ui-select.nvim' }
 
     use {
