@@ -39,34 +39,6 @@ function! GetProjectRoot()
     "return ProjectRootGuess(getcwd())
 endfunction
 
-" Generate All
-" function! ZGenerateAll()
-"     call system('touch ' . GetLastSessionFn())
-"     let l:pr = GetProjectRoot()
-"     let l:cscope_files = gutentags#get_cachefile(l:pr, '.cscope.files')
-"     echom l:cscope_files
-"     copen
-"     exec ":AsyncRun cd '" . l:pr . "' && ag -l --all-types > " . l:cscope_files . " && (git ls-files >> " . l:cscope_files . " 2> /dev/null || true) &&  sort -u " . l:cscope_files . " > /tmp/cscope.tmp.$$ && rm " . l:cscope_files . " && mv /tmp/cscope.tmp.$$ " . l:cscope_files
-"     let l:vim_things = l:pr . '/.vim'
-"     if ! isdirectory(l:vim_things)
-"         call mkdir(l:pr . '/.vim')
-"     endif
-"     let l:coc_settings_local_config = l:vim_things . '/coc-settings.json'
-"     if ! filereadable(l:coc_settings_local_config)
-"         let l:lines = []
-"         call add(l:lines, '{')
-"         call add(l:lines, '"clangd.arguments" : ["-compile-commands-dir=' . l:vim_things . '"]')
-"         call add(l:lines, '}')
-"         call writefile(l:lines, l:coc_settings_local_config)
-"     endif
-"     let l:compile_flags_fn = 'compile_flags.txt'
-"     let l:compile_flags = l:vim_things . '/' . l:compile_flags_fn
-"     if ! filereadable(l:compile_flags)
-"         call system('/bin/cp ' . g:HomePath . '/dotfiles/etc_clang/' . l:compile_flags_fn . ' ' . l:compile_flags)
-"     endif
-"
-" endfunction
-
 let g:projects = {}
 
 function! UpdateProjectMap()
@@ -106,9 +78,6 @@ function! UnrefProject()
         endif
     endif
 endfunction
-
-" Generate All Mapping
-nnoremap <leader>zg :call ZGenerateAll()<CR>
 
 " Codesearch
 nnoremap <leader>zx "tyiw:exe "CSearch " . @t . ""<CR>
@@ -191,15 +160,6 @@ let g:ale_linters = {
 let g:ale_linters_ignore = ['gcc', 'clangd', 'javac']
 call PreparePythonAle()
 
-" function! PrepareClangdCOptions()
-"     let b:ale_c_clangd_options = '-compile-commands-dir=' . GetProjectRoot() . '/.vim'
-" endfunction
-"
-" augroup ALE_things
-"     au!
-"     autocmd FileType,BufEnter * call PrepareClangdCOptions()
-" augroup END
-
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
 let OmniCpp_GlobalScopeSearch = 1
@@ -213,28 +173,8 @@ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
-" autocmd FileType java setlocal omnifunc=javacomplete2#Complete
-
-" GutenTags
-
-" " enable gtags module
-"let g:gutentags_modules = []
-"
-" " config project root markers.
-"let g:gutentags_project_root = ['.root', '.git']
-
-"
 " " generate datebases in my cache directory, prevent gtags files polluting my project
 let g:gutentags_cache_dir = expand('~/.cache/tags')
-"
-" " forbid gutentags adding gtags databases
-" let g:gutentags_auto_add_gtags_cscope = 1
-"
-" let g:gutentags_plus_nomap = 1
-" set statusline+=%{gutentags#statusline()}
-" let g:gutentags_define_advanced_commands = 1
-" Fzf
-"
 " disable gutentags, we don't need tags anymore, only some functions
 let g:gutentags_enabled = 0
 
@@ -647,7 +587,6 @@ augroup my_tmux
     noremap <silent> <Leader>bc :cclose<CR>
     "noremap <silent> <Leader>z :tab split<CR>
     noremap <Leader>w :WinResizerStartResize<CR>
-    noremap <Leader>? :Maps<CR>
     noremap <Leader>?? :Commands<CR>SplitVAndSwap()<cr>
     noremap <Leader>h :History<CR>
     noremap <Leader>% :call SplitVAndSwap()<cr>
@@ -662,15 +601,10 @@ augroup my_tmux
     autocmd BufDelete * : call UnrefProject()
     autocmd VimLeave * call SaveSess()
     autocmd VimLeavePre * :tabdo NERDTreeClose
-    "autocmd VimLeavePre * :tabdo TagbarClose
-    "autocmd VimLeavePre * :tabdo cclose
     autocmd VimEnter * nested call RestoreSess()
     autocmd VimEnter * nested call SetGuttentagsEnable()
     autocmd VimResized * : call UpdateAirlineFileneames()
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
-    "nnoremap <silent> <leader>p :call PasteFromX11() <CR>
-    noremap <silent> <RightMouse> :Maps<CR>
-    "execute("command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis | wincmd p | diffthis")
     nnoremap z= :call FzfSpell()<CR>
     inoremap <Leader>li :LinuxCodingStyle<cr>
     nnoremap <C-d> :call InsertDate()<cr>

@@ -17,6 +17,10 @@ Diagnostics:
       - bugprone-reserved-identifier
       - performance-no*
       - llvmlibc-restrict-system-libc-headers
+      - bugprone-assignment-in-if-condition
+      - cppcoreguidelines-avoid-non-const-global-variables
+      - bugprone-easily-swappable-parameters
+      - bugprone-reserved-identifier
     CheckOptions:
       readability-identifier-naming.FunctionCase: lower_case
       readability-identifier-naming.VariableCase: lower_case
