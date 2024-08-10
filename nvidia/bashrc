@@ -9,10 +9,6 @@ export TERM=xterm-256color
 export PATH=/usr/local/bin:$PATH
 
 if [[ -z "$TMUX" ]]; then
-    if [ -z "$DISPLAY" ]; then
-        echo "X DISPLAY not available"
-        sleep 3
-    fi
     tmux new-session
 fi
 

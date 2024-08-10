@@ -9,6 +9,8 @@ install_tmux_compilation_prereq() {
   sudo apt-get install -y libncurses5-dev libncursesw5-dev
   sudo apt-get install -y jq
   sudo apt-get install -y curl
+  sudo apt-get install -y cargo
+  sudo apt-get install -y npm
 }
 
 
@@ -26,6 +28,8 @@ verify_prereq() {
 
 install_distro_build_tools() {
     sudo apt-get install -y build-essential || exit 255
+    sudo apt-get install -y cargo
+    sudo apt-get install -y ctags
 }
 
 install_distro_zlib() {

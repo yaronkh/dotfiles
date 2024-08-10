@@ -9,6 +9,8 @@ install_tmux_compilation_prereq() {
   sudo yum install -y ncurses-devel
   sudo yum install -y jq
   sudo yum install -y curl
+  sudo yum install -y cargo
+  sudo yum install -y npm
 }
 
 install_distro_ffi() {
@@ -24,6 +26,8 @@ update_distro_db() {
 
 install_distro_build_tools() {
     sudo yum -y groupinstall "Development Tools"
+    sudo yum -y install cargo
+    sudo yum -y install ctags
 }
 
 install_distro_zlib() {
