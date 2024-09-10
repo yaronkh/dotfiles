@@ -218,7 +218,7 @@ nnoremap <M-i> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 nnoremap <C-w>p :copen<CR>
 
 let g:linuxsty_patterns = [ "/kernel/", "/linux/", "/nvmeshum/"]
-function! GetMeIdent()
+function! GetMeIdent(tabsize)
     let apply_nvmeshstype = 0
     if exists("g:linuxsty_patterns")
         let path = expand('%:p')
@@ -229,13 +229,13 @@ function! GetMeIdent()
             endif
         endfor
     endif
-    if apply_nvmeshstype
+    if l:apply_nvmeshstype == 1
+        setlocal shiftwidth=0
+        setlocal tabstop=a:tabsize
         setlocal noexpandtab
-        setlocal shiftwidth=4
-        setlocal tabstop=4
     else
         setlocal expandtab
-        setlocal shiftwidth=4
+        setlocal shiftwidth=a:tabsize
     endif
 endfunction
 
@@ -250,10 +250,10 @@ set smartcase
 set nocompatible
 set shellslash
 set autoindent
-autocmd filetype cpp  call GetMeIdent()
-autocmd filetype c call GetMeIdent()
-autocmd filetype bash call GetMeIdent()
-autocmd filetype sh call GetMeIdent()
+autocmd filetype cpp  call GetMeIdent(8)
+autocmd filetype c call GetMeIdent(8)
+autocmd filetype bash call GetMeIdent(4)
+autocmd filetype sh call GetMeIdent(4)
 set cinoptions=g0N-s
 set backspace=indent,eol,start
 set ruler
@@ -261,7 +261,7 @@ set showcmd
 set incsearch
 set hlsearch
 " set shiftwidth=4
-set tabstop=4
+"set tabstop=4
 set cmdheight=1
 "set number
 set wildmode=list:longest,full
@@ -271,7 +271,7 @@ set nowrap
 nnoremap <C-q> <C-v>
 set shellslash
 map <C-w>w :q<CR>
-autocmd filetype make call GetMeIdent()
+autocmd filetype make call GetMeIdent(4)
 "autocmd filetype c setlocal noexpandtab autoindent
 " noremap <F1> <C-w><C-p>
 " noremap <F2> <C-w><C-w>
