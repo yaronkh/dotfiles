@@ -231,7 +231,8 @@ function! GetMeIdent(tabsize)
     endif
     if l:apply_nvmeshstype == 1
         setlocal shiftwidth=0
-        setlocal tabstop=a:tabsize
+        "setlocal tabstop=a:tabsize
+        setlocal tabstop=8
         setlocal noexpandtab
     else
         setlocal expandtab

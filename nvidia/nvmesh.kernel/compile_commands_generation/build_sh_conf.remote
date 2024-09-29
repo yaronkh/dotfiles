@@ -1,0 +1,136 @@
+#!/bin/bash
+
+BRANCH=`git symbolic-ref --short HEAD`
+LOCAL_DIR=projects/nvmeib.drs
+REMOTE_DIR=projects/$BRANCH
+EXCLUDES=excludes
+PARALLEL=true
+RSYNC_OPTS="-v"
+#MAKE_OPTS="-j TCM=TCMA"
+#MAKE_OPTS="TCM=TCMR"
+#MAKE_OPTS="-j TCM=TCMA DEBUG=yes CONFIG_NVMEIB_FINE=yes"
+#MAKE_OPTS="-j TCM=TCMA SECTOR_SHIFT=9"
+
+#MAKE_OPTS="-j TCM=TCMR VERBOSE=true IS_COMPILATOR=true BUILD_TCP=no"
+MAKE_OPTS="-j TCM=TCMR VERBOSE=true IS_COMPILATOR=true"
+#MAKE_OPTS="-j TCM=TCMR VERBOSE=true IS_COMPILATOR=true"
+#MAKE_OPTS="TCM=TCMR VERBOSE=true IS_COMPILATOR=true BUILD_TCP=no BUILD_PAGER=no"
+
+
+#####################SSH_INVOKE="/usr/local/bin/ssh -i ~/.ssh/id_rsa_vm"
+#SSH_INVOKE="/usr/local/bin/sshpass -p g00g1e ssh -l root"
+#PRE_MAKE_CMD="source /opt/rh/devtoolset-7/enable"
+#PRE_MAKE_CMD="source /opt/rh/devtoolset-8/enable"
+
+# hosts
+REMOTE_SERVERS=""
+#REMOTE_SERVERS="nvme60:IM_BOTH=yes nvme61:IM_BOTH=yes nvme62:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme31:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme52:IM_BOTH=yes nvme53:IM_BOTH=yes nvme58:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme40:IM_BOTH=yes nvme41:IM_BOTH=yes nvme66:IM_BOTH=yes"
+#REMOTE_SERVERS="10.0.1.50:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme60:IM_BOTH=yes nvme61:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme47:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme101:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme17:IM_BOTH=yes nvme54:IM_BOTH=yes nvme55:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme59:IM_BOTH=yes nvme46:IM_BOTH=yes nvme45:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme15:IM_BOTH=yes nvme17:IM_BOTH=yes nvme55:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme45:IM_BOTH=yes nvme46:IM_BOTH=yes nvme59:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme114:IM_BOTH=yes nvme115:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme56:IM_SERVER=yes nvme52:IM_CLIENT=yes"
+#REMOTE_SERVERS="nvme15:IM_SERVER=yes"
+#REMOTE_SERVERS="nvme105:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme44:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme109:IM_BOTH=yes:OFED_VER_TYPE=none:MK_RPM=yes"
+#REMOTE_SERVERS="nvme108:IM_BOTH=yes"
+#REMOTE_SERVERS="nvme4:IM_BOTH=yes:OFED_VER_TYPE=none nvme15:IM_SERVER=yes"
+#REMOTE_SERVERS="nvme4:IM_BOTH=yes:OFED_VER_TYPE=none"
+#REMOTE_SERVERS="nvme101:IM_BOTH=yes nvme105:IM_BOTH=yes"
+#REMOTE_SERVERS="10.0.12.1:IM_BOTH=yes:PARALLEL=false"
+#REMOTE_SERVERS="nvme2:IM_BOTH=yes:OFED_VER_TYPE=none nvme4:IM_BOTH=yes:OFED_VER_TYPE=none"
+#REMOTE_SERVERS="nvme45:IM_BOTH=yes:OFED_VER_TYPE=none"
+#REMOTE_SERVERS+="nvme111:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="nvme112:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="nvme118:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS="nvme110:IM_BOTH=yes:OFED_VER_TYPE=none"
+#REMOTE_SERVERS+="n45:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n46:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n59:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n109:IM_TEST_T=yes "
+#REMOTE_SERVERS+="n110:IM_TEST_T=yes "
+#REMOTE_SERVERS+="n15:IM_SERVER=yes:OFED_VER_TYPE=none "
+#REMOTE_SERVERS+="n109:IM_BOTH=yes"
+
+#REMOTE_SERVERS+="n78:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n79:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n84:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n86:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="10.0.6.14:IM_BOTH=yes:MK_RPM=yes:OFED_VER_TYPE=none"
+#REMOTE_SERVERS+="n241:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n242:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n243:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n244:IM_BOTH=yes:MK_RPM=yes "
+
+#REMOTE_SERVERS+="n107:IM_CLIENT=yes "
+#REMOTE_SERVERS+="n187:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n188:IM_CLIENT=yes:MK_RPM=yes:OFED_VER_TYPE=none "
+#REMOTE_SERVERS+="n189:IM_CLIENT=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n190:IM_BOTH=yes:MK_RPM=yes "
+
+
+#REMOTE_SERVERS+="n109:IM_BOTH=yes:MK_RPM=yes:OFED_VER_TYPE=none "
+
+#REMOTE_SERVERS+="10.0.6.14:IM_BOTH=yes:MK_RPM=yes:OFED_VER_TYPE=none "
+
+#REMOTE_SERVERS+="10.0.0.21:IM_BOTH=yes:MK_RPM=yes "
+
+#REMOTE_SERVERS+="192.168.56.101:IM_BOTH=yes:MK_RPM=yes:OFED_VER_TYPE=none "
+
+#REMOTE_SERVERS+="n70:IM_BOTH=yes:MK_RPM=yes "
+
+##REMOTE_SERVERS+="basicrdmanvmesh10.eastus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+##REMOTE_SERVERS+="basicrdmanvmesh11.eastus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+##REMOTE_SERVERS+="basicrdmanvmesh12.eastus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n174:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n224:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n145:IM_BOTH=yes:MK_RPM=yes:OFED_VER_TYPE=none "
+#######REMOTE_SERVERS+="10.0.11.76:IM_BOTH=yes:MK_RPM=yes "
+#######REMOTE_SERVERS+="10.0.11.77:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n1010:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n1011:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n1012:IM_BOTH=yes:MK_RPM=yes "
+
+#REMOTE_SERVERS+="n174:IM_TEST_DC=yes:MK_RPM=no "
+#REMOTE_SERVERS+="n224:IM_TEST_DC=yes:MK_RPM=no "
+#REMOTE_SERVERS+="192.168.56.102:IM_TEST_RPCRDMA=yes:MK_RPM=no "
+
+#REMOTE_SERVERS+="n224:IM_TEST_RPCRDMA=yes:MK_RPM=no "
+#REMOTE_SERVERS+="n224:IM_BOTH=yes:MK_RPM=no:OFED_VER_TYPE=none "
+#REMOTE_SERVERS+="n174:IM_BOTH=yes:MK_RPM=no:OFED_VER_TYPE=MLNX_OFED_LINUX-5.1-2.3.7.1 "
+#REMOTE_SERVERS+="VM:IM_BOTH=yes:MK_RPM=no "
+
+#REMOTE_SERVERS+="behnamora:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n23:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n202:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n203:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n23:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n31:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n32:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n33:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n174:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n224:IM_BOTH=yes:MK_RPM=yes "
+REMOTE_SERVERS+="n1018:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="n1046:IM_BOTH=yes:MK_RPM=yes "
+
+#REMOTE_SERVERS+="anvme1:IM_BOTH=yes:MK_RPM=yes:OFED_VER_TYPE=none  "
+#REMOTE_SERVERS+="anode001:IM_CLIENT=yes:MK_RPM=yes:OFED_VER_TYPE=none  "
+
+#REMOTE_SERVERS+="exceleroslob2.eastus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="exceleroslob3.eastus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="exceleroslob4.eastus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+
+#REMOTE_SERVERS+="nvmesh1.southcentralus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="nvmesh2.southcentralus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="nvmesh3.southcentralus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="nvmesh4.southcentralus.cloudapp.azure.com:IM_BOTH=yes:MK_RPM=yes "
+#REMOTE_SERVERS+="nvmesh5.southcentralus.cloudapp.azure.com:IM_CLIENT=yes:MK_RPM=yes "

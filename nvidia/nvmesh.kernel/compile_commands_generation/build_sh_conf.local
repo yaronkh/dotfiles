@@ -1,0 +1,36 @@
+#!/bin/bash
+
+BRANCH=nvmeib.drs
+LOCAL_DIR=projects/$BRANCH
+REMOTE_DIR=projects/$BRANCH
+EXCLUDES=excludes
+PARALLEL=true
+#KERNEL_SRC=~/data/linux/linux-5.8.16_clang
+KERNEL_SRC=~/data/linux/linux-5.4.72_clang
+#MAKE_OPTS="-j TCM=TCMA"
+#MAKE_OPTS="TCM=TCMR"
+#MAKE_OPTS="-j TCM=TCMA DEBUG=yes CONFIG_NVMEIB_FINE=yes"
+#MAKE_OPTS="-j TCM=TCMA SECTOR_SHIFT=9"
+
+MAKE_OPTS="-j32 TCM=TCMR VERBOSE=true IS_COMPILATOR=true _KSRC=${KERNEL_SRC} _KSRC1=${KERNEL_SRC} KERN_VER_NO_OFED=5.4 OFED_SYM_VER=${KERNEL_SRC}/Module.symvers LLVM=true"
+# MAKE_OPTS="-j TCM=TCMR VERBOSE=true IS_COMPILATOR=true _KSRC=${KERNEL_SRC} _KSRC1=${KERNEL_SRC} KERN_VER_NO_OFED=5.8 LLVM=true"
+
+# MAKE_OPTS="TCM=TCMR VERBOSE=true IS_COMPILATOR=true _KSRC=~/linux/linux-5.8.16 _KSRC1=~/linux/linux-5.8.16 KERN_VER_NO_OFED=5.8 _OFED_SRC_DIR=~/rpmbuild/SOURCES/MLNX_OFED_LINUX-5.1-2.3.7.1"
+# MAKE_OPTS="TCM=TCMR VERBOSE=true IS_COMPILATOR=true _KSRC=~/linux/linux-5.8.10_clang _KSRC1=~/linux/linux-5.8.10_clang KERN_VER_NO_OFED=5.8 LLVM=true"
+# MAKE_OPTS="TCM=TCMR VERBOSE=true IS_COMPILATOR=true _KSRC=~/linux/linux-5.8.10_gcc _KSRC1=~/linux/linux-5.8.10_gcc KERN_VER_NO_OFED=5.8"
+# MAKE_OPTS="-j TCM=TCMR VERBOSE=true IS_COMPILATOR=true BUILD_TCP=no BUILD_PAGER=no"
+# MAKE_OPTS="-j TCM=TCMR VERBOSE=true IS_COMPILATOR=true"
+#MAKE_OPTS="TCM=TCMR VERBOSE=true IS_COMPILATOR=true BUILD_TCP=no BUILD_PAGER=no"
+
+
+#####################SSH_INVOKE="/usr/local/bin/ssh -i ~/.ssh/id_rsa_vm"
+#SSH_INVOKE="/usr/local/bin/sshpass -p g00g1e ssh -l root"
+#PRE_MAKE_CMD="source /opt/rh/devtoolset-7/enable"
+#PRE_MAKE_CMD="source /opt/rh/devtoolset-8/enable"
+
+# hosts
+REMOTE_SERVERS=""
+REMOTE_SERVERS+="n224:IM_BOTH=yes:MK_RPM=no:OFED_VER_TYPE=none "
+#REMOTE_SERVERS+="n224:IM_TEST_DC=yes:MK_RPM=yes:OFED_VER_TYPE=none "
+#REMOTE_SERVERS+="n224:IM_TEST_DCLIB=yes:MK_RPM=yes:OFED_VER_TYPE=none "
+#REMOTE_SERVERS+="n224:IM_BOTH=yes:MK_RPM=yes:OFED_VER_TYPE=none "
