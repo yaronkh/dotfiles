@@ -11,6 +11,8 @@ Diagnostics:
       - readability-braces-around-statements
       - readability-isolate-declaration
       - readability-function-cognitive-complexity
+      - modernize-macro-to-enum
+      - cppcoreguidelines-macro-to-enum
       - cppcoreguidelines-init-variables
       - altera*
       - hicpp*
@@ -27,5 +29,5 @@ Diagnostics:
       readability-identifier-naming.EnumCase: lower_case
       readability-identifier-naming.EnumConstantCase: UPPER_CASE
       readability-identifier-naming.MacroDefinitionCase: UPPER_CASE
-      readability-identifier-naming.StructCase: lower_case
+      readability-identifier-naming.StructCase: aNy_CasE
 

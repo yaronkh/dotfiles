@@ -1,10 +1,11 @@
 -nostdinc
+-ferror-limit=0
 -ibuiltininc
 -Wall
 -I/usr/src/linux-headers-6.8.0-45-generic/include
--I/usr/src/ofa_kernel/x86_64/5.4.0-155-generic/include
--I/usr/src/ofa_kernel/x86_64/5.4.0-155-generic/include/uapi
--I/usr/src/mlnx-ofed-kernel-5.8/drivers
+-I/home/ykahanovitch/projects/usr/src/ofa_kernel/x86_64/5.4.0-155-generic/include
+-I/home/ykahanovitch/projects/usr/src/ofa_kernel/x86_64/5.4.0-155-generic/include/uapi
+-I/home/ykahanovitch/projects/usr/src/mlnx-ofed-kernel-5.8/drivers
 -I/mlnx_ofed_5.8/include
 -I/mlnx_ofed_5.8/include/linux
 -I./arch/x86/include/mach-xen
@@ -18,8 +19,8 @@
 -Iinclude/generated/uapi
 -I./arch/x86/include
 -Iarch/x86/include/generated
--Icommon
--Icommon_public
+-I./common
+-I./common_public
 -Isrv
 -Iclnt
 -Itoma
@@ -266,7 +267,19 @@
 -DMODULE
 -DKBUILD_BASENAME='\"nvmeibt_client_protocol\"'
 -DKBUILD_MODNAME='\"nvmeibc\"'
-./include/linux/compiler_types.h
+-Du8=unsigned char
+-Ds8=char
+-Du16=unsigned short
+-Ds16=short
+-Du32=unsigned int
+-Ds32=int
+-Du64=unsigned long long
+-Ds64=long long
+-DLLVM
+-DNVMEIB_MIRROR_TO_DMESG_BY_DEFAULT
+-D __clang_empty_logs_
+-DDISABLE_ALL_TRACING
+-include ./include/linux/compiler_types.h
 -D__KERNEL__
 -Wall
 -Wundef
@@ -292,13 +305,13 @@
 -falign-loops=1
 -mno-80387
 -mno-fp-ret-in-387
--mpreferred-stack-boundary=3
 -mskip-rax-setup
 -mtune=generic
 -mno-red-zone
 -mcmodel=kernel
 -fmacro-prefix-map=./=
+-I/usr/src/linux-headers-6.8.0-45-generic/arch/x86/include
 -include linux/compat-2.6.h
--include /lib/modules/5.4.0-155-generic/build/include/generated/autoconf.h
--include /lib/modules/5.4.0-155-generic/build/include/linux/kconfig.h
--include ./include/linux/compiler_types.h
+-include /lib/modules/6.8.0-45-generic/build/include/generated/autoconf.h
+-include /lib/modules/6.8.0-45-generic/build/include/linux/kconfig.h
+-include /usr/src/linux-headers-6.8.0-45-generic//include/linux/compiler_types.h

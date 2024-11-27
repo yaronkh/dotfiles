@@ -14,6 +14,7 @@ fi
 
 #option to set per-pane variable
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 function fzf {
     if [ "${FUNCNAME[1]}" = "__fzf_select__" ];then
         ~/.fzf/bin/fzf --preview "batcat --color=always --style=numbers --line-range=:500 {}"
@@ -144,6 +145,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias onefetch='command onefetch --number-of-authors 100'
 
 alias bastion_command=~/workspace/CloudEndureMG/src/CloudEndureMgDev/scripts/bastion_command.py
 
@@ -203,12 +205,11 @@ alias .....="cd ../../../.."
 alias mark="pwd > ~/.sd"
 alias port='cd $(cat ~/.sd)'
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 #alias ly='~/dev/CloudEndure/scripts/dev/.env-pylint/bin/pylint  --reports=no --output-format=colorized --rcfile ~/dev/CloudEndure/.pylintrc'
 #export PYTHONPATH="/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/Management/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/installer/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure:$PYTHONPATH"
 export OP_SESSION_cloudendure="GDqzU98GynjFvl2jk9Wh8Y_I41LSq_RXRL2uIU-tCdI"
 
-export PATH=$HOME/.toolbox/bin:$PATH
+export PATH=$HOME/.toolbox/bin:/home/ykahanovitch/.cargo/bin:$PATH
 
 #brazil aliases:
 alias bb='brazil-build'
@@ -238,3 +239,4 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 source ~/dotfiles/local/nvim.bash
+. "$HOME/.cargo/env"

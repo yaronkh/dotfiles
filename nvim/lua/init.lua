@@ -1,6 +1,6 @@
 local lsp_items = {
         { mason_name = "jdtls",                      lspc_name = "jdtls",     cfg = { cmd = { 'jdtls', }, }, },
-        { mason_name = "typescript-language-server", lspc_name = "tsserver",  cfg = {} },
+        { mason_name = "typescript-language-server", lspc_name = "ts_ls",  cfg = {} },
         { mason_name = "smithy-language-server",     lspc_name = "smithy_ls", cfg = {} },
         {
                 mason_name = "vim-language-server",

@@ -115,6 +115,7 @@ nnoremap <C-L> :call ToggleSideHelps()<CR>
 function! PreparePythonAle()
     let g:python3_host_prog = trim(system("pyenv which python"))
     let g:ale_virtualenv_dir_names = [fnamemodify(g:python3_host_prog, ":h:h")]
+    let g:ale_python_mypy_options = "--check-untyped-defs --show-column-numbers"
 endfunction
 
 let g:peekaboo_delay = 10
@@ -150,7 +151,7 @@ let g:ale_hover_to_preview = 1
 "" Disable warnings about trailing whitespace for Python files.
 "let b:ale_warn_about_trailing_whitespace = 0
 "let g:ale_python_pylint_executable = 'pylint'
-"let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylint.rc'
+let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylintrc'
 "let g:ale_python_flake8_options = '--config ~/dotfiles/flake8.cfg'
 "let g:ale_linters = {
 "            \  'python': ['flake8', 'pylint', 'black'],
