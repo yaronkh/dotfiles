@@ -282,6 +282,19 @@ nnoremap <S-Tab> :tabp<CR>
 nnoremap <C-t> :tabnew<CR>
 " noremap <F6> :bp<CR>
 " noremap <F7> :bn<CR>
+"
+" turn relative line numbers on
+:set relativenumber
+
+" turn hybrid line numbers on
+set number relativenumber
+
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
+:  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
+:augroup END
+
 noremap <F5> :set nu!<CR>:set paste!<CR>
 set spelllang=en
 "enable ddd  working with the mouse
