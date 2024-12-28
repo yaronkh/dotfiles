@@ -116,6 +116,7 @@ function! PreparePythonAle()
     let g:python3_host_prog = trim(system("pyenv which python"))
     let g:ale_virtualenv_dir_names = [fnamemodify(g:python3_host_prog, ":h:h")]
     let g:ale_python_mypy_options = "--check-untyped-defs --show-column-numbers"
+    let g:ale_python_flake8_options = '--append-config /home/ykahanovitch/dotfiles/nvidia/flake8'
 endfunction
 
 let g:peekaboo_delay = 10
@@ -153,12 +154,7 @@ let g:ale_hover_to_preview = 1
 "let g:ale_python_pylint_executable = 'pylint'
 let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylintrc'
 "let g:ale_python_flake8_options = '--config ~/dotfiles/flake8.cfg'
-"let g:ale_linters = {
-"            \  'python': ['flake8', 'pylint', 'black'],
-"            \ 'vim' :['vint'],
-"            \}
-"" clancd and javac are taken from other places
-"let g:ale_linters_ignore = ['gcc', 'clangd', 'javac']
+let g:ale_linters = {  'c': ['clangd', "clangtidy"]}
 call PreparePythonAle()
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")

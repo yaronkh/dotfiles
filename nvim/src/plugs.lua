@@ -56,6 +56,7 @@ packer.startup(function(use)
     -- enable to move buffers between tabs,
     -- exchange buffers between windows,
     -- easy window navigation and duplicate buffers across windows
+
     use 'yaronkh/vim-winmanip'
 
     --  find and manage project root

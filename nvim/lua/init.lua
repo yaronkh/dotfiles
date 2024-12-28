@@ -330,6 +330,28 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
 
+local file_exists = function(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+
+vim.api.nvim_create_user_command('Precomp',
+function(input)
+        local cfn = vim.fn.expand('%')
+        if vim.o.filetype == "c" then
+                local gev = cfn .. "_gen_events.h"
+                if file_exists(gev) then
+                        vim.call("delete", gev)
+                end
+                vim.cmd("w")
+                vim.fn.system("CC=gcc make " .. gev)
+                vim.cmd("LspRestart")
+                vim.cmd("ALEReset")
+        end
+end,
+{bang = true, desc = 'Search projects folder'}
+        )
+
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -413,3 +435,5 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/codeactions.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/treesitter.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dap.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/trouble.lua")
+dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
+
