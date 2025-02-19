@@ -25,41 +25,19 @@ function fzf {
 
 export XDG_CONFIG_HOME=~/.config
 
-function classic_pylint {
-    /home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/scripts/dev/.env-pylint/bin/python2 ./scripts/dev/.env-pylint/bin/pylint -j 0 --rcfile /home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/.pylintrc --output-format=colorized $1
+function set_tmux_opt {
+        tmux set -q "@$1_$TMUX_PANE" "$2"
 }
 
-
-  function set_tmux_opt {
-    tmux set -q "@$1_$TMUX_PANE" "$2"
-  }
-
-  function get_tmux_opt {
-    tmux show -v "@$1_$2"
-  }
-
-function to_pack() {
-    export PYTHONPATH=$(brazil-path build.pythonpath.python3.8):$(brazil-path testlib.pythonpath.python3.8)
-    for f in $(brazil-path lib.src); do if [[ "$f" == *"CloudEndure"* ]];then export PYTHONPATH=$f/src:$PYTHONPATH; fi; done
-}
-
-function branch() {
-    for d in *;do (cd $d; printf '%-35s %-20s\n' $d: $(git rev-parse --abbrev-ref HEAD)); done
-}
-
-function sshh() {
-    ssh -o ServerAliveInterval=60 -o ServerAliveCountMax=2 -o ForwardX11=yes -i ~/.ssh/dev2.pem $1
-}
-
-function scpp() {
-    scp -i ~/.ssh/dev2.pem $1 $2
+function get_tmux_opt {
+        tmux show -v "@$1_$2"
 }
 
 #NOTE we use Virtualenv to run python in a preconfigured box!!
 #export PYTHONPATH=$HOME/dev/CloudEndure/Management/src
 
 export HISTCONTROL=erasedups
-export HISTSIZE=10000
+export HISTSIZE=50000
 shopt -s histappend
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip_download_cache
@@ -72,8 +50,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=50000
+HISTFILESIZE=50000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -194,46 +172,13 @@ if [ -x /usr/lib/command-not-found -o -x /usr/share/command-not-found/command-no
     }
 fi
 
-if [ -e "/apollo/env/SDETools/bin" ]; then
-        export PATH="/apollo/env/SDETools/bin:$PATH"
-fi
-
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias mark="pwd > ~/.sd"
-alias port='cd $(cat ~/.sd)'
-
 #alias ly='~/dev/CloudEndure/scripts/dev/.env-pylint/bin/pylint  --reports=no --output-format=colorized --rcfile ~/dev/CloudEndure/.pylintrc'
 #export PYTHONPATH="/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/Management/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/installer/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure:$PYTHONPATH"
 export OP_SESSION_cloudendure="GDqzU98GynjFvl2jk9Wh8Y_I41LSq_RXRL2uIU-tCdI"
 
 export PATH=$HOME/.toolbox/bin:/home/ykahanovitch/.cargo/bin:$PATH
 
-#brazil aliases:
-alias bb='brazil-build'
-alias bbr='brazil-build release'
-alias bbrec='brazil-recursive-cmd brazil-build'
-alias bbc='brazil-build clean'
-alias bbf='brazil-build format'
-
 NVIMCMD=$(which nvim)
-
-function nvim() {
-    (
-      export PYTHONPATH=$(python -c "import site; print(':'.join(site.getsitepackages()))"):$PYTHONPATH
-      source ~/dotfiles/.env/bin/activate
-      $NVIMCMD $@
-    )
-}
-
-
-function find-broken-links {
-  find . -type l ! -exec test -e {} \; -print
-}
-
-alias brazil-octane='/apollo/env/OctaneBrazilTools/bin/brazil-octane'
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"

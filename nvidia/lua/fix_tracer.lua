@@ -42,6 +42,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 vim.api.nvim_create_autocmd("BufWritePost", {
-        pattern = "*/nvmeshum/app/*.c",
+        pattern = "*app/*.c",
         callback = start_build,
 })

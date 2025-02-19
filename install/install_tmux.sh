@@ -1,4 +1,4 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
 set -x
 if [ -z "$1"]; 
@@ -7,7 +7,7 @@ then
 	exit 255
 fi
 
-TMUX_VER=3.4
+TMUX_VER=3.5a
 STUFF_DIR=~/stuff
 SOURCE_DIR=$STUFF_DIR/tmux
 
