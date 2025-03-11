@@ -15,6 +15,7 @@ augroup End
 
 
 source ~/dotfiles/nvim/src/plugs.lua
+source ~/dotfiles/nvidia/nvidia.vim
 
 
 " Generation Parameters

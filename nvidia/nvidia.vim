@@ -1,16 +1,17 @@
 " Function to disable ALE for specific filenames in Python
 function! DisableALEForSpecificFiles()
-  if &filetype ==# 'python'
-    " Add your specific filenames here
-    let filenames = ['file1.py', 'file2.py']
-    if expand('%:t') in filenames
-      ALEDisable
-    endif
-  endif
+        " Add your specific filenames here
+        let filenames = ['CMSocket.py', 'managementCM.py']
+        "if expand('%:t') in filenames
+        "        let b:ale_sign_warning = ''
+        "        let b:ale_echo_msg_warning_str = ''
+        "        let b:ale_virtualtext_warning = 0
+        "        ALEDisable
+        "endif
 endfunction
 
 " Autocommand to call the function when opening a buffer
 augroup DisableALEForFiles
-  autocmd!
-  autocmd BufRead,BufNewFile *.py call DisableALEForSpecificFiles()
+        autocmd!
+        autocmd BufReadPost,BufNewFile *.py call DisableALEForSpecificFiles()
 augroup END

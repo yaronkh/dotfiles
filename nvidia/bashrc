@@ -23,6 +23,8 @@ function fzf {
     fi
 }
 
+export PATH=~/.bin:$PATH
+
 export XDG_CONFIG_HOME=~/.config
 
 function set_tmux_opt {
@@ -185,3 +187,8 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 source ~/dotfiles/local/nvim.bash
 . "$HOME/.cargo/env"
+
+. "$HOME/.atuin/bin/env"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
