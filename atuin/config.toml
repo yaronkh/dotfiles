@@ -56,7 +56,7 @@ workspaces = true
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
 ## leave unspecified to use same mode set in "filter_mode"
-# filter_mode_shell_up_key_binding = "global"
+filter_mode_shell_up_key_binding = "directory"
 
 ## which search mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "search_mode"
@@ -207,7 +207,7 @@ ignored_commands = [
 
 [keys]
 # Defaults to true. If disabled, using the up/down key won't exit the TUI when scrolled past the first/last entry.
-# scroll_exits = true
+scroll_exits = false
 
 [sync]
 # Enable sync v2 by default
@@ -263,4 +263,4 @@ sync_frequency = 600
 ## The list of enabled filter modes, in order of priority.
 ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
 ## Default filter mode can be overridden with the filter_mode setting.
-filters = [ "global", "host", "session", "workspace", "directory" ]
+filters = [ "global", "host", "workspace", "session", "directory" ]
