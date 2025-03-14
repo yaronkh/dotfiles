@@ -1,0 +1,27 @@
+- defaults:
+    link:
+      relink: true
+
+- clean:
+    '~':
+    ~/.config:
+      recursive: true
+
+- link:
+    ~/.bashrc: nvidia/bashrc
+    ~/.gitconfig: nvidia/gitconfig
+    ~/.config/alacritty:
+        create: true
+        path: alacritty
+    ~/.config/clangd: nvidia/clangd
+    ~/.config/nvim: nvim
+
+- create:
+    - ~/Downloads
+    - ~/.config/atuin
+    - ~/.config/clangd
+
+- shell:
+  - [ git submodule update --init --recursive, Installing submodules]
+  - [ cp ~/dotfiles/tmux_impl.conf ~/.tmux.conf, setting tmux local conf]
+  - cp atuin/* ~/.config/atuin/

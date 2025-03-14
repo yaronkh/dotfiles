@@ -1,17 +1,13 @@
 [core]
-        editor = nvim
+    editor = nvim
 	pager = less -FMRiX
 [user]
 	name = Yaron Kahanovitch
-	email = kahayaro@amazon.com
+	email = ykahanovitch@nvidia.com
 [color]
         ui = true
 [push]
         default = current
-[gui]
-        editor = /home/roman/Programs/ST3/sublime_text
-        historybrowser = gitg
-        displayuntracked = true
 [alias]
         lg = log --color --graph --pretty=format:'%Cred%h%Creset %C(bold blue)%an%Creset: %C(yellow)%d%Creset %s %Cgreen(%ar)' --abbrev-commit
         lga = log --color --graph --pretty=format:'%Cred%h%Creset %C(bold blue)%an%Creset: %C(yellow)%d%Creset %s %Cgreen(%ar)' --abbrev-commit --all
@@ -25,14 +21,15 @@
         ds = diff --stat
         ff = pull --ff-only
         undo = checkout --
+        ddiff = difftool --dir-diff --tool nvimdirdiff
         rst = reset --hard
         meld = !/home/roman/Programs/git-meld/git-meld.pl
         mt = mergetool -y
 	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
 
 [diff]
-        tool = meld2
-[difftool "meld2"]
-        cmd = meld --diff $LOCAL $BASE
+        guitool = kdiff3
+[difftool "kdiff3"]
+    trustExitCode = false
 [merge]
         tool = kdiff3
