@@ -8,12 +8,28 @@
       recursive: true
 
 - link:
+    #shell
     ~/.bashrc: nvidia/bashrc
+
+    #git
     ~/.gitconfig: nvidia/gitconfig
+
+    #terminal
     ~/.config/alacritty:
         create: true
         path: alacritty
+
+    #tmux
+    ~/.tmux/plugins/tpm:
+         create: true
+         path: tpm
+
+    #clang things
     ~/.config/clangd: nvidia/clangd
+    ~/clang-tidy: nvidia/clang-tidy
+    ~/clang-format: nvidia/clang-format
+
+    #neovimn
     ~/.config/nvim: nvim
 
 - create:
@@ -23,5 +39,5 @@
 
 - shell:
   - [ git submodule update --init --recursive, Installing submodules]
-  - [ cp ~/dotfiles/tmux_impl.conf ~/.tmux.conf, setting tmux local conf]
+  - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux_impl.conf ~/.tmux.conf, setting tmux local conf]
   - cp atuin/* ~/.config/atuin/
