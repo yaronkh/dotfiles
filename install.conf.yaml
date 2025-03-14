@@ -1,6 +1,8 @@
 - defaults:
     link:
       relink: true
+      relative: true
+      create: true
 
 - clean:
     '~':
@@ -15,14 +17,13 @@
     ~/.gitconfig: nvidia/gitconfig
 
     #terminal
-    ~/.config/alacritty:
-        create: true
-        path: alacritty
+    ~/.config/alacritty: alacritty
+
+    #fzf
+    ~/.fzf: fzf
 
     #tmux
-    ~/.tmux/plugins/tpm:
-         create: true
-         path: tpm
+    ~/.tmux/plugins/tpm: tpm
 
     #clang things
     ~/.config/clangd: nvidia/clangd
@@ -31,6 +32,9 @@
 
     #neovimn
     ~/.config/nvim: nvim
+
+    #nix
+    ~/.config/nix: nix
 
 - create:
     - ~/Downloads
@@ -41,3 +45,4 @@
   - [ git submodule update --init --recursive, Installing submodules]
   - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux_impl.conf ~/.tmux.conf, setting tmux local conf]
   - cp atuin/* ~/.config/atuin/
+  - [~/.fzf/install, install fzf]

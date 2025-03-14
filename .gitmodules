@@ -8,3 +8,6 @@
 [submodule "tpm"]
 	path = tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "fzf"]
+	path = fzf
+	url = https://github.com/junegunn/fzf.git
