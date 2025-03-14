@@ -14,3 +14,6 @@
 [submodule "pyenv-virtualenv"]
 	path = pyenv-virtualenv
 	url = https://github.com/pyenv/pyenv-virtualenv
+[submodule "neovim"]
+	path = neovim
+	url = https://github.com/neovim/neovim.git
