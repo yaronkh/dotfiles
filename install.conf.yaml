@@ -36,6 +36,10 @@
     #nix
     ~/.config/nix: nix
 
+    #pyenv
+    ~/.pyenv: pyenv
+    ~/dotfiles/pyenv/plugins/pyenv-virtualenv: pyenv-virtualenv
+
 - create:
     - ~/Downloads
     - ~/.config/atuin
@@ -46,3 +50,6 @@
   - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux_impl.conf ~/.tmux.conf, setting tmux local conf]
   - cp atuin/* ~/.config/atuin/
   - [~/.fzf/install, install fzf]
+  - [test -d pyenv/versions/3.11.0 || ( eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv install 3.11.0 ), installing python]
+  - [test -L ./pyenv/versions/nvim || ( eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv virtualenv 3.11.0 nvim ), creating nvim virtenv ]
+  - [eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv version nvim && pip install -r requirements.txt]
