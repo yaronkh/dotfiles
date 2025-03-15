@@ -1,7 +1,7 @@
 - defaults:
     link:
       relink: true
-      relative: true
+      relative: false
       create: true
 
 - clean:
@@ -34,7 +34,7 @@
     ~/.config/nvim: nvim
 
     #nix
-    ~/.config/nix: nix
+    #~/.config/nix: nix
 
     #pyenv
     ~/.pyenv: pyenv
