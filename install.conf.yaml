@@ -49,7 +49,7 @@
 
 - shell:
   - [ git submodule update --init --recursive, Installing submodules]
-  - [ install_me/verify_ubuntu_packages.sh install_me/packages_ubuntu.txt, verify that all prereq installed ]
+  - [ install_me/install_ubuntu_packages.sh install_me/packages_ubuntu.txt, verify that all prereq installed (on error run this command as root) ]
   - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux_impl.conf ~/.tmux.conf, setting tmux local conf]
   - cp atuin/* ~/.config/atuin/
   - [~/.fzf/install, install fzf]

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -x
-if [ -z "$1"]; 
+if [ -z "$1"];
 then
 	echo "specify installation type: [client/laptop/server]" 1>&2
 	exit 255
