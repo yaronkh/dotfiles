@@ -52,6 +52,7 @@
   - [ install_me/install_ubuntu_packages.sh install_me/packages_ubuntu.txt, verify that all prereq installed (on error run this command as root) ]
   - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux_impl.conf ~/.tmux.conf, setting tmux local conf]
   - [cp atuin/* ~/.config/atuin/, force update atuin conf]
+  - [curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh, install atuin]
   - [~/.fzf/install, install fzf]
   - [test -d pyenv/versions/3.11.0 || ( eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv install 3.11.0 ), installing python]
   - [test -L ./pyenv/versions/nvim || ( eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv virtualenv 3.11.0 nvim ), creating nvim virtenv ]
