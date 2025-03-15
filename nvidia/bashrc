@@ -178,7 +178,7 @@ fi
 #export PYTHONPATH="/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/Management/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/installer/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure:$PYTHONPATH"
 export OP_SESSION_cloudendure="GDqzU98GynjFvl2jk9Wh8Y_I41LSq_RXRL2uIU-tCdI"
 
-export PATH=$HOME/.toolbox/bin:/home/ykahanovitch/.cargo/bin:$PATH
+export PATH=$HOME/.toolbox/bin:$PATH
 
 NVIMCMD=$(which nvim)
 
@@ -186,7 +186,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 source ~/dotfiles/local/nvim.bash
-. "$HOME/.cargo/env"
 
 . "$HOME/.atuin/bin/env"
 
