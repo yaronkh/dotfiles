@@ -51,10 +51,12 @@
   - [ git submodule update --init --recursive, Installing submodules]
   - [ install_me/install_ubuntu_packages.sh install_me/packages_ubuntu.txt, verify that all prereq installed (on error run this command as root) ]
   - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux_impl.conf ~/.tmux.conf, setting tmux local conf]
-  - cp atuin/* ~/.config/atuin/
+  - [cp atuin/* ~/.config/atuin/, force update atuin conf]
   - [~/.fzf/install, install fzf]
   - [test -d pyenv/versions/3.11.0 || ( eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv install 3.11.0 ), installing python]
   - [test -L ./pyenv/versions/nvim || ( eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv virtualenv 3.11.0 nvim ), creating nvim virtenv ]
   - [eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv version nvim && pip install -r requirements.txt]
   - [curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | NVM_DIR="$HOME/.config/nvm" bash, Install nvm]
   - [\. "$HOME/.config/nvm/nvm.sh" && nvm install 22, install nodejs]
+  - [install_me/install_tmux2.sh, installing tmux]
+  - [install_me/install_neovim2.sh, install neovim]
