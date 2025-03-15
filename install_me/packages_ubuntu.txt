@@ -6,7 +6,6 @@ bison
 libevent-dev
 autotools-dev
 libncurses5-dev
-libncursesw5-dev
 jq
 curl
 libffi-dev
