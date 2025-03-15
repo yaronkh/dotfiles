@@ -27,8 +27,8 @@
 
     #clang things
     ~/.config/clangd: nvidia/clangd
-    ~/clang-tidy: nvidia/clang-tidy
-    ~/clang-format: nvidia/clang-format
+    ~/.clang-tidy: nvidia/clang-tidy
+    ~/.clang-format: nvidia/clang-format
 
     #neovimn
     ~/.config/nvim: nvim
