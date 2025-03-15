@@ -17,3 +17,6 @@
 [submodule "neovim"]
 	path = neovim
 	url = https://github.com/neovim/neovim.git
+[submodule "tmux"]
+	path = tmux
+	url = https://github.com/tmux/tmux.git
