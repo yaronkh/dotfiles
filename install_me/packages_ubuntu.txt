@@ -22,3 +22,7 @@ zip
 gettext
 cmake
 ninja-build
+clang
+clangd
+clang-tidy
+clang-format
