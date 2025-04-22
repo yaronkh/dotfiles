@@ -329,6 +329,7 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+vim.diagnostic.config({ virtual_text = true })
 
 local file_exists = function(name)
    local f=io.open(name,"r")
@@ -357,6 +358,10 @@ end,
 vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('UserLspConfig', {}),
         callback = function(ev)
+                local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                if client:supports_method('textDocument/completion') then
+                        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true  })
+                end
                 local whichkey = require("which-key")
                 -- Enable completion triggered by <c-x><c-o>
                 vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
@@ -436,4 +441,5 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/treesitter.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dap.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/trouble.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
+dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/copilot.lua")
 

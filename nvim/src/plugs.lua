@@ -49,6 +49,7 @@ packer.startup(function(use)
         end
     }
     -- doorboy - doorboy.vim is a smart plugin that serves you around brackets((){}[]) and quotations('`").
+    use 'github/copilot.vim'
     use 'itmammoth/doorboy.vim'
     use 'wbthomason/packer.nvim'
     use 'WhoIsSethDaniel/mason-tool-installer.nvim'
