@@ -1,6 +1,9 @@
 [core]
     editor = nvim
-	pager = less -FMRiX
+[pager]
+        log = bat -l \"Git Log\"
+        diff = bat -l Diff
+        help = bat -plhelp
 [user]
 	name = Yaron Kahanovitch
 	email = ykahanovitch@nvidia.com
@@ -33,3 +36,5 @@
     trustExitCode = false
 [merge]
         tool = kdiff3
+[man]
+	pager = bat

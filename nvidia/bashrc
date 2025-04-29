@@ -35,6 +35,16 @@ function get_tmux_opt {
         tmux show -v "@$1_$2"
 }
 
+function colorize_less {
+        export LESS_TERMCAP_mb=$'\e[1;32m'
+        export LESS_TERMCAP_md=$'\e[1;32m'
+        export LESS_TERMCAP_me=$'\e[0m'
+        export LESS_TERMCAP_se=$'\e[0m'
+        export LESS_TERMCAP_so=$'\e[01;33m'
+        export LESS_TERMCAP_ue=$'\e[0m'
+        export LESS_TERMCAP_us=$'\e[1;4;31m'
+}
+
 #NOTE we use Virtualenv to run python in a preconfigured box!!
 #export PYTHONPATH=$HOME/dev/CloudEndure/Management/src
 
@@ -196,3 +206,4 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 eval "$(bat --completion bash)"
+colorize_less
