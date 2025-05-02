@@ -45,6 +45,23 @@ function colorize_less {
         export LESS_TERMCAP_us=$'\e[1;4;31m'
 }
 
+function colorize_man {
+        export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+        export MANROFFOPT="-c"
+}
+
+function cat {
+        bat -p --paging=never $@
+}
+
+function bless {
+        bat -p $@
+}
+
+function hl {
+        command $1 --help | bat -plhelp
+}
+
 #NOTE we use Virtualenv to run python in a preconfigured box!!
 #export PYTHONPATH=$HOME/dev/CloudEndure/Management/src
 
@@ -207,3 +224,27 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 eval "$(bat --completion bash)"
 colorize_less
+colorize_man
+
+#shopt -s extdebug
+#
+#preexec_invoke_exec () {
+#    [ -n "$COMP_LINE" ] && return  # do nothing if completing
+#    [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return # don't cause a preexec for $PROMPT_COMMAND
+#    local this_command=`HISTTIMEFORMAT= history 1 | sed -e "s/^[ ]*[0-9]*[ ]*//"`;
+#    #echo "this_command: $this_command"
+#
+#    # So that you don't get locked accidentally
+#    if [ "shopt -u extdebug" == "$this_command" ]; then
+#        return 0
+#    fi
+#
+#    # Modify $this_command and then execute it
+#    if [[ "$this_command" == *--help ]]; then
+#            $this_command | bat -plhelp
+#            return 1
+#    fi
+#
+#    return 0
+#}
+#trap 'preexec_invoke_exec' DEBUG

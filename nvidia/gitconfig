@@ -1,7 +1,7 @@
 [core]
     editor = nvim
 [pager]
-        log = bat -l \"Git Log\"
+        log = bat -p -l \"Git Log\"
         diff = bat -l Diff
         help = bat -plhelp
 [user]

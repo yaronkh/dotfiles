@@ -1,0 +1,25 @@
+#!/bin/sh
+EXCLUDES=excludes
+
+BRANCH=`git symbolic-ref --short HEAD`
+REMOTE_DIR=projects/$BRANCH
+MAKE_OPTS="-j clean"
+RSYNC_OPTS="--compress --cvs-exclude --include=core"
+PARALLEL=true
+FILTER_OUT=true
+
+# Repository Settings
+REPO_DIR="$HOME"
+REPO_RPMS="true"
+REPO_MODS="true"
+REPO_SYMS="true"
+COMPRESS_KO='no'
+IS_DEVELOPMENT=yes
+
+echo "-------------------- $BUILD_TYPE: n37-39 --------------------"
+#REMOTE_SERVERS="n34:IM_BOTH=yes:MK_RPM=yes n37:IM_BOTH=yes:MK_RPM=yes n38:IM_BOTH=yes:MK_RPM=yes n39:IM_BOTH=yes:MK_RPM=yes"
+REMOTE_SERVERS="n37:IM_BOTH=yes:MK_RPM=yes:CREATE_PYTHON_TOOLS_EXEC=no"
+#REMOTE_SERVERS="nvme1040:IM_BOTH=yes:MK_RPM=yes:CREATE_PYTHON_TOOLS_EXEC=no"
+#REMOTE_SERVERS="nvme127:IM_BOTH=yes:CREATE_PYTHON_TOOLS_EXEC=no";
+MAKE_OPTS="TCM=TCMR -j clean"
+echo "***************************************************************"
