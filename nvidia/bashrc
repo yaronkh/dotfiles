@@ -1,7 +1,7 @@
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
-      *) return;;
+    *) return;;
 esac
 
 export TERM=xterm-256color
@@ -28,38 +28,38 @@ export PATH=~/.bin:$PATH
 export XDG_CONFIG_HOME=~/.config
 
 function set_tmux_opt {
-        tmux set -q "@$1_$TMUX_PANE" "$2"
+    tmux set -q "@$1_$TMUX_PANE" "$2"
 }
 
 function get_tmux_opt {
-        tmux show -v "@$1_$2"
+    tmux show -v "@$1_$2"
 }
 
 function colorize_less {
-        export LESS_TERMCAP_mb=$'\e[1;32m'
-        export LESS_TERMCAP_md=$'\e[1;32m'
-        export LESS_TERMCAP_me=$'\e[0m'
-        export LESS_TERMCAP_se=$'\e[0m'
-        export LESS_TERMCAP_so=$'\e[01;33m'
-        export LESS_TERMCAP_ue=$'\e[0m'
-        export LESS_TERMCAP_us=$'\e[1;4;31m'
+    export LESS_TERMCAP_mb=$'\e[1;32m'
+    export LESS_TERMCAP_md=$'\e[1;32m'
+    export LESS_TERMCAP_me=$'\e[0m'
+    export LESS_TERMCAP_se=$'\e[0m'
+    export LESS_TERMCAP_so=$'\e[01;33m'
+    export LESS_TERMCAP_ue=$'\e[0m'
+    export LESS_TERMCAP_us=$'\e[1;4;31m'
 }
 
 function colorize_man {
-        export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-        export MANROFFOPT="-c"
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export MANROFFOPT="-c"
 }
 
 function cat {
-        bat -p --paging=never $@
+    bat -p --paging=never $@
 }
 
 function bless {
-        bat -p $@
+    bat -p $@
 }
 
 function hl {
-        command $1 --help | bat -plhelp
+    command $1 --help | bat -plhelp
 }
 
 #NOTE we use Virtualenv to run python in a preconfigured box!!
@@ -105,12 +105,12 @@ esac
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
     else
-	color_prompt=
+        color_prompt=
     fi
 fi
 
@@ -126,11 +126,11 @@ unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
+    xterm*|rxvt*)
+        PS1="\[\e]0;\u@\h: \w\a\]$PS1"
+        ;;
+    *)
+        ;;
 esac
 
 # enable color support of ls and also add handy aliases
@@ -173,11 +173,11 @@ fi
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 if [ -e /usr/bin/aws_completer ]; then
@@ -185,21 +185,21 @@ if [ -e /usr/bin/aws_completer ]; then
 fi
 
  # if the command-not-found package is installed, use it
-if [ -x /usr/lib/command-not-found -o -x /usr/share/command-not-found/command-not-found ]; then
-    function command_not_found_handle {
-        # check because c-n-f could've been removed in the meantime
-        if [ -x /usr/lib/command-not-found ]; then
-	   /usr/lib/command-not-found -- "$1"
-           return $?
-        elif [ -x /usr/share/command-not-found/command-not-found ]; then
-	   /usr/share/command-not-found/command-not-found -- "$1"
-           return $?
-	else
-	   printf "%s: command not found\n" "$1" >&2
-	   return 127
-	fi
-    }
-fi
+ if [ -x /usr/lib/command-not-found -o -x /usr/share/command-not-found/command-not-found ]; then
+     function command_not_found_handle {
+         # check because c-n-f could've been removed in the meantime
+         if [ -x /usr/lib/command-not-found ]; then
+             /usr/lib/command-not-found -- "$1"
+             return $?
+         elif [ -x /usr/share/command-not-found/command-not-found ]; then
+             /usr/share/command-not-found/command-not-found -- "$1"
+             return $?
+         else
+             printf "%s: command not found\n" "$1" >&2
+             return 127
+         fi
+     }
+ fi
 
 #alias ly='~/dev/CloudEndure/scripts/dev/.env-pylint/bin/pylint  --reports=no --output-format=colorized --rcfile ~/dev/CloudEndure/.pylintrc'
 #export PYTHONPATH="/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/Management/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure/installer/src:/home/ANT.AMAZON.COM/kahayaro/dev/CloudEndure:$PYTHONPATH"

@@ -234,7 +234,7 @@ function! GetMeIdent(tabsize)
         setlocal noexpandtab
     else
         setlocal expandtab
-        setlocal shiftwidth=a:tabsize
+        let &shiftwidth = 4
     endif
 endfunction
 
