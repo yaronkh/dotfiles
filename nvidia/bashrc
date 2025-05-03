@@ -59,7 +59,7 @@ function bless {
 }
 
 function hl {
-    command $1 --help | bat -plhelp
+    command $@ --help | bat -plhelp
 }
 
 #NOTE we use Virtualenv to run python in a preconfigured box!!

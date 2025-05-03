@@ -48,6 +48,13 @@ packer.startup(function(use)
             }
         end
     }
+    use{
+            'MeanderingProgrammer/render-markdown.nvim',
+            requires = { {'echasnovski/mini.nvim'}, {'nvim-tree/nvim-web-devicons'}}, -- if you use the mini.nvim suite
+            config = function()
+                    require('render-markdown').setup({})
+            end,
+    }
     -- doorboy - doorboy.vim is a smart plugin that serves you around brackets((){}[]) and quotations('`").
     use 'github/copilot.vim'
     use 'itmammoth/doorboy.vim'

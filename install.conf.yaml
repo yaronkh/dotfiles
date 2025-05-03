@@ -57,7 +57,7 @@
   - [~/.fzf/install, install fzf]
   - [test -d pyenv/versions/3.11.0 || ( eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv install 3.11.0 ), installing python]
   - [test -L ./pyenv/versions/nvim || ( eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv virtualenv 3.11.0 nvim ), creating nvim virtenv ]
-  - [eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv version nvim && pip install -r requirements.txt]
+  - [eval "$(~/.pyenv/bin/pyenv init -)" && ~/.pyenv/bin/pyenv version nvim && pip install -U -r requirements.txt]
   - [curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | NVM_DIR="$HOME/.config/nvm" bash, Install nvm]
   - [\. "$HOME/.config/nvm/nvm.sh" && nvm install 22, install nodejs]
   - [install_me/install_tmux2.sh, installing tmux]
