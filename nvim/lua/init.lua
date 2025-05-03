@@ -442,4 +442,3 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dap.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/trouble.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/copilot.lua")
-
