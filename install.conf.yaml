@@ -46,7 +46,7 @@
     - ~/.config/clangd
     - ~/dotfiles/build
     - ~/.config/nvm
-    - ~/bat
+    - ~/dotfiles/bat
 
 - shell:
   - [ git submodule update --init --recursive, Installing submodules]
