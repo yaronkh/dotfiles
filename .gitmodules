@@ -20,3 +20,6 @@
 [submodule "tmux"]
 	path = tmux
 	url = https://github.com/tmux/tmux.git
+[submodule "bat-extras"]
+	path = bat-extras
+	url = https://github.com/eth-p/bat-extras.git

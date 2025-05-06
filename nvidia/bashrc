@@ -54,6 +54,14 @@ function cat {
     bat -p --paging=never $@
 }
 
+function tail {
+    if [ "$1" == "-f" ]; then
+        tail -f $2 | bat --paging=never -l log
+    else
+        $@
+    fi
+}
+
 function bless {
     bat -p $@
 }
@@ -225,6 +233,7 @@ export NVM_DIR="$HOME/.config/nvm"
 eval "$(bat --completion bash)"
 colorize_less
 colorize_man
+export DELTA_FEATURES=+side-by-side
 
 #shopt -s extdebug
 #

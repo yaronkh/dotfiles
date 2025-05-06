@@ -7,3 +7,8 @@ version=$(git tag | sort -V | tail -1)
 git reset --hard "${version}" || exit 1
 cd ../
 cargo install --locked --root ~/dotfiles/build bat
+
+cd ~/dotfiles/bat-extras
+./build.sh
+cp bin/* ../build/bin/
+
