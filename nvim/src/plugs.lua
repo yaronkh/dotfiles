@@ -292,5 +292,17 @@ packer.startup(function(use)
     }
     use 'Marskey/telescope-sg'
 
+    use {
+        "Exafunction/windsurf.nvim",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/nvim-cmp",
+        },
+        config = function()
+            require("codeium").setup({
+            })
+        end
+    }
+
 end)
 
