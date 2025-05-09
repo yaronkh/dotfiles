@@ -292,6 +292,15 @@ packer.startup(function(use)
     }
     use 'Marskey/telescope-sg'
 
+    use 'onsails/lspkind.nvim'
+
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/nvim-cmp'
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'uga-rosa/cmp-dictionary'
+    use ' f3fora/cmp-spell'
+    use 'lukas-reineke/cmp-rg'
+
     use {
         "Exafunction/windsurf.nvim",
         requires = {

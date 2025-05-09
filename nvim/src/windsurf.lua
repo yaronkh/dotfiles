@@ -1,3 +1,23 @@
+require("cmp").setup({
+        sources = require("cmp").config.sources(
+                {{name ="codeium"}},
+                {{name = "nvim_lsp"}},
+                {{ name = "path" }},
+                -- {{ name = "dictionary" }},
+                -- {{ name = "spell" }},
+                -- {{ name = "rg" }},
+                {{ name = "cmdline"}}
+        ),
+        formatting = {
+                format = require('lspkind').cmp_format({
+                        mode = "symbol",
+                        maxwidth = 50,
+                        ellipsis_char = '...',
+                        symbol_map = { Codeium = "", }
+                })
+        }
+})
+
 require("codeium").setup({
     -- Optionally disable cmp source if using virtual text only
     enable_cmp_source = false,
@@ -42,4 +62,6 @@ require("codeium").setup({
 })
 
 vim.g.codeium_token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjNmOWEwNTBkYzRhZTgyOGMyODcxYzMyNTYzYzk5ZDUwMjc3ODRiZTUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiWWFyb24gS2FoYW5vdml0Y2giLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZXhhMi1mYjE3MCIsImF1ZCI6ImV4YTItZmIxNzAiLCJhdXRoX3RpbWUiOjE3NDY2OTAwMDYsInVzZXJfaWQiOiJEdGtBb0xCT1dSWmZteXgwQmxlczdDbUdCY24xIiwic3ViIjoiRHRrQW9MQk9XUlpmbXl4MEJsZXM3Q21HQmNuMSIsImlhdCI6MTc0NjY5MzI2OSwiZXhwIjoxNzQ2Njk2ODY5LCJlbWFpbCI6InlrYWhhbm92aXRjaEBudmlkaWEuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsic2FtbC5udmlkaWEiOlsieWthaGFub3ZpdGNoQG52aWRpYS5jb20iXSwiZW1haWwiOlsieWthaGFub3ZpdGNoQG52aWRpYS5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJzYW1sLm52aWRpYSIsInNpZ25faW5fYXR0cmlidXRlcyI6eyJmaXJzdE5hbWUiOiJZYXJvbiIsImxhc3ROYW1lIjoiS2FoYW5vdml0Y2giLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL2lkZW50aXR5L2NsYWltcy9kaXNwbGF5bmFtZSI6Illhcm9uIEthaGFub3ZpdGNoIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS9pZGVudGl0eS9jbGFpbXMvdGVuYW50aWQiOiI0MzA4M2QxNS03MjczLTQwYzEtYjdkYi0zOWVmZDljY2MxN2EiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL2lkZW50aXR5L2NsYWltcy9pZGVudGl0eXByb3ZpZGVyIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNDMwODNkMTUtNzI3My00MGMxLWI3ZGItMzllZmQ5Y2NjMTdhLyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vaWRlbnRpdHkvY2xhaW1zL29iamVjdGlkZW50aWZpZXIiOiJjMDU2ZTE1MC05YjhjLTRkNmYtOWU1Ni0zNjllY2QyM2I3YzUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJZYXJvbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJ5a2FoYW5vdml0Y2hAbnZpZGlhLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vY2xhaW1zL2F1dGhubWV0aG9kc3JlZmVyZW5jZXMiOlsiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2F1dGhlbnRpY2F0aW9ubWV0aG9kL3Bhc3N3b3JkIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS9jbGFpbXMvbXVsdGlwbGVhdXRobiJdLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zdXJuYW1lIjoiS2FoYW5vdml0Y2giLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ5a2FoYW5vdml0Y2hAbnZpZGlhLmNvbSJ9fX0.s3VoAerPc17NgwuRAdF1vb8L4R3tAhOwW5uG8e_LTSmbJjcElJks98emB_poG55aT_hi7HM1T7bNeqSI9VAiisQ9O3lE1gM4mNQumIIaWrNeGvLBhS-ycuhgjsjeVAfOVqN3pVKjXfWJgXnBgH04toRJu7aR0mExNnvndbt4gkMFkgz9hnnsTZuj1aNcG_Hqk5xx5tuvh0Bu4fITnUwcJt0hyFD417ndCZ9pGao8xilZy8d5wkLzoitrViIapEWgONA0mzn8SUXk1lrxcLc8QSBVLivU67JcOx9i7pFT7Q1yc7HAuoeuwxvRwxR3QIyCWjZq9mbnTrTRMmASd9icHw'
+
+--local cmp = require("cmp")
 
