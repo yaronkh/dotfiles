@@ -448,3 +448,11 @@ vim.cmd("Copilot disable")
 --        suggestions = false
 --})
 
+-- set capabilities so the window will be taken from nvim-cmp
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+for _, v in pairs(lsp_items) do
+        lspconfig[v.lspc_name].setup({
+                capabilities = capabilities
+        })
+end
+
