@@ -1,5 +1,6 @@
 local lsp_items = {
         { mason_name = "jdtls",                      lspc_name = "jdtls",     cfg = { cmd = { 'jdtls', }, }, },
+        { mason_name = "jsonls",                      lspc_name = "jsonls",     cfg = {}, },
         { mason_name = "typescript-language-server", lspc_name = "ts_ls",  cfg = {} },
         { mason_name = "smithy-language-server",     lspc_name = "smithy_ls", cfg = {} },
         {
@@ -455,4 +456,7 @@ for _, v in pairs(lsp_items) do
                 capabilities = capabilities
         })
 end
+require'lspconfig'.jsonls.setup {
+  capabilities = capabilities,
+}
 

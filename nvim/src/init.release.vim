@@ -169,7 +169,7 @@ let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
 let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 "" automatically open and close the popup menu / preview window
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menuone,menu,longest,preview
+"set completeopt=menuone,menu,longest
 
 " " generate datebases in my cache directory, prevent gtags files polluting my project
 let g:gutentags_cache_dir = expand('~/.cache/tags')
@@ -264,7 +264,7 @@ set hlsearch
 set cmdheight=1
 "set number
 set wildmode=list:longest,full
-set completeopt=longest,menuone
+set completeopt=
 set nowrap
 "set colorcolumn=80
 nnoremap <C-q> <C-v>

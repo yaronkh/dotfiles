@@ -53,6 +53,11 @@ cmp.setup({
                                 { name = 'nvim_lsp' },
                                 { name = "path" },
                                 { name = 'cmdline' },
+                                -- { name ='buffer-lines' },
+                                -- { name = 'cmd' },
+                                { name = 'spell' },
+                                { name = 'tmux' },
+                                { name = "codeium" },
                                 -- { name = 'rg' },
                                 { name = 'buffer' },
                         --        -- { name = 'vsnip' }, -- For vsnip users.
@@ -68,7 +73,7 @@ cmp.setup({
                                         mode = "symbol",
                                         maxwidth = 50,
                                         ellipsis_char = '...',
-                                        symbol_map = { Codeium = "", }
+                                        symbol_map = {Codeium = ""}
                                 })
                         }
 

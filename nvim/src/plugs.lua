@@ -183,7 +183,7 @@ packer.startup(function(use)
     --  code completer for python, that uses jedi library
     --  I've exanded that to include 'goto-definition' and
     --  where used
-    use 'davidhalter/jedi-vim'
+    -- use 'davidhalter/jedi-vim'
 
     --  plugin to python debugger. This plugin is deprecated
     --  in favor of vimspector with debugpy
@@ -298,9 +298,11 @@ packer.startup(function(use)
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'uga-rosa/cmp-dictionary'
-    use ' f3fora/cmp-spell'
+    use 'f3fora/cmp-spell'
     use 'lukas-reineke/cmp-rg'
     use 'hrsh7th/cmp-omni'
+    use 'amarz45/nvim-cmp-buffer-lines'
+    use 'andersevenrud/cmp-tmux'
 
     use {
         "Exafunction/windsurf.nvim",
