@@ -453,8 +453,7 @@ function! GetFileNameForBuffer()
 endfunction
 
 let g:airline_section_c = "%{GetFileNameForBuffer()}"
-let g:airline_section_y = ""
-let g:airline_section_x = ""
+let g:airline_section_x = "%{luaeval(\"vim.bo.filetype .. require('codeium.virtual_text').status_string()\")}"
 let g:airline_extensions = ["ale", "searchcount"]
 let g:airline#extensions#default#section_truncate_width = {
       \ 'a': 80,
@@ -464,7 +463,7 @@ let g:airline#extensions#default#section_truncate_width = {
       \ }
 let g:airline#extensions#default#layout = [
       \ [ 'a', 'b', 'c'],
-      \ ['z', 'error']
+      \ ['x', 'z', 'error']
       \ ]
 
 function! UpdateAirlineFileneames()
