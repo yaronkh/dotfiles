@@ -300,6 +300,7 @@ packer.startup(function(use)
     use 'uga-rosa/cmp-dictionary'
     use ' f3fora/cmp-spell'
     use 'lukas-reineke/cmp-rg'
+    use 'hrsh7th/cmp-omni'
 
     use {
         "Exafunction/windsurf.nvim",

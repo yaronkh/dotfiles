@@ -3,6 +3,7 @@ require("cmp").setup({
                 {{name ="codeium"}},
                 {{name = "nvim_lsp"}},
                 {{ name = "path" }},
+                {{ name = "Omni" }},
                 -- {{ name = "dictionary" }},
                 -- {{ name = "spell" }},
                 -- {{ name = "rg" }},
