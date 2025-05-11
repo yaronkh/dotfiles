@@ -264,7 +264,7 @@ set hlsearch
 set cmdheight=1
 "set number
 set wildmode=list:longest,full
-set completeopt=
+set completeopt=noinsert
 set nowrap
 "set colorcolumn=80
 nnoremap <C-q> <C-v>
