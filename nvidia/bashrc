@@ -240,6 +240,8 @@ colorize_less
 colorize_man
 export DELTA_FEATURES=+side-by-side
 
+eval $(batpipe)
+
 #shopt -s extdebug
 #
 #preexec_invoke_exec () {
