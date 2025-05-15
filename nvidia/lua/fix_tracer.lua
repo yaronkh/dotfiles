@@ -20,7 +20,7 @@ local function start_build()
         vim.fn.jobstart(cmd, {
                   on_exit = function()
                           local sout = table.concat(result, "\n")
-                          print(sout)
+                          -- print(sout)
                           if ends_with(sout, "0\n") then
                                   if string.find(sout, "Nothing to be done") == nil then
                                           vim.cmd("LspRestart")
@@ -28,6 +28,9 @@ local function start_build()
                           end
                           s_mode = false
                           -- vim.api.nvim_echo({ { sout, "Normal" } }, false, {})
+                  end,
+                  on_stderr = function(_, data, _)
+                          result[#result + 1] = data[1]
                   end,
                   on_stdout = function(_, data, _)
                           result[#result + 1] = data[1]
