@@ -151,15 +151,15 @@ class VimInstance(object):
         ffname = os.path.basename(file_name)
         temp_fn = os.path.join(tempfile.gettempdir(), '{1}-{2}.{0}'.format(ffname, self.pid, forpid))
         subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-expr', 'execute("write {0}")'.format(temp_fn)])
-        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
+        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\\><C-N>:bd!<CR>'])
         file_obj.show()
-        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
+        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\\><C-N>:bd!<CR>'])
         return temp_fn
 
     def close_file(self, file_name):
         file_obj = self.files[file_name]
         file_obj.show()
-        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\><C-N>:bd!<CR>'])
+        subprocess.check_call([VimComm.vim_client, '--servername', self.name, '--remote-send', '<C-\\><C-N>:bd!<CR>'])
 
     def open_file(self, file_name):
         if file_name != None and len(file_name):
