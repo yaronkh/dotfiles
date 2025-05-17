@@ -49,9 +49,22 @@ local lsp_items = {
                         },
                 }
         },
+        { mason_name = "pyright", lspc_name = "pyright", },
         {
-                mason_name = "pyright",
-                lspc_name = "pyright",
+                mason_name = "pylsp",
+                lspc_name = "pylsp",
+                cfg = {
+                        settings = {
+                                pylsp = {
+                                        plugins = {
+                                                pycodestyle = {
+                                                        ignore = {'W391'},
+                                                        maxLineLength = 120
+                                                }
+                                        }
+                                }
+                        }
+                }
         },
         { mason_name = "clangd",               lspc_name = "clangd", cfg = {} },
 }
@@ -417,11 +430,14 @@ local setup_data = {
 mason_tool.setup(setup_data)
 
 for _, v in pairs(lsp_items) do
-        if v.cfg == nil then
-                v.cfg = {}
-        end
-        if next(v.cfg) ~= nil then
-                vim.lsp.config(v.lspc_name, v.cfg)
+        local lsp_name = v.lspc_name
+        if lsp_name ~= nil then
+                if v.cfg == nil then
+                        v.cfg = {}
+                end
+                if next(v.cfg) ~= nil then
+                        vim.lsp.config(v.lspc_name, v.cfg)
+                end
         end
         --lspconfig[v.lspc_name].setup(v.cfg)
 end
@@ -439,8 +455,11 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
 -- set capabilities so the window will be taken from nvim-cmp
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, v in pairs(lsp_items) do
-        vim.lsp.config(v.lspc_name, { capabilities = capabilities })
-        vim.lsp.enable(v.lspc_name)
+        local lsp_name = v.lspc_name
+        if lsp_name ~= nil then
+                vim.lsp.config(lsp_name, { capabilities = capabilities })
+                vim.lsp.enable(lsp_name)
+        end
         -- lspconfig[v.lspc_name].setup({
         --         capabilities = capabilities
         -- })

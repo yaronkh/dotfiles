@@ -139,7 +139,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ale_floating_preview = 1
 let g:ale_hover_to_preview = 1
 
-let g:ale_linters = {  'c': ['clangd', "clangtidy"]}
+let g:ale_linters = {  'c': ['clangd', "clangtidy"], 'python': []}
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
@@ -602,7 +602,6 @@ augroup my_tmux
     nnoremap z= :call FzfSpell()<CR>
     inoremap <Leader>li :LinuxCodingStyle<cr>
     nnoremap <C-d> :call InsertDate()<cr>
-    " nnoremap <F10> :call LaunchIpythonInTmux()<CR>
     nnoremap <F1> :call OpenVimTmuxTerm()<CR>
     nnoremap <F2> :call OpenVimBufTmuxTerm()<CR>
     inoremap <C-d> <C-o>:call InsertDate() <CR>
@@ -662,11 +661,6 @@ function! BrazilRecuriseBuild()
     copen
     call BrazilSetErrFormat()
     :AsyncRun brazil-recursive-cmd brazil-build
-endfunction
-
-function! LaunchIpythonInTmux()
-    let g:ipythPaneId = system("cd test && tmux splitw -v -P -F \"#{pane_id}\" brazil-test-exec ipython")
-    exec ":call system('tmux set -q @vim_server " . v:servername . "')"
 endfunction
 
 function! OpenVimTmuxTerm()
