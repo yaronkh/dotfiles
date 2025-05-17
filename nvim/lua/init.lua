@@ -50,23 +50,8 @@ local lsp_items = {
                 }
         },
         {
-                mason_name = "python-lsp-server",
-                lspc_name = "pylsp",
-                cfg = {
-                        settings = {
-                                pylsp = {
-                                        plugins = {
-                                                pylint = { enabled = false, },
-                                                pyls_mypy = { enabled = false, },
-                                                black = { enabled = false },
-                                                pyls_flake8 = { enabled = false },
-                                                autopep8 = { enabled = false },
-                                                pycodestyle = { enabled = false },
-                                                pyflakes = { enabled = false },
-                                        }
-                                }
-                        }
-                }
+                mason_name = "pyright",
+                lspc_name = "pyright",
         },
         { mason_name = "clangd",               lspc_name = "clangd", cfg = {} },
 }
@@ -430,10 +415,15 @@ local setup_data = {
         run_on_start = true,
 }
 mason_tool.setup(setup_data)
-local lspconfig = require 'lspconfig'
 
 for _, v in pairs(lsp_items) do
-        lspconfig[v.lspc_name].setup(v.cfg)
+        if v.cfg == nil then
+                v.cfg = {}
+        end
+        if next(v.cfg) ~= nil then
+                vim.lsp.config(v.lspc_name, v.cfg)
+        end
+        --lspconfig[v.lspc_name].setup(v.cfg)
 end
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/clangd.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/telescope.lua")
@@ -444,17 +434,16 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/trouble.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
 -- dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/copilot.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
-vim.cmd("Copilot disable")
---require("copilot").setup({
---        suggestions = false
---})
+--vim.cmd("Copilot disable")
 
 -- set capabilities so the window will be taken from nvim-cmp
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, v in pairs(lsp_items) do
-        lspconfig[v.lspc_name].setup({
-                capabilities = capabilities
-        })
+        vim.lsp.config(v.lspc_name, { capabilities = capabilities })
+        vim.lsp.enable(v.lspc_name)
+        -- lspconfig[v.lspc_name].setup({
+        --         capabilities = capabilities
+        -- })
 end
 require'lspconfig'.jsonls.setup {
   capabilities = capabilities,

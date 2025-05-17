@@ -8,7 +8,7 @@ let g:update_clangd_fn = stdpath('config') . '/clangd_ver_ok'
 augroup ymason
     au!
     "autocmd VimEnter * source ~/dotfiles/nvim/src/telescope.lua
-    autocmd VimEnter * source ~/dotfiles/nvim/lua/init.lua
+    autocmd VimEnter * source ~/dotfiles/nvim/lua/post_init.lua
     autocmd VimEnter * :TSEnable cpp<CR>
 "    autocmd VimEnter * lua require("mason").setup()
 augroup End
@@ -16,6 +16,7 @@ augroup End
 
 source ~/dotfiles/nvim/src/plugs.lua
 source ~/dotfiles/nvidia/nvidia.vim
+source ~/dotfiles/nvim/lua/init.lua
 
 
 " Generation Parameters
@@ -109,16 +110,7 @@ function! ToggleSideHelps()
         call tagbar#ToggleWindow()
         "TagbarToggle
 endfunction
-"nnoremap <C-L> :NERDTreeToggle<CR>:wincmd w<CR>:TagbarToggle<CR>
 nnoremap <C-L> :call ToggleSideHelps()<CR>
-
-
-function! PreparePythonAle()
-    let g:python3_host_prog = trim(system("pyenv which python"))
-    let g:ale_virtualenv_dir_names = [fnamemodify(g:python3_host_prog, ":h:h")]
-    let g:ale_python_mypy_options = "--check-untyped-defs --show-column-numbers"
-    let g:ale_python_flake8_options = '--append-config /home/ykahanovitch/dotfiles/nvidia/flake8'
-endfunction
 
 let g:peekaboo_delay = 10
 
@@ -147,16 +139,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ale_floating_preview = 1
 let g:ale_hover_to_preview = 1
 
-"python linting
-" Check Python files with flake8 and pylint.
-"let b:ale_fixers = ['autopep8', 'yapf']
-"" Disable warnings about trailing whitespace for Python files.
-"let b:ale_warn_about_trailing_whitespace = 0
-"let g:ale_python_pylint_executable = 'pylint'
-let g:ale_python_pylint_options = '--rcfile ~/dotfiles/pylintrc'
-"let g:ale_python_flake8_options = '--config ~/dotfiles/flake8.cfg'
 let g:ale_linters = {  'c': ['clangd', "clangtidy"]}
-call PreparePythonAle()
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
