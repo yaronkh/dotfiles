@@ -1,5 +1,5 @@
 local lsp_items = {
-        { mason_name = "jdtls",                      lspc_name = "jdtls",     cfg = { cmd = { 'jdtls', }, }, },
+        { mason_name = "jdtls",                      lspc_name = "jdtls",     cfg = { cmd = { 'jdtls', }}},
         { mason_name = "jsonls",                      lspc_name = "jsonls",     cfg = {}, },
         { mason_name = "typescript-language-server", lspc_name = "ts_ls",  cfg = {} },
         { mason_name = "smithy-language-server",     lspc_name = "smithy_ls", cfg = {} },
@@ -449,3 +449,6 @@ require'lspconfig'.jsonls.setup {
   capabilities = capabilities,
 }
 
+-- overcome jdtls bug with insertReplaceSupport, for now disable it
+capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
+vim.lsp.config('jdtls', { capabilities = capabilities })

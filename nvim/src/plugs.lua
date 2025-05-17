@@ -75,8 +75,12 @@ packer.startup(function(use)
     --  gdb and debugpy
     use 'puremourning/vimspector'
 
-    --  align text in old c-style fashin style
+    --  align text in old c-style fashion style
     use 'junegunn/vim-easy-align'
+    -- to aling with vim-easy-align to char '=' run :EasyAlign =
+    --
+
+    use 'mhinz/vim-startify'
 
     --  enable tag search in all opened buffers
     use 'vim-scripts/taglist.vim'
