@@ -1,5 +1,4 @@
 build-essential
-cargo
 pkg-config
 gcc
 bison

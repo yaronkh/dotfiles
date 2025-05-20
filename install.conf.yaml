@@ -62,3 +62,4 @@
   - [install_me/install_neovim2.sh, install neovim]
   - [./install_bat.sh, install bat]
   - [cargo install --locked --root ~/dotfiles/build git-delta, install git-delta]
+  - [cargo install --locked --root ~/dotfiles/build pylyzer, install pylyzer]

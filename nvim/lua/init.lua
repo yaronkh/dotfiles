@@ -471,3 +471,6 @@ require'lspconfig'.jsonls.setup {
 -- overcome jdtls bug with insertReplaceSupport, for now disable it
 capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
 vim.lsp.config('jdtls', { capabilities = capabilities })
+
+
+vim.lsp.enable('pylyzer')

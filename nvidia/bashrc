@@ -264,3 +264,4 @@ eval $(batpipe)
 #    return 0
 #}
 #trap 'preexec_invoke_exec' DEBUG
+. "$HOME/.cargo/env"

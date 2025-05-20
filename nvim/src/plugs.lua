@@ -234,7 +234,7 @@ packer.startup(function(use)
     use 'wellle/tmux-complete.vim'
 
     --  Semshi provides semantic highlighting for Python in Neovim
-    use {'numirias/semshi' }
+    -- use {'numirias/semshi' }
 
     --  Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more
     use 'tpope/vim-surround'
@@ -273,6 +273,8 @@ packer.startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate'
     }
+
+    use 'nvim-treesitter/playground'
 
     use 'nvim-tree/nvim-web-devicons'
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'bash -c "cd ~/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim && CC=gcc make > ~/.makeit"' }
