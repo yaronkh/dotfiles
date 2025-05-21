@@ -8,7 +8,7 @@ live_config_reload = true
 draw_bold_text_with_bright_colors = true
 
 [terminal]
-osc52 = "CopyPaste"
+osc52 = "OnlyCopy"
 
 [colors.bright]
 black = "0x686868"
@@ -604,9 +604,6 @@ mouse = "Middle"
 
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
-
-[terminal.shell]
-program = "/bin/bash"
 
 # [small_font]
 # upper_bound = 7.0
