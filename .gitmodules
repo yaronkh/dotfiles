@@ -23,3 +23,6 @@
 [submodule "bat-extras"]
 	path = bat-extras
 	url = https://github.com/eth-p/bat-extras.git
+[submodule "alacritty"]
+	path = alacritty
+	url = https://github.com/alacritty/alacritty.git
