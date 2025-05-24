@@ -1,4 +1,4 @@
-require'lspconfig'.clangd.setup{
+vim.lsp.config.clangd = {
         cmd = {
                 -- see clangd --help-hidden
                 "clangd",
@@ -15,5 +15,7 @@ require'lspconfig'.clangd.setup{
                 "--function-arg-placeholders",
                 "--log=verbose",
         },
+        filetypes = {'c', 'cpp', 'h'},
 }
+vim.lsp.enable("clangd", true)
 

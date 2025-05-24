@@ -66,7 +66,7 @@ local lsp_items = {
                         }
                 }
         },
-        { mason_name = "clangd",               lspc_name = "clangd", cfg = {} },
+        { mason_name = "clangd"},
 }
 
 local DEFAULT_SETTINGS = {
@@ -430,16 +430,12 @@ local setup_data = {
 mason_tool.setup(setup_data)
 
 for _, v in pairs(lsp_items) do
-        local lsp_name = v.lspc_name
-        if lsp_name ~= nil then
-                if v.cfg == nil then
-                        v.cfg = {}
-                end
-                if next(v.cfg) ~= nil then
-                        vim.lsp.config(v.lspc_name, v.cfg)
-                end
+        local lsp_name = v["lspc_name"]
+        local cfg = v["cfg"]
+        if lsp_name and cfg then
+                vim.lsp.config(lsp_name, cfg)
+                vim.lsp.enable(lsp_name)
         end
-        --lspconfig[v.lspc_name].setup(v.cfg)
 end
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/clangd.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/telescope.lua")
@@ -452,25 +448,8 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
 --vim.cmd("Copilot disable")
 
--- set capabilities so the window will be taken from nvim-cmp
+-- enable cmp capabilities to all lsp configs in one sentence
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-for _, v in pairs(lsp_items) do
-        local lsp_name = v.lspc_name
-        if lsp_name ~= nil then
-                vim.lsp.config(lsp_name, { capabilities = capabilities })
-                vim.lsp.enable(lsp_name)
-        end
-        -- lspconfig[v.lspc_name].setup({
-        --         capabilities = capabilities
-        -- })
-end
-require'lspconfig'.jsonls.setup {
-  capabilities = capabilities,
-}
-
--- overcome jdtls bug with insertReplaceSupport, for now disable it
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
-vim.lsp.config('jdtls', { capabilities = capabilities })
-
+vim.lsp.config('*', capabilities)
 
 vim.lsp.enable('pylyzer')

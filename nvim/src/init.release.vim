@@ -139,7 +139,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ale_floating_preview = 1
 let g:ale_hover_to_preview = 1
 
-let g:ale_linters = {  'c': ['clangd', "clangtidy"], 'python': []}
+let g:ale_linters = {  'c': ["clangtidy"], 'python': []}
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1
@@ -562,13 +562,6 @@ augroup debug
      noremap ;` :call KillDbgBuf()
 augroup end
 
-function! CheckClang()
-    if ! filereadable(g:update_clangd_fn)
-        echom 'consider running "CocCommand clangd.Install"'
-        call system('touch ' . g:update_clangd_fn )
-    endif
-endfunction
-
 augroup my_tmux
     autocmd!
     autocmd bufenter * call Panetitle()
@@ -591,7 +584,6 @@ augroup my_tmux
     autocmd InsertLeave *.c,*.sh,*.java,*.j2,*.cpp,*.html,*.py,*.json,*.yml,*.mk,*.vim,COMMIT_EDITMSG call EraseTralingWs()
     autocmd BufWritePre,QuitPre * :call RemoveWhiteSpacesFromGitHunks()
     autocmd BufRead * : call UpdateProjectMap()
-    autocmd BufRead *.c,*.h,*.hpp : call CheckClang()
     autocmd BufDelete * : call UnrefProject()
     autocmd VimLeave * call SaveSess()
     autocmd VimLeavePre * :tabdo NERDTreeClose
@@ -613,7 +605,8 @@ augroup my_tmux
     "map "quote this word
     :nnoremap <Leader>w" ciw""<Esc>P
     :nnoremap <Leader>T" ciW""<Esc>P
-    nnoremap <C-h> :ClangdSwitchSourceHeader<CR>
+    nnoremap <C-h> :LspClangdSwitchSourceHeade <CR>
+
 augroup end
 
 augroup ts_config
