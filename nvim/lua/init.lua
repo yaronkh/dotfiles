@@ -27,28 +27,7 @@ local lsp_items = {
                 }
         },
         { mason_name = "bash-language-server", lspc_name = "bashls", cfg = {} },
-        {
-                mason_name = "lua-language-server",
-                lspc_name = "lua_ls",
-                cfg = {
-                        settings = {
-                                Lua = {
-                                        diagnostics = {
-                                                -- Get the language server to recognize the `vim` global
-                                                globals = { 'vim' },
-                                        },
-                                        workspace = {
-                                                -- Make the server aware of Neovim runtime files
-                                                library = vim.api.nvim_get_runtime_file("", true),
-                                        },
-                                        -- Do not send telemetry data containing a randomized but unique identifier
-                                        telemetry = {
-                                                enable = false,
-                                        },
-                                },
-                        },
-                }
-        },
+        { mason_name = "lua-language-server", },
         { mason_name = "pyright", lspc_name = "pyright", },
         {
                 mason_name = "pylsp",
@@ -437,6 +416,8 @@ for _, v in pairs(lsp_items) do
                 vim.lsp.enable(lsp_name)
         end
 end
+
+dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_cmp.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/clangd.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/telescope.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/codeactions.lua")
@@ -446,10 +427,20 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/trouble.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
 -- dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/copilot.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
+dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_lua.lua")
 --vim.cmd("Copilot disable")
 
 -- enable cmp capabilities to all lsp configs in one sentence
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-vim.lsp.config('*', capabilities)
+vim.lsp.config('*', { capabilities = capabilities})
 
 vim.lsp.enable('pylyzer')
+
+require('lspconfig').clangd.setup {
+        capabilities = capabilities,
+}
+
+
+-- overcome jdtls bug with insertReplaceSupport, for now disable it                                                                                                                      │    │
+--capabilities.textDocument.completion.completionItem.insertReplaceSupport = false                                                                                                         │    │
+-- vim.lsp.config('jdtls', { capabilities = capabilities })

@@ -139,7 +139,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ale_floating_preview = 1
 let g:ale_hover_to_preview = 1
 
-let g:ale_linters = {  'c': ["clangtidy"], 'python': []}
+let g:ale_linters = {  'c': ["clangtidy"], 'python': [], 'lua' : []}
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
 let OmniCpp_NamespaceSearch = 1

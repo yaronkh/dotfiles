@@ -308,7 +308,11 @@ packer.startup(function(use)
     use 'lukas-reineke/cmp-rg'
     use 'hrsh7th/cmp-omni'
     use 'amarz45/nvim-cmp-buffer-lines'
+    use 'hrsh7th/cmp-buffer'
     use 'andersevenrud/cmp-tmux'
+    use 'ray-x/cmp-treesitter'
+    use 'delphinus/cmp-ctags'
+    use 'hrsh7th/cmp-nvim-lsp-signature-help'
 
     use {
         "Exafunction/windsurf.nvim",
