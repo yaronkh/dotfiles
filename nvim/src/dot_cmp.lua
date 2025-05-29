@@ -15,11 +15,11 @@ cmp.setup({
         }),
         sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
-                { name = 'nvim_lsp_signature_help' },
+                -- { name = 'nvim_lsp_signature_help' },
                 { name = "path" },
                 -- { name = 'cmdline' },
                 -- { name ='buffer-lines' },
-                -- { name = 'cmd' },
+                { name = 'cmd' },
                 { name = 'spell' },
                 { name = 'tmux' },
                 { name = "codeium" },
@@ -74,10 +74,11 @@ cmp.setup({
   --        matching = { disallow_symbol_nonprefix_matching = false }
   --})
 
-  -- Set up lspconfig.
-  --local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  ---- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  --require('lspconfig')['clangd'].setup {
-  --        capabilities = capabilities
-  --}
+-- enable cmp capabilities to all lsp configs in one sentence
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+vim.lsp.config('*', { capabilities = capabilities})
+
+require('lspconfig').clangd.setup {
+        capabilities = capabilities,
+}
 

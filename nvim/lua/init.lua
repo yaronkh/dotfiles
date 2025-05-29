@@ -430,17 +430,8 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_lua.lua")
 --vim.cmd("Copilot disable")
 
--- enable cmp capabilities to all lsp configs in one sentence
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-vim.lsp.config('*', { capabilities = capabilities})
-
-vim.lsp.enable('pylyzer')
-
-require('lspconfig').clangd.setup {
-        capabilities = capabilities,
-}
-
 
 -- overcome jdtls bug with insertReplaceSupport, for now disable it                                                                                                                      │    │
 --capabilities.textDocument.completion.completionItem.insertReplaceSupport = false                                                                                                         │    │
 -- vim.lsp.config('jdtls', { capabilities = capabilities })
+vim.lsp.enable('pylyzer')
