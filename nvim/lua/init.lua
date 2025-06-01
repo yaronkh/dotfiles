@@ -29,22 +29,22 @@ local lsp_items = {
         { mason_name = "bash-language-server", lspc_name = "bashls", cfg = {} },
         { mason_name = "lua-language-server", },
         { mason_name = "pyright", lspc_name = "pyright", },
-        {
-                mason_name = "pylsp",
-                lspc_name = "pylsp",
-                cfg = {
-                        settings = {
-                                pylsp = {
-                                        plugins = {
-                                                pycodestyle = {
-                                                        ignore = {'W391'},
-                                                        maxLineLength = 120
-                                                }
-                                        }
-                                }
-                        }
-                }
-        },
+        -- {
+        --         mason_name = "pylsp",
+        --         lspc_name = "pylsp",
+        --         cfg = {
+        --                 settings = {
+        --                         pylsp = {
+        --                                 plugins = {
+        --                                         pycodestyle = {
+        --                                                 ignore = {'W391'},
+        --                                                 maxLineLength = 120
+        --                                         }
+        --                                 }
+        --                         }
+        --                 }
+        --         }
+        -- },
         { mason_name = "clangd"},
 }
 
@@ -400,7 +400,9 @@ require('telescope')
 local mason_tool = require('mason-tool-installer')
 local ensured = {}
 for _, v in pairs(lsp_items) do
-        table.insert(ensured, { v.mason_name, auto_update = true })
+        if v.mason_name then
+                table.insert(ensured, { v.mason_name, auto_update = true })
+        end
 end
 local setup_data = {
         ensure_installed = ensured,
@@ -434,4 +436,5 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_lua.lua")
 -- overcome jdtls bug with insertReplaceSupport, for now disable it                                                                                                                      │    │
 --capabilities.textDocument.completion.completionItem.insertReplaceSupport = false                                                                                                         │    │
 -- vim.lsp.config('jdtls', { capabilities = capabilities })
-vim.lsp.enable('pylyzer')
+-- vim.lsp.enable('pylyzer')
+vim.lsp.enable('pylsp', false)
