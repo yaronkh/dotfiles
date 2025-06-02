@@ -1,8 +1,10 @@
+local restricted_capabilities = vim.lsp.protocol.make_client_capabilities()
+restricted_capabilities.textDocument.definition = nil
 local lsp_items = {
-        { mason_name = "jdtls",                      lspc_name = "jdtls",     cfg = { cmd = { 'jdtls', }}},
-        { mason_name = "jsonls",                      lspc_name = "jsonls",     cfg = {}, },
-        { mason_name = "typescript-language-server", lspc_name = "ts_ls",  cfg = {} },
-        { mason_name = "smithy-language-server",     lspc_name = "smithy_ls", cfg = {} },
+        { mason_name = "jdtls",                      lspc_name = "jdtls"},
+        { mason_name = "jsonls",                      lspc_name = "jsonls"},
+        { mason_name = "typescript-language-server", lspc_name = "ts_ls"},
+        { mason_name = "smithy-language-server",     lspc_name = "smithy_ls"},
         {
                 mason_name = "vim-language-server",
                 lspc_name = "vimls",
@@ -26,25 +28,11 @@ local lsp_items = {
                         vimruntime = ""
                 }
         },
-        { mason_name = "bash-language-server", lspc_name = "bashls", cfg = {} },
+        { mason_name = "bash-language-server", lspc_name = "bashls"},
         { mason_name = "lua-language-server", },
-        { mason_name = "pyright", lspc_name = "pyright", },
-        -- {
-        --         mason_name = "pylsp",
-        --         lspc_name = "pylsp",
-        --         cfg = {
-        --                 settings = {
-        --                         pylsp = {
-        --                                 plugins = {
-        --                                         pycodestyle = {
-        --                                                 ignore = {'W391'},
-        --                                                 maxLineLength = 120
-        --                                         }
-        --                                 }
-        --                         }
-        --                 }
-        --         }
-        -- },
+        { mason_name = "pyright", lspc_name = "pyright", enable = true},
+        { mason_name = "autopep8" },
+        { mason_name = "pylsp",},
         { mason_name = "clangd"},
 }
 
@@ -410,12 +398,21 @@ local setup_data = {
 }
 mason_tool.setup(setup_data)
 
+vim.print(vim.lsp.client.capabilities)
 for _, v in pairs(lsp_items) do
         local lsp_name = v["lspc_name"]
-        local cfg = v["cfg"]
-        if lsp_name and cfg then
-                vim.lsp.config(lsp_name, cfg)
-                vim.lsp.enable(lsp_name)
+        if lsp_name then
+                local cfg = v["cfg"]
+                local enable = v["enable"]
+                -- according to lspconfig help, the default configuration is provided by lspconfig by deafult
+                if cfg then
+                        vim.lsp.config(lsp_name, cfg)
+                end
+                if enable == nil or enable == true then
+                        vim.lsp.enable(lsp_name)
+                else
+                        vim.lsp.enable(lsp_name, false)
+                end
         end
 end
 
@@ -430,11 +427,4 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
 -- dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/copilot.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_lua.lua")
---vim.cmd("Copilot disable")
-
-
--- overcome jdtls bug with insertReplaceSupport, for now disable it                                                                                                                      │    │
---capabilities.textDocument.completion.completionItem.insertReplaceSupport = false                                                                                                         │    │
--- vim.lsp.config('jdtls', { capabilities = capabilities })
--- vim.lsp.enable('pylyzer')
-vim.lsp.enable('pylsp', false)
+dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/pylsp.lua")
