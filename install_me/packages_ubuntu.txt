@@ -25,3 +25,5 @@ clang
 clangd
 clang-tidy
 clang-format
+shellcheck
+shfmt

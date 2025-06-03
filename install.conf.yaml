@@ -64,3 +64,5 @@
   - [cargo install --locked --root ~/dotfiles/build git-delta, install git-delta]
   - [cargo install --locked --root ~/dotfiles/build alacritty, install alacritty]
   - [cargo install --locked --root ~/dotfiles/build pylyzer, install pylyzer]
+  - [npm i -g bash-language-server, install bash-language-server]
+  - [npm install -g dockerfile-language-server-nodejs, install dockerfile-language-server-nodejs]
