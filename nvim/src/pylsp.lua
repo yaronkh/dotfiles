@@ -10,7 +10,8 @@ vim.lsp.config.pylsp = {
                                 flake8 = { enabled = true, config = "max-line-length = 120" },
                                 pylint = { enabled = true, args = { "--max-line-length=120" } },
                                 rope_autoimport = { enabled = true },
-                                pycodestyle = { ignore = {'W391'}, maxLineLength = 120 }
+                                pycodestyle = { ignore = {'W391'}, maxLineLength = 120 },
+                                black = { enabled = true , line_length = 120 },
                         }
                 }
         }

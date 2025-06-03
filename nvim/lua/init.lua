@@ -28,7 +28,7 @@ local lsp_items = {
                         vimruntime = ""
                 }
         },
-        { mason_name = "bash-language-server", lspc_name = "bashls"},
+        -- { mason_name = "bash-language-server", lspc_name = "bashls"},
         { mason_name = "lua-language-server", },
         { mason_name = "pyright", lspc_name = "pyright", enable = true},
         { mason_name = "autopep8" },
@@ -428,3 +428,9 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_lua.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/pylsp.lua")
+dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/bashls.lua")
+
+vim.lsp.enable("GitHub Copilot", false)
+-- vim.lsp.enable("clangd")
+-- vim.lsp.enable("lua_ls")
+-- vim.lsp.enable("gopls")

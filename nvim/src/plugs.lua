@@ -56,7 +56,7 @@ packer.startup(function(use)
             end,
     }
     -- doorboy - doorboy.vim is a smart plugin that serves you around brackets((){}[]) and quotations('`").
-    use 'github/copilot.vim'
+    -- use 'github/copilot.vim'
     use 'itmammoth/doorboy.vim'
     use 'wbthomason/packer.nvim'
     use 'WhoIsSethDaniel/mason-tool-installer.nvim'
@@ -296,6 +296,7 @@ packer.startup(function(use)
             require("telescope").load_extension("live_grep_args")
         end
     }
+    use 'python-lsp/python-lsp-black'
     use 'Marskey/telescope-sg'
 
     use 'onsails/lspkind.nvim'

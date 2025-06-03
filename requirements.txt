@@ -1,6 +1,7 @@
 Arpeggio==2.0.2
 astroid==3.3.10
 asttokens==3.0.0
+python-lsp-black==2.0.0
 cmake==4.0.2
 confluent-kafka==2.10.0
 curses-menu==0.9.0
