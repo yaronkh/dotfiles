@@ -404,14 +404,12 @@ for _, v in pairs(lsp_items) do
         if lsp_name then
                 local cfg = v["cfg"]
                 local enable = v["enable"]
+                enable = (enable == nil) or enable
                 -- according to lspconfig help, the default configuration is provided by lspconfig by deafult
-                if cfg then
+                if cfg and enable then
                         vim.lsp.config(lsp_name, cfg)
-                end
-                if enable == nil or enable == true then
+                elseif enable then
                         vim.lsp.enable(lsp_name)
-                else
-                        vim.lsp.enable(lsp_name, false)
                 end
         end
 end
@@ -431,6 +429,3 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/pylsp.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/bashls.lua")
 
 vim.lsp.enable("GitHub Copilot", false)
--- vim.lsp.enable("clangd")
--- vim.lsp.enable("lua_ls")
--- vim.lsp.enable("gopls")

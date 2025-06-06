@@ -19,6 +19,7 @@ Checks: "*,
         -misc*,
         -clang-diagnostic-error,
         -llvm-include-order,
+        -modernize-macro-to-enum,
 "
 WarningsAsErrors: ''
 HeaderFilterRegex: ''

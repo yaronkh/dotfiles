@@ -17,5 +17,5 @@ vim.lsp.config.clangd = {
         },
         filetypes = {'c', 'cpp', 'h'},
 }
-vim.lsp.enable("clangd", true)
+--vim.lsp.enable("clangd", true)
 

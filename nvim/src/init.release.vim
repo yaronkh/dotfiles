@@ -139,6 +139,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ale_floating_preview = 1
 let g:ale_hover_to_preview = 1
 
+let g:ale_c_clangtidy_extra_options = '--config-file=' . expand('~/dotfiles/nvidia/clang-tidy')
 let g:ale_linters = {  'c': ["clangtidy"], 'python': [], 'lua' : []}
 
 exe "set tags+=" . GetSourceFile("nvim/tags/cpp")
@@ -401,6 +402,7 @@ if argc() > 0
 endif
 
 function! GetLastSessionFn()
+    echom gutentags#get_cachefile(getcwd(), 'LASTSESSION.vim')
     return gutentags#get_cachefile(getcwd(), 'LASTSESSION.vim')
 endfunction
 
