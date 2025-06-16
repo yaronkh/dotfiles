@@ -429,3 +429,15 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/pylsp.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/bashls.lua")
 
 vim.lsp.enable("GitHub Copilot", false)
+
+vim.opt.shellpipe = '2>&1|less'
+vim.opt.shellredir = '2>&1|less'
+--vim.lsp.set_log_level("debug")
+
+--vim.api.nvim_create_autocmd('LspAttach', {
+--        callback = function(args)
+--                local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+--                vim.print("hey started new lsp " .. vim.inspect(args))
+--                vim.print("client: " .. vim.inspect(client))
+--        end
+--})

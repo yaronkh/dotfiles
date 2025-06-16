@@ -1,4 +1,8 @@
-vim.lsp.config.clangd = {
+-- h files are c not cpp
+vim.g.c_syntax_for_h = 1
+vim.g.c_comment_strings = 1
+vim.g.c_space_errors = 1
+vim.lsp.config("clangd", {
         cmd = {
                 -- see clangd --help-hidden
                 "clangd",
@@ -15,7 +19,16 @@ vim.lsp.config.clangd = {
                 "--function-arg-placeholders",
                 "--log=verbose",
         },
-        filetypes = {'c', 'cpp', 'h'},
-}
+        root_markers = { '.git' },
+        filetypes = { 'c', 'cpp', 'cuda', 'objc', 'objcpp', },
+        capabilities = {
+                textDocument = {
+                        completion = {
+                                editsNearCursor = true,
+                        },
+                },
+                offsetEncoding = { 'utf-8', 'utf-16' },
+        },
+})
 --vim.lsp.enable("clangd", true)
 

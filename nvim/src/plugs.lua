@@ -221,8 +221,6 @@ packer.startup(function(use)
                     vim.keymap.set({ "v", "n" }, "ge", require("actions-preview").code_actions)
             end,
     }
-    -- use 'justmao945/vim-clang'
-
     --  aws smithy language syntax highlight
     use 'jasdel/vim-smithy'
 

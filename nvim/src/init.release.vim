@@ -839,7 +839,6 @@ function! s:get_visual_selection()
     return join(lines, "\n")
 endfunction
 
-
 "To specify a preferred indent level when no detection is possible:
 let g:detectindent_preferred_indent = 4
 let g:detectindent_max_lines_to_analyse = 10
