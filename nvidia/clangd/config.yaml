@@ -25,6 +25,7 @@ Diagnostics:
       - bugprone-unused-return-value
       - llvm-include-order
       - misc-no-recursion
+      - misc-static-assert
     Add:
       - readability-identifier-naming
       - bugprone-assert-side-effect

@@ -20,6 +20,7 @@ Checks: "*,
         -clang-diagnostic-error,
         -llvm-include-order,
         -modernize-macro-to-enum,
+        -clang-diagnostic-implicit-function-declaration,
 "
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
