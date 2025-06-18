@@ -64,6 +64,7 @@
   - [install_me/install_tmux2.sh, installing tmux]
   - [install_me/install_neovim2.sh, install neovim]
   - [./install_bat.sh, install bat]
+  - [ curl https://sh.rustup.rs -sSf > /tmp/rustup.sh && sh /tmp/rustup.sh -y, install rust]
   - [cargo install --locked --root ~/dotfiles/build git-delta, install git-delta]
   - [cargo install --locked --root ~/dotfiles/build alacritty, install alacritty]
   - [fc-cache ~/.fonts/, update cache with fonts]
