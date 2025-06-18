@@ -40,6 +40,9 @@
     ~/.pyenv: pyenv
     ~/dotfiles/pyenv/plugins/pyenv-virtualenv: pyenv-virtualenv
 
+    #fonts
+    ~/.fonts/source-code-pro: source-code-pro
+
 - create:
     - ~/Downloads
     - ~/.config/atuin
@@ -63,6 +66,7 @@
   - [./install_bat.sh, install bat]
   - [cargo install --locked --root ~/dotfiles/build git-delta, install git-delta]
   - [cargo install --locked --root ~/dotfiles/build alacritty, install alacritty]
+  - [fc-cache ~/.fonts/, update cache with fonts]
   - [cargo install --locked --root ~/dotfiles/build pylyzer, install pylyzer]
   - [npm i -g bash-language-server, install bash-language-server]
   - [npm install -g dockerfile-language-server-nodejs, install dockerfile-language-server-nodejs]
