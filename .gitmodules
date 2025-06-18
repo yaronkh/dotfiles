@@ -26,3 +26,6 @@
 [submodule "alacritty"]
 	path = alacritty
 	url = https://github.com/alacritty/alacritty.git
+[submodule "source-code-pro"]
+	path = source-code-pro
+	url = https://github.com/adobe-fonts/source-code-pro.git
