@@ -1,6 +1,7 @@
 build-essential
 pkg-config
 gcc
+make
 bison
 libevent-dev
 autotools-dev
@@ -27,3 +28,7 @@ clang-tidy
 clang-format
 shellcheck
 shfmt
+python3-pip
+fontconfig
+libfontconfig1-dev
+gawk

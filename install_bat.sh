@@ -6,9 +6,8 @@ cd bat || exit 255
 version=$(git tag | sort -V | tail -1)
 git reset --hard "${version}" || exit 1
 cd ../
-cargo install --locked --root ~/dotfiles/build bat
-
+~/.cargo/bin/cargo install --locked --root ~/dotfiles/build bat
 cd ~/dotfiles/bat-extras
-./build.sh
+./build.sh || true
 cp bin/* ../build/bin/
 

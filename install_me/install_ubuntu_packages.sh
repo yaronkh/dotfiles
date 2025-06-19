@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if the script is running on an Ubuntu-like system
-if ! grep -q "Ubuntu" /etc/os-release; then
+if ! grep -qi "Ubuntu" /etc/os-release; then
   echo "This script only runs on Ubuntu or Ubuntu-like distributions."
   exit 0
 fi

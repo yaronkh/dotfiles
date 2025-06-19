@@ -18,6 +18,7 @@
 [user]
 	name = Yaron Kahanovitch
 	email = ykahanovitch@nvidia.com
+        signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAydITTNQcNksqyLe2/2zsQmSz7nR5WrPkY6DJmvG/YZ
 [color]
         ui = true
 [push]
@@ -50,3 +51,12 @@
      tool = kdiff3
 [man]
 	pager = delta
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/opt/1Password/op-ssh-sign"
+
+[commit]
+  gpgsign = true
+
