@@ -266,3 +266,4 @@ eval $(batpipe)
 . "$HOME/.cargo/env"
 export MAVEN_HOME=/home/ykahanovitch/stuff/maven/maven-mvnd-1.0.2-linux-amd64
 export PATH=$PATH:$MAVEN_HOME/mvn/bin
+eval "$(zoxide init bash)"

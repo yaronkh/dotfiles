@@ -70,3 +70,6 @@
   - [fc-cache ~/.fonts/, update cache with fonts]
   - [\. "$HOME/.config/nvm/nvm.sh" && npm i -g bash-language-server, install bash-language-server]
   - [\. "$HOME/.config/nvm/nvm.sh" && npm install -g dockerfile-language-server-nodejs, install dockerfile-language-server-nodejs]
+  - [npm install -g tldr, install tldr]
+  - [tldr --update, update tldr]
+  - [curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh, install zoxide]
