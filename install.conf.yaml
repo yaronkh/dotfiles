@@ -53,7 +53,7 @@
 
 - shell:
   - [ git submodule update --init --recursive, Installing submodules]
-  - [install_me/install_ubuntu_packages.sh install_me/packages_ubuntu.txt, verify that all prereq installed (on error run this command as root) ]
+  - [install_me/install_ubuntu_packages.sh, verify that all prereq installed (on error run this command as root) ]
   - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux.conf ~/.tmux.conf, setting tmux local conf]
   - [mkdir -p ~/.config/atuin && cp atuin/* ~/.config/atuin/, force update atuin conf]
   - [curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh, install atuin]
