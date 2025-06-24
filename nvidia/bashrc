@@ -14,7 +14,11 @@ fi
 
 #option to set per-pane variable
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if [ -z "$FZF_INITIALIZED" ]; then
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    export FZF_INITIALIZED=1
+fi
+
 function fzf {
     if [ "${FUNCNAME[1]}" = "__fzf_select__" ];then
         ~/.fzf/bin/fzf --preview "batcat --color=always --style=numbers --line-range=:500 {}"
@@ -220,20 +224,18 @@ export OP_SESSION_cloudendure="GDqzU98GynjFvl2jk9Wh8Y_I41LSq_RXRL2uIU-tCdI"
 
 export PATH=$HOME/.toolbox/bin:$PATH
 
-NVIMCMD=$(which nvim)
-
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
-source ~/dotfiles/local/nvim.bash
+source "$HOME/dotfiles/local/nvim.bash"
 
 . "$HOME/.atuin/bin/env"
-[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+[[ -f "$HOME/.bash-preexec.sh" ]] && source "$HOME/.bash-preexec.sh"
 eval "$(atuin init bash)"
 
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#export NVM_DIR="$HOME/.config/nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 eval "$(bat --completion bash)"
 colorize_less
 colorize_man
