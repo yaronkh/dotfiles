@@ -12,6 +12,7 @@
 - link:
     #shell
     ~/.bashrc: nvidia/bashrc
+    ~/.face: face
 
     #git
     ~/.gitconfig: nvidia/gitconfig
