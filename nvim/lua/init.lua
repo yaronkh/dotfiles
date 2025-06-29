@@ -416,6 +416,7 @@ end
 
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_cmp.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/clangd.lua")
+dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/webdevicons.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/telescope.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/codeactions.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/treesitter.lua")
@@ -441,3 +442,4 @@ vim.opt.shellredir = '2>&1|less'
 --                vim.print("client: " .. vim.inspect(client))
 --        end
 --})
+--

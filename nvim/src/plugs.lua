@@ -87,7 +87,7 @@ packer.startup(function(use)
 
     use 'preservim/nerdtree'
 
-    use 'ryanoasis/vim-devicons'
+    --use 'ryanoasis/vim-devicons'
 
     use 'tiagofumo/vim-nerdtree-syntax-highlight'
 
@@ -246,7 +246,7 @@ packer.startup(function(use)
 
     use "kevinhwang91/nvim-bqf"
 
-    use({'glepnir/nerdicons.nvim', cmd = 'NerdIcons', config = function() require('nerdicons').setup({}) end})
+    --use({'glepnir/nerdicons.nvim', cmd = 'NerdIcons', config = function() require('nerdicons').setup({}) end})
 
     use {
         "williamboman/mason.nvim",
@@ -281,8 +281,9 @@ packer.startup(function(use)
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.5',
         requires = {
+            {"nvim-tree/nvim-web-devicons"},
             {'nvim-lua/plenary.nvim'},
-            { "nvim-telescope/telescope-live-grep-args.nvim" },
+            {"nvim-telescope/telescope-live-grep-args.nvim" },
             {"Marskey/telescope-sg"},
             {"debugloop/telescope-undo.nvim"},
             {"AckslD/nvim-neoclip.lua"},
