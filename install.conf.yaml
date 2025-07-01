@@ -47,7 +47,6 @@
 - create:
     - ~/Downloads
     - ~/.config/atuin
-    - ~/.config/clangd
     - ~/dotfiles/build
     - ~/.config/nvm
     - ~/dotfiles/bat
