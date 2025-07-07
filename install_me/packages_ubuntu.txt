@@ -5,7 +5,7 @@ make
 bison
 libevent-dev
 autotools-dev
-libncurses5-dev
+libncurses-dev
 jq
 curl
 libffi-dev
