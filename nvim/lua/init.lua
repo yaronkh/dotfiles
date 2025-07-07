@@ -345,7 +345,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
                         t = { "<cmd>lua vim.lsp.buf.type_definition()<CR>", "Goto Type Definition" },
                         c = { "<cmd>lua vim.lsp.buf.references()<CR>", "find all references" },
                         r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "rename" },
-                        f = { "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", "format accroding to the project standards" },
+                        -- f = { "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", "format accroding to the project standards" },
                 }
                 whichkey.register(keymap_g, { buffer = ev.buf, prefix = "g" })
                 local keymap_gv = {
