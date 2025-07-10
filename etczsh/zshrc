@@ -77,6 +77,11 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 export ZSH_PYENV_VIRTUALENV=true
+#
+#f-zsh-plugin
+#export FZF_PREVIEW_ADVANCED=true
+export FZF_PREVIEW_WINDOW=right:65%:nohidden
+FZF_COLOR_SCHEME=--color='hl:148,hl+:154,pointer:032,marker:010,bg+:237,gutter:008'
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -118,11 +123,18 @@ alias ohmyzsh="nvim ~/.oh-my-zsh"
 
 eval "$(atuin init zsh)"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #init atuin
 eval "$(atuin init zsh)"
+
+#zbel ignores
+zbell_ignore=($EDITOR $PAGER bat batcat)
+zbell_duration=15
+zbell_use_notify_send=false
+
 
 #init zoxide
 eval "$(zoxide init zsh)"
@@ -130,6 +142,17 @@ eval "$(zoxide init zsh)"
 #colorize man pages
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANROFFOPT="-c"
+
+#clolorzie less
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 #colorized cat
 unalias cat

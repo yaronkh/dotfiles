@@ -12,13 +12,16 @@ plugins=(
     "fdellwing/zsh-bat.git"
     "zpm-zsh/colorize.git"
     "zpm-zsh/colors"
+    "unixorn/fzf-zsh-plugin.git"
 )
 
 oh_my_zsh_plg=(
     pyenv
-    fzf)
+    zbell
+    1password
+    )
 
-for p in ${plugins[@]}; do 
+for p in ${plugins[@]}; do
     p_name=$(basename "$p" | sed 's/\.git$//')
     if [ "$command" = "print" ]; then
         echo "$p_name"
