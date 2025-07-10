@@ -1,6 +1,8 @@
 build-essential
 pkg-config
 gcc
+zsh
+finger
 make
 bison
 libevent-dev

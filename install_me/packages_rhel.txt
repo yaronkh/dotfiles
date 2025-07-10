@@ -1,6 +1,8 @@
 gcc
 make
 bison
+zsh
+finger
 libevent-devel
 automake
 autoconf

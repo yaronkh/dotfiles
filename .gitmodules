@@ -29,3 +29,6 @@
 [submodule "source-code-pro"]
 	path = source-code-pro
 	url = https://github.com/adobe-fonts/source-code-pro.git
+[submodule "zsh-autosuggestions"]
+	path = zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
