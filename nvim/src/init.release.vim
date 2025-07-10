@@ -302,6 +302,7 @@ colorscheme gruvbox
 
 "will ovveride gruvbox shitty gray background
 highlight Normal guibg=black guifg=white
+highlight Comment guibg=gray guifg=black
 
 "hi WinSeparator guifg=white guibg=black
 "hi! link Statement CType
