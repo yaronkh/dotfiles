@@ -1,4 +1,4 @@
-  -- Set up nvim-cmp.
+-- Set up nvim-cmp.
 require("codeium").setup({
     -- Optionally disable cmp source if using virtual text only
     enable_cmp_source = true,
@@ -50,6 +50,3 @@ vim.api.nvim_create_autocmd({"VimEnter", "ColorScheme"}, {
                 vim.api.nvim_set_hl(0, "CodeiumSuggestion", { fg = "#FFED29" })
         end
 })
-
---local cmp = require("cmp")
-

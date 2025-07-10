@@ -67,6 +67,8 @@
   - [./install_bat.sh, install bat]
   - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build git-delta, install git-delta]
   - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build alacritty, install alacritty]
+  - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build lsd, install lsd]
+  - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build fd-find, install fd file finder]
   - [install_me/install_nerd_fonts.sh, install nerd fonts]
   - [fc-cache -fv ~/.fonts/, update cache with fonts]
   - [\. "$HOME/.config/nvm/nvm.sh" && npm i -g bash-language-server, install bash-language-server]

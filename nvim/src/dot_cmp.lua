@@ -22,7 +22,7 @@ cmp.setup({
                 { name = 'cmd' },
                 { name = 'spell' },
                 { name = 'tmux' },
-                { name = "codeium" },
+                -- { name = "codeium" },
                 -- { name = 'rg' },
                 { name = 'buffer' },
                 { name = 'treesitter' },
