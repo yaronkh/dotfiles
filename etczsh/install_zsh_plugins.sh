@@ -25,14 +25,12 @@ oh_my_zsh_plg=(
     rsync
     ssh
     sudo
-    ripgrep
     pyenv
     aliases
     alias-finder
     zbell
     1password
     jsontools
-    shellfirm
     docker
     docker-compose
     debian
