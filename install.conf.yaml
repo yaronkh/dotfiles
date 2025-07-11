@@ -76,6 +76,7 @@
   - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build alacritty, install alacritty]
   - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build lsd, install lsd]
   - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build fd-find, install fd file finder]
+  - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build procs, install procs]
   - [install_me/install_nerd_fonts.sh, install nerd fonts]
   - [fc-cache -fv ~/.fonts/, update cache with fonts]
   - [\. "$HOME/.config/nvm/nvm.sh" && npm i -g bash-language-server, install bash-language-server]
@@ -83,3 +84,4 @@
   - [tldr --update, update tldr]
   - [curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh, install zoxide]
   - [ bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install), install navi]
+  - [ curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo bash /dev/stdin, install git-extras]

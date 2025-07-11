@@ -19,6 +19,13 @@ plugins=(
 oh_my_zsh_plg=(
     git
     git-commit
+    git-extras
+    jira
+    procs
+    rsync
+    ssh
+    sudo
+    ripgrep
     pyenv
     aliases
     alias-finder
