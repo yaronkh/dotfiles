@@ -60,6 +60,7 @@
   - [ ~/dotfiles/etczsh/make_default_shell.sh, set zsh as default shell ]
   - [ test -d ~/.oh-my-zsh || KEEP_ZSHRC=true sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)", install ohmyzsh]
   - [ ~/dotfiles/etczsh/install_zsh_plugins.sh install, install zsh plugins ]
+  - [ test -d ~/.oh-my-zsh/plugins/shellfirm/shellfirm.plugin.zsh || curl https://raw.githubusercontent.com/kaplanelad/shellfirm/main/shell-plugins/shellfirm.plugin.oh-my-zsh.zsh --create-dirs -o ~/.oh-my-zsh/plugins/shellfirm/shellfirm.plugin.zsh , install shellfirm plugin]
   - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux.conf ~/.tmux.conf, setting tmux local conf]
   - [mkdir -p ~/.config/atuin && cp atuin/* ~/.config/atuin/, force update atuin conf]
   - [curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh, install atuin]
@@ -81,3 +82,4 @@
   - [\. "$HOME/.config/nvm/nvm.sh" && npm install -g dockerfile-language-server-nodejs, install dockerfile-language-server-nodejs]
   - [tldr --update, update tldr]
   - [curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh, install zoxide]
+  - [ bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install), install navi]

@@ -13,12 +13,17 @@ plugins=(
     "zpm-zsh/colorize.git"
     "zpm-zsh/colors"
     "unixorn/fzf-zsh-plugin.git"
+    "MichaelAquilina/zsh-you-should-use"
 )
 
 oh_my_zsh_plg=(
+    git
     pyenv
     zbell
     1password
+    jsontools
+    shellfirm
+    debian
     )
 
 for p in ${plugins[@]}; do
