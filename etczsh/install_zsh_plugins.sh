@@ -18,11 +18,16 @@ plugins=(
 
 oh_my_zsh_plg=(
     git
+    git-commit
     pyenv
+    aliases
+    alias-finder
     zbell
     1password
     jsontools
     shellfirm
+    docker
+    docker-compose
     debian
     )
 
