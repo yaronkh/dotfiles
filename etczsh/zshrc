@@ -133,13 +133,11 @@ $ZSH_CUSTOM/macos.zsh
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 
-eval "$(atuin init zsh)"
-
-
 #[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #init atuin
+PATH="$HOME/.atuin/bin:$PATH"
 eval "$(atuin init zsh)"
 
 #zbel ignores

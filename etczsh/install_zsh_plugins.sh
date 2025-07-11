@@ -58,4 +58,8 @@ if [ "$command" = "print" ]; then
     for p in ${oh_my_zsh_plg[@]}; do
         echo "$p"
     done
+else
+    for f in aliases.zsh macos.zsh; do
+        [ -L "$HOME/.oh-my-zsh/custom/$f" ] || ln -s "$HOME/dotfiles/etczsh/$f" "$HOME/.oh-my-zsh/custom/$f"
+    done
 fi
