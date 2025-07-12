@@ -25,6 +25,7 @@ oh_my_zsh_plg=(
     rsync
     ssh
     sudo
+    tmux
     pyenv
     aliases
     alias-finder
