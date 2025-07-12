@@ -60,7 +60,6 @@
   - [install_me/install_ubuntu_packages.sh, verify that all prereq installed (on error run this command as root) ]
   - [ ~/dotfiles/etczsh/make_default_shell.sh, set zsh as default shell ]
   - [ ~/dotfiles/etczsh/install_zsh_plugins.sh install, install zsh plugins ]
-  - [ test -d ~/.oh-my-zsh/plugins/shellfirm/shellfirm.plugin.zsh || curl https://raw.githubusercontent.com/kaplanelad/shellfirm/main/shell-plugins/shellfirm.plugin.oh-my-zsh.zsh --create-dirs -o ~/.oh-my-zsh/plugins/shellfirm/shellfirm.plugin.zsh , install shellfirm plugin]
   - [ test -f ~/.tmux.conf || cp ~/dotfiles/tmux.conf ~/.tmux.conf, setting tmux local conf]
   - [mkdir -p ~/.config/atuin && cp atuin/* ~/.config/atuin/, force update atuin conf]
   - [curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh, install atuin]
