@@ -1,2 +1,4 @@
 build
 bat
+.python-version
+node_modules
