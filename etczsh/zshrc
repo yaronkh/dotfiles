@@ -192,6 +192,10 @@ source "$HOME/dotfiles/local/nvim.bash"
 #[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # This should fix the error at the start of zsh session, but doesn't work :(
+
+#set up vim keys
+bindkey -v
+
 TRAPWINCH() {
   zle && { zle reset-prompt; zle -R }
 }
