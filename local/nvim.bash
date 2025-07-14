@@ -7,8 +7,6 @@ eval "$(pyenv virtualenv-init -)"
 nvim() (
   pyenv activate nvim > /dev/null 2>&1
   export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64/
-  #export NVIM_COC_LOG_LEVEL=debug && export NVIM_COC_LOG_FILE=/tmp/coc.log
-  #export PATH=~/.config/coc/extensions/coc-clangd-data/install/15.0.6/clangd_15.0.6/bin:$PATH
   export XDG_CONFIG_HOME=~/.config
   export export CC=clang
   export CXX=g++

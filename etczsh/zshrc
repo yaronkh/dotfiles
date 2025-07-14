@@ -196,9 +196,14 @@ source "$HOME/dotfiles/local/nvim.bash"
 #set up vim keys
 bindkey -v
 
+#use extended globing
+setopt extendedglob
+
 TRAPWINCH() {
   zle && { zle reset-prompt; zle -R }
 }
 TRAPEXIT() {
   zle && { zle reset-prompt; zle -R }
 }
+
+source $HOME/dotfiles/nvm/nvm.sh

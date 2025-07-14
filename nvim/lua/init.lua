@@ -423,12 +423,11 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/treesitter.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dap.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/trouble.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvidia/lua/fix_tracer.lua")
--- dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/copilot.lua")
-dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
+dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/copilot.lua")
+-- dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/windsurf.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_lua.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/pylsp.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/bashls.lua")
-
 vim.lsp.enable("GitHub Copilot", false)
 
 vim.opt.shellpipe = '2>&1|less'
