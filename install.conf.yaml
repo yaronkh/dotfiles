@@ -52,7 +52,6 @@
     - ~/Downloads
     - ~/.config/atuin
     - ~/dotfiles/build
-    - ~/.config/nvm
     - ~/dotfiles/bat
 
 - shell:

@@ -11,6 +11,7 @@
 [submodule "fzf"]
 	path = fzf
 	url = https://github.com/junegunn/fzf.git
+        ignore = dirty
 [submodule "pyenv-virtualenv"]
 	path = pyenv-virtualenv
 	url = https://github.com/pyenv/pyenv-virtualenv
