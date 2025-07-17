@@ -1,6 +1,9 @@
 CompileFlags:
   Add: [-ferror-limit=0]
 
+Completion:
+  ArgumentLists: None
+
 Diagnostics:
   ClangTidy:
     Remove:
