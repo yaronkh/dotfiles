@@ -8,12 +8,14 @@ plugins=(
     "zsh-users/zsh-autosuggestions"
     "zsh-users/zsh-completions.git"
     "zsh-users/zsh-syntax-highlighting.git"
+    "yngc0der/zsh-ssh-config-suggestions"
     "z-shell/zsh-lsd.git"
     "fdellwing/zsh-bat.git"
     "zpm-zsh/colorize.git"
     "zpm-zsh/colors"
     "unixorn/fzf-zsh-plugin.git"
     "MichaelAquilina/zsh-you-should-use"
+    "bric3/nice-exit-code.git"
 )
 
 oh_my_zsh_plg=(
