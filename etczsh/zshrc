@@ -22,8 +22,8 @@ export XDG_CONFIG_HOME=~/.config
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
-ZSH_THEME="garyblessington"
+ZSH_THEME="robbyrussell"
+#ZSH_THEME="nicoulaj"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -182,6 +182,10 @@ function hl {
     command $@ --help | bat -plhelp
 }
 
+#add sign to prompt
+#PROMPT="${PROMPT}%{$fg_bold[green]%}%1{➜%} "
+PROMPT="${PROMPT}%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} )%{$reset_color%}"
+
 
 #provide function that wraps nvim
 source "$HOME/dotfiles/local/nvim.bash"
@@ -205,6 +209,11 @@ TRAPWINCH() {
 }
 TRAPEXIT() {
   zle && { zle reset-prompt; zle -R }
+}
+
+# Function to search and replace in all git tracked files
+function gsed() {
+        git ls-files | xargs sed -i "s/$1/$2/g"
 }
 
 source $HOME/dotfiles/nvm/nvm.sh
