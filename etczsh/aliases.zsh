@@ -1,4 +1,5 @@
 alias lg='git lg -10'
+alias lgg='git lg'
 alias n='nvim'
 
 alias v='nvim'

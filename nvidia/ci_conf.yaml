@@ -1,0 +1,142 @@
+nvmeshum_ci:
+    tests: ['test_middleman', 'test_goodpath', 'test_file_system', 'test_disasters', 'test_disasters_part2', 'test_multi_disaster', 'test_reattach', 'test_restart_service'] #['test_goodpath', 'test_file_system', 'test_middleman', 'test_disasters', 'test_multi_disaster', 'test_restart_service']
+    test_data_path: true
+    force_kernel_client: false
+    rpc_version: 1
+    check_service_down: false
+    io_enable_timeout: 40
+    assert_on_dp_counters_coverage_regression: false
+    covered_dp_counters: ['piggyback_write_binfo', 'piggyback_read_lock_free', 'piggyback_read_lock_busy', 'trim_child_lock_acquired', 'trim_blocksets', 'lock_slr_wait', 'contended_lock_retries', 'err_stale_locks', 'err_locks_abandoned', 'sync_stale_to_dirty', 'err_sync_failures', 'err_nwh_transient_disk_error']
+    uncovered_dp_counters: ['io_retries', 'unaligned_io_buffer', 'err_io_aborts', 'err_io_failures', 'err_bad_read_sectors', 'err_bad_read_metadata', 'trim_child_fiber_alloc_failure', 'err_lock_complaints', 'lockset_policy_conflict', 'err_nwh_bad_read_sectors', 'err_nwh_bad_read_metadata', 'err_nwh_partial_destroy_slices', 'nwh_destroy_slices', 'err_nwh_alloc_failure', 'sync_successes']
+
+    test_goodpath:
+        volumes_count: 1
+        volumes: ['concatenated'] # ['concatenated', 'raid-1', 'raid-10', 'ec-4D-2P']
+        io_duration: 20
+        iterations: 1
+        btest_args:
+            threads: [4] # -T
+            read_ratio: [50] # R/W/50
+            bs: ['128k'] # -b
+            width: [32] # -w
+            io_timeout:  3 # -B (here in seconds..bit high)
+            io_timeout_ec: 10 # Until peformance
+            other: ["-r 1 -q -c -t 0 -D"]
+        multi_chunk_volumes: ['raid-10']
+
+    test_goodpath_lvol:
+        volumes_count: 1
+        volumes_capacity: "2g"
+        source_type: ['concatenated'] # ['concatenated', 'raid-1', 'ec-4D-2P']
+        data_type:   ['raid-1', 'ec-4D-2P']
+        multi_chunk_volumes: [] # This volumes will be expanded right creation
+        io_duration: 5
+        iterations: 1
+        btest_args:
+            threads: [4] # -T
+            read_ratio: [50] # R/W/50
+            bs: ['4k'] # -b
+            width: [32] # -w
+            io_timeout:  15 # -B (here in seconds)
+            io_timeout_ec: 10
+            other: ["-r 1 -q -c -t 0 -D"]
+
+    test_disasters_lvol:
+        volumes_count: 1
+        volumes_capacity: "2g"
+        data_type: ['ec-4D-2P']
+        source_type: ['raid-10']
+        volumes: ['concatenated'] # ['concatenated', 'raid-1', 'ec-4D-2P']
+        disasters: ['bounce_drive'] # ['bounce_toma', 'bounce_drive', 'bounce_network', 'bounce_local_ports', 'bounce_cm', 'bounce_kc']
+        multi_chunk_volumes: [] # This volumes will be expanded right creation
+        disaster_duration: 0
+        io_duration: 0 # Minimum value is 60(seconds) if test_data_path = true, 0 means minimum as possible
+        io_timeout: 25
+        io_enable_timeout_after_disaster: 8
+        iterations: 1
+        run_disaster_on: ['data', 'source']
+        btest_args:
+            threads: [ 4 ] # -T
+            read_ratio: [ 50 ] # R/W/50
+            bs: [ '4k' ] # -b
+            width: [ 32 ] # -w
+            io_timeout: 60 # -B (here in seconds)
+            other: [ "-r 1 -q -c -t 0 -D" ]
+
+    test_disasters:
+        volumes_count: 1
+        volumes: ['concatenated'] # ['concatenated', 'raid-1', 'ec-4D-2P']
+        volumes_part2: []
+        disasters: ['bounce_toma', 'bounce_drive', 'bounce_um'] # ['bounce_toma', 'bounce_drive', 'bounce_network', 'bounce_local_ports', 'bounce_cm', 'bounce_kc']
+        disasters_part2: ['bounce_network']
+        disaster_duration: 0
+        io_duration: 0 # Minimum value is 60(seconds) if test_data_path = true
+        r1_io_timeout: 25
+        concatenated_io_timeout: 30
+        extended_io_timeout: 90
+        io_enable_timeout_after_disaster: 20
+        iterations: 1
+        multi_chunk_volumes: ['raid-10']
+        btest_args:
+            threads: [ 4 ] # -T
+            read_ratio: [ 50 ] # R/W/50
+            bs: [ '4k' ] # -b
+            width: [ 32 ] # -w
+            other: [ "-r 1 -q -c -t 0 -D" ]
+
+
+    test_middleman:
+        # 7 (KC --> MM) + 16 (MM --> MGMT) + 5
+        critical_status: 28
+        healthy_status: 10
+        detach_timeout: 60
+        volumes_count: 150
+        volumes_capacity: "2g"
+        disasters: [ 'bounce_um' ] #['bounce_local_ports', 'bounce_kc', 'bounce_um', 'bounce_cm']
+        volumes: [ 'concatenated', 'raid-1']
+
+    test_file_system:
+        io_duration: 5
+        volumes: ['concatenated'] # ['concatenated', 'raid-1', 'ec-4D-2P']
+        volumes_capacity: "3g"
+
+    test_multi_disaster:
+        volumes_capacity: "2g"
+        iterations: 1
+        disasters: ['bounce_drive']
+        disasters_length: 2
+        volumes_count: 1
+        io_duration: 60
+        disasters_delay: 3
+        io_enable_timeout_after_disaster: 25
+        volume_type: ['raid-1']
+        timeout_for_online: 120 #times volumes_count
+        forgiving: true
+        btest_args:
+            threads: [ 4 ] # -T
+            read_ratio: [ 50 ] # R/W/50
+            bs: [ '4k' ] # -b
+            width: [ 32 ] # -w
+            io_timeout: 60 # -B (here in seconds)
+            other: [ "-r 1 -q -c -t 0 -D" ]
+
+scenario:
+    debug_di: null
+    volumes: []
+    io_test_cleanup_timeouts:
+        delete_volumes: 10
+        delete_volumes_poll: 1
+        detach_volumes: 10
+        detach_volumes_poll: 1
+
+nvmeshum:
+    # Should be overridden for BF setup
+    expose_method: "nvmeof"
+    expose_protocol: "rdma"
+    um_support_ec: true
+    auto: true
+
+cluster:
+    install_opts:
+        nvmeshum-flags:
+            build-sh-envars: ""

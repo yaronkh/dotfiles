@@ -50,7 +50,7 @@ add_ChangeId() {
 
 		undef $/;
 		open(I, $MSG); $_ = <I>; close I;
-		s|^diff --git a/.*||ms;
+		s|^diff --git .*||ms;
 		s|^#.*$||mg;
 		exit unless $_;
 
