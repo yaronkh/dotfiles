@@ -42,3 +42,6 @@
 [submodule "nvm"]
 	path = nvm
 	url = https://github.com/nvm-sh/nvm.git
+[submodule "colorgcc"]
+	path = colorgcc
+	url = https://github.com/colorgcc/colorgcc
