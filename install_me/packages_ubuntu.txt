@@ -35,4 +35,5 @@ fontconfig
 libfontconfig1-dev
 gawk
 perl
+grc
 tldr

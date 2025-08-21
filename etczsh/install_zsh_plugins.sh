@@ -12,6 +12,7 @@ plugins=(
     "z-shell/zsh-lsd.git"
     "fdellwing/zsh-bat.git"
     "zpm-zsh/colors"
+    "unixorn/warhol.plugin.zsh.git"
     "unixorn/fzf-zsh-plugin.git"
     "MichaelAquilina/zsh-you-should-use"
     "bric3/nice-exit-code.git"
@@ -39,7 +40,7 @@ oh_my_zsh_plg=(
     )
 
 for p in ${plugins[@]}; do
-    p_name=$(basename "$p" | sed 's/\.git$//')
+    p_name=$(basename "$p" | sed 's/\.git$//' | sed 's/\.zsh$//' | sed 's/\.plugin//')
     if [ "$command" = "print" ]; then
         echo "$p_name"
         continue

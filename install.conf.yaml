@@ -56,9 +56,9 @@
     ~/.fonts/source-code-pro: source-code-pro
 
     #colorgcc
-    ~/dotfiles/build/bin/gcc: ~/dotfiles/colorgcc/colorgcc.pl
-    ~/dotfiles/build/bin/cc: ~/dotfiles/colorgcc/colorgcc.pl
-    ~/dotfiles/build/bin/make: ~/dotfiles/colorgcc/colorgcc.pl
+    ~/dotfiles/build/bin/gcc: ~/dotfiles/utils/colorgcc.pl
+    ~/dotfiles/build/bin/cc: ~/dotfiles/utils/colorgcc.pl
+    ~/dotfiles/build/bin/make: ~/dotfiles/utils/colorgcc.pl
     ~/.colorgccrc: ~/dotfiles/etc_clang/colorgccrc.txt
 
     #nvim runpath

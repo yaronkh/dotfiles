@@ -28,5 +28,6 @@ python3-pip
 fontconfig
 fontconfig-devel
 gawk
+grc
 perl
 tldr

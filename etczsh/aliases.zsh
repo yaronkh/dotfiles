@@ -6,6 +6,9 @@ alias v='nvim'
 alias t=take
 
 alias lsm='lsmod | grep nvmeib'
+alias ls=lsd
+
+alias make='/home/ykahanovitch/dotfiles/build/bin/make'
 
 alias p='pwd'
 alias m='make -j'

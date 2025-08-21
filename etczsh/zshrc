@@ -219,7 +219,9 @@ function gsed() {
 source $HOME/dotfiles/nvm/nvm.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-eval "$(gh copilot alias -- zsh)"
+if which "gh" >/dev/null 2>&1; then
+        eval "$(gh copilot alias -- zsh)"
+fi
 
 #make()
 #{
