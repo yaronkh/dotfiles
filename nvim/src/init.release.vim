@@ -199,7 +199,7 @@ nnoremap <M-i> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 " QuickFix
 nnoremap <C-w>p :copen<CR>
 
-let g:linuxsty_patterns = [ "/kernel/", "/linux/", "/nvmeshum/"]
+let g:linuxsty_patterns = [ "/kernel/", "/linux/", "/nvmesh/", "nvmeshum"]
 function! GetMeIdent(tabsize)
     let apply_nvmeshstype = 0
     if exists("g:linuxsty_patterns")

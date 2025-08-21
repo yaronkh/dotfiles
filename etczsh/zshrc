@@ -217,3 +217,12 @@ function gsed() {
 }
 
 source $HOME/dotfiles/nvm/nvm.sh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$(gh copilot alias -- zsh)"
+
+#make()
+#{
+#  /usr/bin/make "$@" 2>&1 | sed -E -e "s/error/ $(echo -e "\\033[31m" ERROR "\\033[0m"/g)"   -e "s/warning/ $(echo -e "\\033[0;33m" WARNING "\\033[0m"/g)"
+#  return ${PIPESTATUS[0]}
+#}

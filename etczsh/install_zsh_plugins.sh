@@ -11,7 +11,6 @@ plugins=(
     "yngc0der/zsh-ssh-config-suggestions"
     "z-shell/zsh-lsd.git"
     "fdellwing/zsh-bat.git"
-    "zpm-zsh/colorize.git"
     "zpm-zsh/colors"
     "unixorn/fzf-zsh-plugin.git"
     "MichaelAquilina/zsh-you-should-use"

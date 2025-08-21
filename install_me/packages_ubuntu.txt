@@ -34,4 +34,5 @@ python3-pip
 fontconfig
 libfontconfig1-dev
 gawk
+perl
 tldr

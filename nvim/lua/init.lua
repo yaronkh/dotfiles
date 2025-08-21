@@ -442,3 +442,24 @@ vim.opt.shellredir = '2>&1|less'
 --        end
 --})
 --
+
+vim.api.nvim_create_user_command(
+  'Opf',
+  function(opts)
+	  local open_grep_files = require("open_grep_files")
+	  open_grep_files(opts.args)
+  end,
+  { nargs = 1 }  -- Require exactly one argument
+)
+
+local wk = require("which-key")
+wk.register({
+    l = {
+        function()
+            local word = vim.fn.expand('<cword>')
+            local open_grep_files = require("open_grep_files")
+            open_grep_files(word)
+        end,
+        "Run my_lua_function with word under cursor"
+    }
+}, { prefix = "," })

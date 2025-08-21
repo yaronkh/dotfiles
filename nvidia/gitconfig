@@ -73,4 +73,4 @@
 #  gpgsign = true
 
 [oh-my-zsh]
-	git-commit-alias = a6beb0f5958e935d33b0edb6d4470c3d7c4e8917
+	git-commit-alias = 9fe2c26abd3f476a3377bf37b513e5cabf3f3637

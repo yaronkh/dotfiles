@@ -9,6 +9,13 @@
     ~/.config:
       recursive: true
 
+- create:
+    - ~/Downloads
+    - ~/.config/atuin
+    - ~/dotfiles/build/bin
+    - ~/dotfiles/bat
+    - ~/dotfiles/build/lib/nvim
+
 - link:
     #shell
     ~/.bashrc: nvidia/bashrc
@@ -48,11 +55,15 @@
     #fonts
     ~/.fonts/source-code-pro: source-code-pro
 
-- create:
-    - ~/Downloads
-    - ~/.config/atuin
-    - ~/dotfiles/build
-    - ~/dotfiles/bat
+    #colorgcc
+    ~/dotfiles/build/bin/gcc: ~/dotfiles/colorgcc/colorgcc.pl
+    ~/dotfiles/build/bin/cc: ~/dotfiles/colorgcc/colorgcc.pl
+    ~/dotfiles/build/bin/make: ~/dotfiles/colorgcc/colorgcc.pl
+    ~/.colorgccrc: ~/dotfiles/etc_clang/colorgccrc.txt
+
+    #nvim runpath
+    ~/dotfiles/build/lib/nvim/lua: ~/dotfiles/nvim/lua
+
 
 - shell:
   - [ git submodule update --init --recursive, Installing submodules]

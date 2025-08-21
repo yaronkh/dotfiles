@@ -57,6 +57,8 @@ packer.startup(function(use)
     }
     -- doorboy - doorboy.vim is a smart plugin that serves you around brackets((){}[]) and quotations('`").
     use 'github/copilot.vim'
+    use 'nvim-lua/plenary.nvim'
+    use 'CopilotC-Nvim/CopilotChat.nvim'
     use 'itmammoth/doorboy.vim'
     use 'wbthomason/packer.nvim'
     use 'WhoIsSethDaniel/mason-tool-installer.nvim'
@@ -256,7 +258,6 @@ packer.startup(function(use)
     if packer_bootstrap then
         require('packer').sync()
     end
-    use "nvim-lua/plenary.nvim"
 
     -- debugger interface
     -- use "mfussenegger/nvim-dap.git"
@@ -278,11 +279,12 @@ packer.startup(function(use)
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'bash -c "cd ~/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim && CC=gcc make > ~/.makeit"' }
     use {'nvim-telescope/telescope-ui-select.nvim' }
 
+    use {'OXY2DEV/helpview.nvim'}
+
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.5',
         requires = {
             {"nvim-tree/nvim-web-devicons"},
-            {'nvim-lua/plenary.nvim'},
             {"nvim-telescope/telescope-live-grep-args.nvim" },
             {"Marskey/telescope-sg"},
             {"debugloop/telescope-undo.nvim"},

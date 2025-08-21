@@ -1,0 +1,8 @@
+#REMOTE_SERVERS="nvme31:IM_CLIENT=yes:MK_RPM=yes"
+REMOTE_SERVERS="nvme31:IM_CLIENT=yes"
+#REMOTE_SERVERS="nvme31:IM_SERVER=yes:MK_RPM=yes"
+#REMOTE_SERVERS="nvme33:IM_CLIENT=yes:MK_RPM=no nvme31:IM_CLIENT=yes:MK_RPM=yes"
+REMOTE_DIR=projects/${BRANCH_NAME}
+SSH_INVOKE="ssh -t"
+MAKE_CMD="/home/ykahanovitch/dotfiles/build/bin/make -j32"
+
