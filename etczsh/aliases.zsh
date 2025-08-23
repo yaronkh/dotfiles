@@ -9,6 +9,7 @@ alias lsm='lsmod | grep nvmeib'
 alias ls=lsd
 
 alias make='/home/ykahanovitch/dotfiles/build/bin/make'
+alias sync='~/dotfiles/utils/sync_files.sh'
 
 alias p='pwd'
 alias m='make -j'
