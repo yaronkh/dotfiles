@@ -415,7 +415,7 @@ for _, v in pairs(lsp_items) do
 end
 
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/dot_cmp.lua")
-dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/clangd.lua")
+-- dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/clangd.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/webdevicons.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/telescope.lua")
 dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/codeactions.lua")
@@ -432,16 +432,6 @@ dofile(os.getenv("HOME") .. "/dotfiles/nvim/src/bashls.lua")
 
 vim.opt.shellpipe = '2>&1|less'
 vim.opt.shellredir = '2>&1|less'
---vim.lsp.set_log_level("debug")
-
---vim.api.nvim_create_autocmd('LspAttach', {
---        callback = function(args)
---                local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
---                vim.print("hey started new lsp " .. vim.inspect(args))
---                vim.print("client: " .. vim.inspect(client))
---        end
---})
---
 
 vim.api.nvim_create_user_command(
   'Opf',
@@ -463,3 +453,9 @@ wk.register({
         "Run my_lua_function with word under cursor"
     }
 }, { prefix = "," })
+
+
+-- new command to restart clangd with or without remote
+local clangd_setup = require('clangd_setup')
+clangd_setup.setup("no")
+

@@ -439,7 +439,7 @@ function! GetFileNameForBuffer()
 endfunction
 
 let g:airline_section_c = "%{GetFileNameForBuffer()}"
-let g:airline_section_x = "%{luaeval(\"vim.bo.filetype .. require('codeium.virtual_text').status_string()\")}"
+let g:airline_section_x = "%{'remote clangd:' . g:sync_started}"
 let g:airline_extensions = ["ale", "searchcount"]
 let g:airline#extensions#default#section_truncate_width = {
       \ 'a': 80,

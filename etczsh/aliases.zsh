@@ -9,6 +9,7 @@ alias lsm='lsmod | grep nvmeib'
 alias ls=lsd
 
 alias make='/home/ykahanovitch/dotfiles/build/bin/make'
+alias sync='lsyncd ~/dotfiles/nvidia/lsync_conf.lua'
 
 alias p='pwd'
 alias m='make -j'
