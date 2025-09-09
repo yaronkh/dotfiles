@@ -1,0 +1,57 @@
+#!/bin/bash
+
+setup() {
+    MY_MAKE="/home/ykahanovitch/dotfiles/build/bin/make"
+    REMOTE_DIR=$PWD
+    #SERVERS=(nvme31 nvme32 nvme33)
+    SERVERS=( nvme32 )
+    CLANGD="~/.local/share/nvim/mason/bin/clangd"
+    SSH_INVOKE="ssh -t"
+}
+
+set_var() {
+    REMOTE_SERVERS=""
+    cmd=":$1=yes"
+    if [ "$2" = "rpm" ]; then
+        cmd="$cmd:MK_RPM=yes"
+    fi
+    for srv in ${SERVERS[@]}; do
+        if [ -n "$REMOTE_SERVERS" ]; then
+            REMOTE_SERVERS="$REMOTE_SERVERS "
+        fi
+        REMOTE_SERVERS="${srv}${cmd}"
+    done
+    MAKE_CMD="$MY_MAKE -j32"
+    if [ -n "$3" ]; then
+        MAKE_CMD="$3 $MAKE_CMD"
+    fi
+    REMOTE_TGT="${SERVERS[0]}" # first server in the list
+    
+}
+
+compile_client() {
+    set_var "IM_CLIENT" "norpm"
+}
+
+client_rpm() {
+    set_var "IM_CLIENT" "rpm"
+}
+
+compile_both() {
+    set_var "IM_BOTH" "norpm"
+}
+
+both_rpm() {
+    set_var "IM_BOTH" "rpm"
+}
+
+generate_compile_commands() {
+    set_var "IM_CLIENT" "norpm" "bear -o clnt/compile_commands.json"
+}
+
+setup
+####################################################################
+#compile_client
+generate_compile_commands
+###################################################################
+

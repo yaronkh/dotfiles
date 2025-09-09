@@ -228,3 +228,37 @@ fi
 #  /usr/bin/make "$@" 2>&1 | sed -E -e "s/error/ $(echo -e "\\033[31m" ERROR "\\033[0m"/g)"   -e "s/warning/ $(echo -e "\\033[0;33m" WARNING "\\033[0m"/g)"
 #  return ${PIPESTATUS[0]}
 #}
+#
+function delete_untracked_files_with_extension() {
+        local extension=""
+        if [ -z "$1" ]; then
+                echo "Usage: delete_untracked_files_with_extension <extension>"
+                return 1
+        fi
+
+        if [ "$1" != '-y' ] ;then
+                dry_run="yes"
+                extension="$1"
+        else
+                dry_run=""
+                extension="$2"
+        fi
+
+        if [ -n "$dry_run" ] ; then
+                echo "Dry run mode: No files will be deleted."
+        fi
+
+        # Find all untracked files with the given extension
+        local untracked_files=$(git ls-files --others --exclude-standard)
+
+        # Filter files based on the given extension and delete them
+        for file in ${(f)untracked_files}; do
+                if [[ "$file" == *.$extension ]]; then
+                        echo "Deleting $file"
+                        if [ -z "$dry_run" ] ; then
+                                rm "$file"
+                        fi
+                fi
+        done
+}
+
