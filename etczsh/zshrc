@@ -262,3 +262,8 @@ function delete_untracked_files_with_extension() {
         done
 }
 
+function git_func_hist() {
+        func=$1
+        file=$2
+        git log -L :$2:$3 "$@"
+}

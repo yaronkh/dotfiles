@@ -10,6 +10,7 @@ Diagnostics:
       - bugprone-reserved-identifier
       - google-readability*
       - altera*
+      - llvmlibc-callee-namespace
       - readability-identifier-length
       - readability-braces-around-statements
       - readability-isolate-declaration

@@ -18,3 +18,6 @@ alias m='make -j'
 
 alias pver='pyenv versions | bat -pl ls'
 
+alias h='hostname'
+
+alias gfh='git_func_hist'
