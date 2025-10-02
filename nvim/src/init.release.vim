@@ -10,7 +10,6 @@ augroup ymason
     "autocmd VimEnter * source ~/dotfiles/nvim/src/telescope.lua
     autocmd VimEnter * source ~/dotfiles/nvim/lua/post_init.lua
     autocmd VimEnter * :TSEnable cpp<CR>
-"    autocmd VimEnter * lua require("mason").setup()
 augroup End
 
 
@@ -288,35 +287,6 @@ set spell
 function! ShowSynGroup()
         echo synIDattr(synID(line("."), col("."), 1), "name")
 endfunction
-
-" Gruvbox
-set background=dark
-let g:gruvbox_contrast_dark = 'high'
-let g:gruvbox_contrast_dark="hard"
-"colorscheme dracula
-"colorscheme pablo
-"colorscheme koehler
-"colorscheme desert
-" colorscheme seoul256
-colorscheme gruvbox
-
-"will ovveride gruvbox shitty gray background
-highlight Normal guibg=black guifg=white
-highlight Comment guibg=gray guifg=black
-
-"hi WinSeparator guifg=white guibg=black
-"hi! link Statement CType
-"hi SignColumn guibg=NONE
-"hi NotifyInfoBorder guifg=white
-"hi StatusLineNC guibg=white guifg=white
-"hi String  guifg=#c7ea46
-" hi WinBarNC guifg=white
-" hi VertSplit guifg=white
-" hi StatusLineNC	 guifg=white
-"hi MsgSeparator guifg=white
-"hi Visual  guifg=Black guibg=White gui=none
-" colorscheme gruvbox
-" colorscheme tokyonight-moon
 
 vnoremap Y y:call SendViaOSC52(getreg('"'))<CR>
 
@@ -808,18 +778,18 @@ endfunction
 command! BTags call Btags()
 nnoremap <silent> <F3> :call Btags()<CR>
 
-function! s:get_visual_selection()
-    " Why is this not a built-in Vim script function?!
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-    let lines = getline(line_start, line_end)
-    if len(lines) == 0
-        return ''
-    endif
-    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-    let lines[0] = lines[0][column_start - 1:]
-    return join(lines, "\n")
-endfunction
+"function! s:get_visual_selection()
+"    " Why is this not a built-in Vim script function?!
+"    let [line_start, column_start] = getpos("'<")[1:2]
+"    let [line_end, column_end] = getpos("'>")[1:2]
+"    let lines = getline(line_start, line_end)
+"    if len(lines) == 0
+"        return ''
+"    endif
+"    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+"    let lines[0] = lines[0][column_start - 1:]
+"    return join(lines, "\n")
+"endfunction
 
 function! Mgrep(t)
     copen
@@ -828,17 +798,17 @@ endfunction
 
 command! -nargs=* Mg call Mgrep(<q-args>)
 
-function! s:get_visual_selection()
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-    let lines = getline(line_start, line_end)
-    if len(lines) == 0
-        return ''
-    endif
-    let lines[-1] = lines[-1][: column_end - 2]
-    let lines[0] = lines[0][column_start - 1:]
-    return join(lines, "\n")
-endfunction
+"function! s:get_visual_selection()
+"    let [line_start, column_start] = getpos("'<")[1:2]
+"    let [line_end, column_end] = getpos("'>")[1:2]
+"    let lines = getline(line_start, line_end)
+"    if len(lines) == 0
+"        return ''
+"    endif
+"    let lines[-1] = lines[-1][: column_end - 2]
+"    let lines[0] = lines[0][column_start - 1:]
+"    return join(lines, "\n")
+"endfunction
 
 "To specify a preferred indent level when no detection is possible:
 let g:detectindent_preferred_indent = 4

@@ -74,3 +74,5 @@
 
 [oh-my-zsh]
 	git-commit-alias = 9fe2c26abd3f476a3377bf37b513e5cabf3f3637
+[coderabbit]
+	machineId = cli/3eb39019126845ceb367fca6799835f7
