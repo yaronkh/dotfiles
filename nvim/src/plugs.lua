@@ -139,7 +139,7 @@ packer.startup(function(use)
     use 'majutsushi/tagbar'
 
     --  retro style for vim`
-    use 'morhetz/gruvbox'
+    use 'ellisonleao/gruvbox.nvim'
 
     --  highlight tags in code
     use 'vim-scripts/TagHighlight'

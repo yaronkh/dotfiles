@@ -459,3 +459,5 @@ wk.register({
 local clangd_setup = require('clangd_setup')
 clangd_setup.setup("no")
 
+require("gruvbox_init")
+
