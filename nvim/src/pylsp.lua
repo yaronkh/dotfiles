@@ -7,11 +7,11 @@ vim.lsp.config.pylsp = {
                         plugins = {
                                 jedi_definition = { enabled = false },
                                 jedi_references = { enabled = false },
-                                flake8 = { enabled = true, config = "max-line-length = 120" },
-                                pylint = { enabled = true, args = { "--max-line-length=120" } },
-                                rope_autoimport = { enabled = true },
-                                pycodestyle = { ignore = {'W391'}, maxLineLength = 120 },
-                                black = { enabled = true , line_length = 120 },
+                                flake8 = { enabled = true, config = "max-line-length = 180" },
+                                pylint = { enabled = true, args = { "--max-line-length=180" } },
+                                rope_autoimport = { enabled = false },
+                                pycodestyle = { ignore = {'W391'}, maxLineLength = 180 },
+                                black = { enabled = true , line_length = 180 },
                         }
                 }
         }
