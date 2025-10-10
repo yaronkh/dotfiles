@@ -198,29 +198,6 @@ nnoremap <M-i> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 " QuickFix
 nnoremap <C-w>p :copen<CR>
 
-let g:linuxsty_patterns = [ "/kernel/", "/linux/", "/nvmesh/", "nvmeshum", "ker_mod"]
-function! GetMeIdent(tabsize)
-    let apply_nvmeshstype = 0
-    if exists("g:linuxsty_patterns")
-        let path = expand('%:p')
-        for p in g:linuxsty_patterns
-            if path =~ p
-                let apply_nvmeshstype = 1
-                break
-            endif
-        endfor
-    endif
-    if l:apply_nvmeshstype == 1
-        setlocal shiftwidth=0
-        "setlocal tabstop=a:tabsize
-        setlocal tabstop=8
-        setlocal noexpandtab
-    else
-        setlocal expandtab
-        let &shiftwidth = 4
-    endif
-endfunction
-
 " Generic
 syntax on
 filetype plugin indent on
@@ -232,10 +209,6 @@ set smartcase
 set nocompatible
 set shellslash
 set autoindent
-autocmd filetype cpp  call GetMeIdent(8)
-autocmd filetype c call GetMeIdent(8)
-autocmd filetype bash call GetMeIdent(4)
-autocmd filetype sh call GetMeIdent(4)
 set cinoptions=g0N-s
 set backspace=indent,eol,start
 set ruler
@@ -253,10 +226,6 @@ set nowrap
 nnoremap <C-q> <C-v>
 set shellslash
 map <C-w>w :q<CR>
-autocmd filetype make call GetMeIdent(4)
-"autocmd filetype c setlocal noexpandtab autoindent
-" noremap <F1> <C-w><C-p>
-" noremap <F2> <C-w><C-w>
 nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabp<CR>
 nnoremap <C-t> :tabnew<CR>
