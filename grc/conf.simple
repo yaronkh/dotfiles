@@ -1,0 +1,29 @@
+#
+# files
+regexp=/[^\s:]+
+colours=blue
+.........
+# warning and error won't work, unless you redirect also
+# files with statandard extension
+regexp=\.(c|cpp|h|hpp|cc|hh|cxx|hxx|java|js|ts|go|rs|py|rb|sh|bash|zsh|ksh|pl|pm|php|html?|css|xml|json|yml?|md|cfg)$
+colours=bold blue
+# stderr to grcat
+#
+.........
+# warning
+regexp=[Ww]arning[:\b] .*$
+colours=bold yellow
+.........
+regexp=[iI]nfo[:\b]
+colours=bold green
+.........
+# error
+regexp=[Ee]rror[:\b] .*$
+colours=bold red
+.........
+regexp=error:
+colours=bold white on_red
+.........
+#note
+regexp=note:
+colours=bold cyan

@@ -268,3 +268,16 @@ function git_func_hist() {
         file=$2
         git log -L :$2:$3 "$@"
 }
+
+function deploy_editor_config() {
+        ~/dotfiles/proj_deploy/create_editor_config.bash $@ | grcat ~/dotfiles/grc/conf.simple
+}
+
+function _deploy_editor_config() {
+        if ((CURRENT == 2)); then
+                _files -/ -W ~/dotfiles/proj_deploy/projects/
+                return
+        fi
+}
+
+compdef _deploy_editor_config deploy_editor_config

@@ -1,0 +1,16 @@
+ # .editorconfig
+    root = true
+
+    [*]
+    end_of_line = lf
+    charset = utf-8
+    trim_trailing_whitespace = false
+    insert_final_newline = false
+
+    [*.c]
+    indent_style = tab
+    tab_width = 8
+
+    [*.py]
+    indent_style = space
+    indent_size = 4
