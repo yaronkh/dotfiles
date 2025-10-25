@@ -21,6 +21,7 @@ indent_size = 4
 indent_style = tab
 indent_size = 8
 #
+# this must be below  management_cm/*.py to overwrite it
 [management_cm/clnt/**.py]
 indent_style = space
 indent_size = 4

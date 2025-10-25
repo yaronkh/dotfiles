@@ -224,12 +224,6 @@ if which "gh" >/dev/null 2>&1; then
         eval "$(gh copilot alias -- zsh)"
 fi
 
-#make()
-#{
-#  /usr/bin/make "$@" 2>&1 | sed -E -e "s/error/ $(echo -e "\\033[31m" ERROR "\\033[0m"/g)"   -e "s/warning/ $(echo -e "\\033[0;33m" WARNING "\\033[0m"/g)"
-#  return ${PIPESTATUS[0]}
-#}
-#
 function delete_untracked_files_with_extension() {
         local extension=""
         if [ -z "$1" ]; then
@@ -263,21 +257,23 @@ function delete_untracked_files_with_extension() {
         done
 }
 
+preexec() {
+  # Capture the current command
+  CURRENT_COMMAND="$2"
+}
+
+# Enable the preexec and precmd hooks
+autoload -Uz add-zsh-hook
+add-zsh-hook preexec preexec
+
 function git_func_hist() {
         func=$1
         file=$2
-        git log -L :$2:$3 "$@"
+        git log -L :$func:$file "$@"
 }
 
-function deploy_editor_config() {
-        ~/dotfiles/proj_deploy/create_editor_config.bash $@ | grcat ~/dotfiles/grc/conf.simple
-}
-
-function _deploy_editor_config() {
-        if ((CURRENT == 2)); then
-                _files -/ -W ~/dotfiles/proj_deploy/projects/
-                return
-        fi
-}
-
-compdef _deploy_editor_config deploy_editor_config
+#
+#
+source $HOME/dotfiles/etczsh/completions/completion.zsh
+autoload -Uz compinit
+compinit

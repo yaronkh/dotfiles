@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
 fi
 
 # Get the directory of the script
-script_dir=$(dirname "$(realpath "$0")")
+script_dir=$HOME/dotfiles/proj_deploy
 
 # Get the root_search_dir from the command line argument and make it absolute
 root_search_dir=$(realpath "$script_dir/projects/$1")

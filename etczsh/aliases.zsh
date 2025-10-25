@@ -21,5 +21,3 @@ alias pver='pyenv versions | bat -pl ls'
 alias h='hostname'
 
 alias gfh='git_func_hist'
-
-alias dep='deploy_editor_config'

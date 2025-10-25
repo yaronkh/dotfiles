@@ -1,0 +1,9 @@
+#compdef deploy_editor_config
+
+_deploy_editor_config() {
+        if ((CURRENT == 2)); then
+                _files -/ -W ~/dotfiles/proj_deploy/projects/
+                return
+        fi
+}
+

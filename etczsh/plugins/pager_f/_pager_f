@@ -1,0 +1,22 @@
+#compdef pager_f
+#
+#
+#
+zstyle 'completion::complete:pager_f:*' com
+_pager_f() {
+      local -a options
+      # Define the completion for --log-channel
+      if [ -z "$log_channel_completions" ]; then
+          log_channel_completions=(${(f)"$(basename -s $(find . -maxdepth 1 -type f -regex '.*\.[0-9]+$' | sed 's/[0-9\.]*$//' | sort -u) )"})
+      fi
+
+      _arguments \
+          '-l[log channel]:log channel:($log_channel_completions)' \
+          "*::arg:->args"
+      case $state in
+          opts)
+              _describe 'pager options' options
+              ;;
+      esac
+}
+
