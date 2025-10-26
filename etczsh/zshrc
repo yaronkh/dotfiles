@@ -81,6 +81,7 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+warhol_ignore_journalctl="yes"
 
 #init pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -271,6 +272,7 @@ function git_func_hist() {
         file=$2
         git log -L :$func:$file "$@"
 }
+
 
 #
 #

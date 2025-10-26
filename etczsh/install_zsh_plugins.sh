@@ -16,6 +16,7 @@ plugins=(
     "unixorn/fzf-zsh-plugin.git"
     "MichaelAquilina/zsh-you-should-use"
     "bric3/nice-exit-code.git"
+    "Aloxaf/fzf-tab"
 )
 
 oh_my_zsh_plg=(
