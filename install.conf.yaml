@@ -69,6 +69,7 @@
 
 
 - shell:
+  - [(groups | grep -qE 'adm | adm') || sudo usermod -aG adm $(whoami), add user to adm group to access log files]
   - [install_me/install_ubuntu_packages.sh, verify that all prereq installed (on error run this command as root) ]
   - [ ~/dotfiles/etczsh/make_default_shell.sh, set zsh as default shell ]
   - [ ~/dotfiles/etczsh/install_zsh_plugins.sh install, install zsh plugins ]
