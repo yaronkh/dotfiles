@@ -54,22 +54,22 @@ setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
 # :completion:<function>:<completer>:<command>:<argument>:<tag>
 
 # Define completers
-zstyle ':completion:*' completer _extensions _complete _approximate
-
-# Use cache for commands using cache
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "$HOME/.cache/zsh/.zcompcache"
-# Complete the alias when _expand_alias is used as a function
-zstyle ':completion:*' complete true
-
-zle -C alias-expension complete-word _generic
-bindkey '^Xa' alias-expension
-zstyle ':completion:alias-expension:*' completer _expand_alias
+# zstyle ':completion:*' completer _extensions _complete _approximate
+#
+# # Use cache for commands using cache
+# zstyle ':completion:*' use-cache on
+# zstyle ':completion:*' cache-path "$HOME/.cache/zsh/.zcompcache"
+# # Complete the alias when _expand_alias is used as a function
+# zstyle ':completion:*' complete true
+#
+# zle -C alias-expension complete-word _generic
+# bindkey '^Xa' alias-expension
+# zstyle ':completion:alias-expension:*' completer _expand_alias
 
 # Use cache for commands which use it
 
 # Allow you to select in a menu
-zstyle ':completion:*' menu select
+# zstyle ':completion:*' menu select
 
 # Autocomplete options for cd instead of directory stack
 zstyle ':completion:*' complete-options true
@@ -89,7 +89,7 @@ zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
 # zstyle ':completion:*:complete:git:argument-1:' tag-order !aliases
 #
-zstyle ':completion:*' file-list all
+# zstyle ':completion:*' file-list all
 
 # Required for completion to be in good groups (named after the tags)
 zstyle ':completion:*' group-name ''
@@ -113,23 +113,25 @@ zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f
 zstyle ':completion:*:git-checkout:*' sort false
 # set descriptions format to enable group support
 # NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
-zstyle ':completion:*:descriptions' format '[%d]'
+#zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
 zstyle ':completion:*' menu no
 # preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+#zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # custom fzf flags
 # NOTE: fzf-tab does not follow FZF_DEFAULT_OPTS by default
-zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
+#zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
+zstyle ':fzf-tab:*' fzf-flags --ansi --bind=tab:accept
 # To make fzf-tab follow FZF_DEFAULT_OPTS.
 # NOTE: This may lead to unexpected behavior since some flags break this plugin. See Aloxaf/fzf-tab#455.
-zstyle ':fzf-tab:*' use-fzf-default-opts yes
+# zstyle ':fzf-tab:*' use-fzf-default-opts yes
 # switch group using `<` and `>`
-zstyle ':fzf-tab:*' switch-group '<' '>'
+#zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:complete:*' fzf-preview '[ -f $realpath ] && bat -p --color=always $realpath || lsd --color=always --icon=always $realpath'
 
-#zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-
+#zstyle ':fzf-tab:complete:cd:*' fzf-preview ':'
+zstyle ':completion:*' list-prompt ''
 enable-fzf-tab
 
