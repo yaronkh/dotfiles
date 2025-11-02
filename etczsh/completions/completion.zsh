@@ -30,7 +30,7 @@ bindkey -M menuselect '^xh' accept-and-hold                # Hold
 bindkey -M menuselect '^xn' accept-and-infer-next-history  # Next
 bindkey -M menuselect '^xu' undo                           # Undo
 
-autoload -U compinit; compinit
+#autoload -U compinit; compinit
 _comp_options+=(globdots) # With hidden files
 
 # Only work with the Zsh function vman
@@ -57,19 +57,19 @@ setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
 # zstyle ':completion:*' completer _extensions _complete _approximate
 #
 # # Use cache for commands using cache
-# zstyle ':completion:*' use-cache on
+zstyle ':completion:*' use-cache on
 # zstyle ':completion:*' cache-path "$HOME/.cache/zsh/.zcompcache"
 # # Complete the alias when _expand_alias is used as a function
-# zstyle ':completion:*' complete true
+zstyle ':completion:*' complete true
 #
 # zle -C alias-expension complete-word _generic
-# bindkey '^Xa' alias-expension
-# zstyle ':completion:alias-expension:*' completer _expand_alias
+bindkey '^Xa' alias-expension
+zstyle ':completion:alias-expension:*' completer _expand_alias
 
 # Use cache for commands which use it
 
 # Allow you to select in a menu
-# zstyle ':completion:*' menu select
+zstyle ':completion:*' menu select
 
 # Autocomplete options for cd instead of directory stack
 zstyle ':completion:*' complete-options true
@@ -133,5 +133,4 @@ zstyle ':fzf-tab:complete:*' fzf-preview '[ -f $realpath ] && bat -p --color=alw
 
 #zstyle ':fzf-tab:complete:cd:*' fzf-preview ':'
 zstyle ':completion:*' list-prompt ''
-disable-fzf-tab
 

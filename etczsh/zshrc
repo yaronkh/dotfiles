@@ -1,3 +1,9 @@
+# uncomment to enable zsh profiling
+PROFILE_ZSH=false
+if [ "$PROFILE_ZSH" = true ] ; then
+    zmodload zsh/zprof
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -106,6 +112,7 @@ export JIRA_RAPID_BOARD=true
 # Add wisely, as too many plugins slow down shell startup.
 plugins=( $($HOME/dotfiles/etczsh/install_zsh_plugins.sh print ) )
 
+source $HOME/dotfiles/etczsh/completions/completion.zsh
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -218,7 +225,7 @@ function gsed() {
         git ls-files | xargs sed -i "s/$1/$2/g"
 }
 
-source $HOME/dotfiles/nvm/nvm.sh
+# source $HOME/dotfiles/nvm/nvm.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 if which "gh" >/dev/null 2>&1; then
@@ -287,6 +294,11 @@ bindkey '\ey' yazi_pick_path
 
 #
 #
-source $HOME/dotfiles/etczsh/completions/completion.zsh
-autoload -Uz compinit
-compinit
+#autoload -Uz compinit
+#compinit
+
+if [ "$PROFILE_ZSH" = true ] ; then
+    zprof
+fi
+
+disable-fzf-tab
