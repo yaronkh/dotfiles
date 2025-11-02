@@ -45,6 +45,3 @@
 [submodule "colorgcc"]
 	path = colorgcc
 	url = https://github.com/colorgcc/colorgcc
-[submodule "yazi"]
-	path = yazi
-	url = https://github.com/sxyazi/yazi.git
