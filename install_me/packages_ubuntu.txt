@@ -37,3 +37,6 @@ gawk
 perl
 grc
 tldr
+ffmpeg
+7zip
+poppler-utils

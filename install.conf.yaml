@@ -96,3 +96,4 @@
   - [curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh, install zoxide]
   - [ bash <(curl -sL https://raw.githubusercontent.com/denisidoro/navi/master/scripts/install), install navi]
   - [ curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo bash /dev/stdin, install git-extras]
+  - [ install_me/install_yazi.sh, install yazi cli]
