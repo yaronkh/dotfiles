@@ -134,3 +134,6 @@ zstyle ':fzf-tab:complete:*' fzf-preview '[ -f $realpath ] && bat -p --color=alw
 #zstyle ':fzf-tab:complete:cd:*' fzf-preview ':'
 zstyle ':completion:*' list-prompt ''
 
+#nvm stuff
+zstyle ':omz:plugins:nvm' lazy yes
+zstyle ':omz:plugins:nvm' lazy-cmd eslint prettier typescript

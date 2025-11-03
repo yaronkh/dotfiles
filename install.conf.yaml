@@ -23,6 +23,7 @@
     #shell
     ~/.bashrc: nvidia/bashrc
     ~/.zshrc: etczsh/zshrc
+    ~/.nvmrc: etczsh/nvmrc
     ~/.oh-my-zsh: ohmyzsh
     ~/.oh-my-zsh/custom/aliases.zsh: etczsh/aliases.zsh
     ~/.oh-my-zsh/custom/macos.zsh: etczsh/macos.zsh

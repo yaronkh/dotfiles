@@ -38,6 +38,7 @@ oh_my_zsh_plg=(
     docker
     docker-compose
     debian
+    nvm
     )
 
 for p in ${plugins[@]}; do

@@ -225,7 +225,8 @@ function gsed() {
         git ls-files | xargs sed -i "s/$1/$2/g"
 }
 
-# source $HOME/dotfiles/nvm/nvm.sh
+# this loads nvm, in order to postpone using nvm until its being needed
+#source $HOME/dotfiles/nvm/nvm.sh --no-use
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 if which "gh" >/dev/null 2>&1; then

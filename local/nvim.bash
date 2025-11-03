@@ -5,6 +5,7 @@ if command -v pyenv 1>/dev/null 2>&1; then eval "$(pyenv init --path 2>/dev/null
 eval "$(pyenv virtualenv-init -)"
 
 nvim() (
+  nvm use > /dev/null
   pyenv activate nvim > /dev/null 2>&1
   export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64/
   export XDG_CONFIG_HOME=~/.config
