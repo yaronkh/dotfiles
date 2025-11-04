@@ -37,6 +37,7 @@
 
     #fzf
     ~/.fzf: fzf
+    ~/dotfiles/build/bin/fzf: ~/.fzf/bin/fzf
 
     #tmux
     ~/.tmux/plugins/tpm: tpm
