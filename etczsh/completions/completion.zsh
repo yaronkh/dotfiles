@@ -62,11 +62,6 @@ zstyle ':completion:*' use-cache on
 # # Complete the alias when _expand_alias is used as a function
 zstyle ':completion:*' complete true
 #
-# zle -C alias-expension complete-word _generic
-bindkey '^Xa' alias-expension
-zstyle ':completion:alias-expension:*' completer _expand_alias
-
-# Use cache for commands which use it
 
 # Allow you to select in a menu
 zstyle ':completion:*' menu select
@@ -137,3 +132,7 @@ zstyle ':completion:*' list-prompt ''
 #nvm stuff
 zstyle ':omz:plugins:nvm' lazy yes
 zstyle ':omz:plugins:nvm' lazy-cmd eslint prettier typescript
+
+# enable alias expansion in completion
+zstyle ':completion:*' expand-aliases yes
+bindkey "^Xa" _expand_alias
