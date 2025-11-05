@@ -303,3 +303,4 @@ if [ "$PROFILE_ZSH" = true ] ; then
 fi
 
 disable-fzf-tab
+bindkey "^Xa" _expand_alias
