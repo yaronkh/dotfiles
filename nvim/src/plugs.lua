@@ -224,7 +224,7 @@ packer.startup(function(use)
             end,
     }
     --  aws smithy language syntax highlight
-    use 'jasdel/vim-smithy'
+    -- use 'jasdel/vim-smithy'
 
     use 'junegunn/seoul256.vim'
 

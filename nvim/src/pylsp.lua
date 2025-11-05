@@ -1,6 +1,6 @@
 -- go get the good and full list of configurations us this file
 -- pylsp/config/scheme.json
-local conf_file = "--rcfile=" .. vim.env.HOME .. "/dotfiles/pylint.rc"
+local conf_file = vim.env.HOME .. "/dotfiles/pylint.rc"
 local line_length = 180
 vim.lsp.config.pylsp = {
         -- capabilities = restricted_capabilities,
