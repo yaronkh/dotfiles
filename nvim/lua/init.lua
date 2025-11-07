@@ -4,7 +4,6 @@ local lsp_items = {
         { mason_name = "jdtls",                      lspc_name = "jdtls"},
         { mason_name = "jsonls",                      lspc_name = "jsonls"},
         { mason_name = "typescript-language-server", lspc_name = "ts_ls"},
-        { mason_name = "smithy-language-server",     lspc_name = "smithy_ls"},
         {
                 mason_name = "vim-language-server",
                 lspc_name = "vimls",

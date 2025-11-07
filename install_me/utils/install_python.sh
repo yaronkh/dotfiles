@@ -1,4 +1,4 @@
-PYVER=3.11.0
+PYVER=3.13.5
 PYENV=~/.pyenv/bin/pyenv
 
 if ! verify_prereq; then
