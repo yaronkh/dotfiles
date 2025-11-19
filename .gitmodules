@@ -48,3 +48,6 @@
 [submodule "yazi"]
 	path = yazi
 	url = https://github.com/sxyazi/yazi.git
+[submodule "1password"]
+	path = 1password
+	url = https://github.com/1Password/shell-plugins.git
