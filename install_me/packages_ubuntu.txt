@@ -40,3 +40,4 @@ tldr
 ffmpeg
 7zip
 poppler-utils
+neofetch

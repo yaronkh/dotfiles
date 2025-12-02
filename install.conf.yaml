@@ -100,3 +100,5 @@
   - [ curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo bash /dev/stdin, install git-extras]
   - [ install_me/install_yazi.sh, install yazi cli]
   - [ install_me/install_lazygit.sh, install lazygit]
+  - [ install_me/install_lazydocker.sh, install lazydocker]
+  - [ install_me/install_speedtest.sh, install speedtest ]

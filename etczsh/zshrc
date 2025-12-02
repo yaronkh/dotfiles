@@ -1,4 +1,5 @@
 # uncomment to enable zsh profiling
+export EDITOR=$HOME/dotfiles/build/bin/nvim
 PROFILE_ZSH=false
 if [ "$PROFILE_ZSH" = true ] ; then
     zmodload zsh/zprof
@@ -121,13 +122,6 @@ source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
@@ -304,3 +298,12 @@ fi
 
 disable-fzf-tab
 bindkey "^Xa" _expand_alias
+
+function update_custom_plugins() {
+        for f in "$HOME/.oh-my-zsh/custom/plugins/"* ; do
+                if ! [ -L "$f" ]; then
+                        echo $(basename "$f")
+                        ( cd "$f" && git pull)
+                fi
+        done
+}
