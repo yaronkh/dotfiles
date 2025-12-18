@@ -51,3 +51,6 @@
 [submodule "1password"]
 	path = 1password
 	url = https://github.com/1Password/shell-plugins.git
+[submodule "tools/tools/cli"]
+	path = tools/tools/cli
+	url = https://gitlab.com/gitlab-org/cli.git
