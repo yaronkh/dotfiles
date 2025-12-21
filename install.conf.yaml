@@ -79,7 +79,7 @@
   - [mkdir -p ~/.config/atuin && cp atuin/* ~/.config/atuin/, force update atuin conf]
   - [curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh, install atuin]
   - [yes | ~/.fzf/install, install fzf]
-  - [~/dotfiles/update_pyenv_nvim.sh 3.13.2, update and install nvim environment]
+  - [~/dotfiles/update_pyenv_nvim.sh 3.14.0, update and install nvim environment]
   - [\. "$HOME/dotfiles/nvm/nvm.sh" && nvm install 22, install nodejs]
   - [install_me/install_tmux2.sh, installing tmux]
   - [install_me/install_neovim2.sh, install neovim]
