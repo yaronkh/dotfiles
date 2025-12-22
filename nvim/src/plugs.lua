@@ -268,6 +268,9 @@ packer.startup(function(use)
         }
     }
 
+    -- gisignes, show git changes in sign column and able to show git information inline
+    use { "lewis6991/gitsigns.nvim" }
+
      use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate'
