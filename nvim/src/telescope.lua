@@ -1,5 +1,17 @@
 local builtin = require('telescope.builtin')
 
+local function grep_string_excluding()
+  builtin.grep_string({
+    search = vim.fn.expand("<cword>"),
+    additional_args = function(_)
+      return {
+        "--glob", "!.scannerwork/**",
+        "--glob", "!.git/**",
+      }
+    end,
+  })
+end
+
 function vim.getVisualSelection()
 	vim.cmd('noau normal! "vy"')
 	local text = vim.fn.getreg('v')
@@ -33,7 +45,7 @@ vim.keymap.set('n', ',x', '<cmd>Telescope tags<CR>', { desc = "Show symbols from
 vim.keymap.set('n', ',e', '<cmd>Telescope diagnostics<CR>', { desc = "Show all code diagnostics problem"})
 vim.keymap.set('n', ',i', '<cmd>AdvancedGitSearch<CR>', { desc = "AdvancedGitSearch"})
 vim.keymap.set('n', ',o', builtin.oldfiles, { desc = "Find Old Files"})
-vim.keymap.set('n', ',w', builtin.grep_string, { desc = "Find Word under Cursor"})
+vim.keymap.set('n', ',w', grep_string_excluding, { desc = "Find Word under Cursor"})
 vim.keymap.set('n', ',q', '<cmd>Telescope quickfix<CR>', { desc = "move quickfix content to telescope"})
 vim.keymap.set('n', ',a', '<cmd>Telescope quickfixhistory<CR>', { desc = "show quickfix history in telescope"})
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = "Search Git Commits"})
