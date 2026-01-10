@@ -9,11 +9,11 @@ augroup ymason
     au!
     "autocmd VimEnter * source ~/dotfiles/nvim/src/telescope.lua
     autocmd VimEnter * source ~/dotfiles/nvim/lua/post_init.lua
-    autocmd VimEnter * :TSEnable cpp<CR>
+"    autocmd VimEnter * :TSEnable cpp<CR>
 augroup End
 
 
-source ~/dotfiles/nvim/src/plugs.lua
+" source ~/dotfiles/nvim/src/plugs.lua
 source ~/dotfiles/nvidia/nvidia.vim
 source ~/dotfiles/nvim/lua/init.lua
 

@@ -1,3 +1,7 @@
+require("config.lazy")
+
+require("gruvbox_init")
+
 local restricted_capabilities = vim.lsp.protocol.make_client_capabilities()
 restricted_capabilities.textDocument.definition = nil
 local lsp_items = {
@@ -335,35 +339,22 @@ vim.api.nvim_create_autocmd('LspAttach', {
                 -- See `:help vim.lsp.*` for documentation on any of the below functions
                 local opts = { buffer = ev.buf }
                 local keymap_g = {
-                        name = "Goto",
-                        desc = "Example description 2",
-                        d = { "<Cmd>lua vim.lsp.buf.definition()<CR>", "Definition" },
-                        D = { "<Cmd>lua vim.lsp.buf.declaration()<CR>", "Declaration" },
-                        s = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
-                        I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation" },
-                        t = { "<cmd>lua vim.lsp.buf.type_definition()<CR>", "Goto Type Definition" },
-                        c = { "<cmd>lua vim.lsp.buf.references()<CR>", "find all references" },
-                        r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "rename" },
-                        -- f = { "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", "format accroding to the project standards" },
+                    { "g", group = "Goto" },
+                    { "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", desc = "Go to type definition" },
+                    { "gc", "<cmd>lua vim.lsp.buf.references()<CR>" , desc = "Go to references" },
+                    { "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>" , desc = "Go to definition" },
+                    { "gr", "<cmd>lua vim.lsp.buf.rename()<CR>" , desc = "Rename symbol" },
+                    { "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>" , desc = "Go to implementation" },
+                    { "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>" , desc = "Go to declaration" },
+                    { "gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>" , desc = "Signature help" },
                 }
-                whichkey.register(keymap_g, { buffer = ev.buf, prefix = "g" })
+                whichkey.add(keymap_g)
                 local keymap_gv = {
-                        name = "Goto",
-                        desc = "Example description 2",
-                        f = { "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", "style the code accroding to the project standards" },
+                         { "gf", "<cmd>lua vim.lsp.buf.format({ async = false })<CR>", desc = "Format selection" , mode = 'v' },
                 }
-                whichkey.register(keymap_gv, { buffer = ev.buf, prefix = "g", mode = 'v' })
+                whichkey.add(keymap_gv)
 
-                -- local keymap_f = {
-                --         name = "telescope features",
-                --         -- f = {"<cmd> lua builtin.find_files<CR>", "Find Files"}
-                -- }
-                -- whichkey.register(keymap_f, { buffer = ev.buf, prefix = "f" })
-
-                -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-                -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-                -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
                 vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
                 vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
                 vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
@@ -442,21 +433,8 @@ vim.api.nvim_create_user_command(
 )
 
 local wk = require("which-key")
-wk.register({
-    l = {
-        function()
-            local word = vim.fn.expand('<cword>')
-            local open_grep_files = require("open_grep_files")
-            open_grep_files(word)
-        end,
-        "Run my_lua_function with word under cursor"
-    }
-}, { prefix = "," })
-
-
 -- new command to restart clangd with or without remote
 local clangd_setup = require('clangd_setup')
 clangd_setup.setup("no")
 
-require("gruvbox_init")
 

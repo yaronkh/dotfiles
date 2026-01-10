@@ -3,3 +3,4 @@ bat
 .python-version
 node_modules
 .editorconfig
+nvim/lazy-lock.json
