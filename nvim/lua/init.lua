@@ -1,6 +1,5 @@
 require("config.lazy")
 
-require("gruvbox_init")
 
 local restricted_capabilities = vim.lsp.protocol.make_client_capabilities()
 restricted_capabilities.textDocument.definition = nil
@@ -432,9 +431,9 @@ vim.api.nvim_create_user_command(
   { nargs = 1 }  -- Require exactly one argument
 )
 
-local wk = require("which-key")
 -- new command to restart clangd with or without remote
 local clangd_setup = require('clangd_setup')
 clangd_setup.setup("no")
 
+require("gruvbox_init")
 

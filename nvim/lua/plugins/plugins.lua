@@ -34,7 +34,7 @@ return {
         },
     },
 
-    'ellisonleao/gruvbox.nvim',
+    {'ellisonleao/gruvbox.nvim', lazy = false,},
     'github/copilot.vim',
     'nvim-lua/plenary.nvim',
     'CopilotC-Nvim/CopilotChat.nvim',
