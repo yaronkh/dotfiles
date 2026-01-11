@@ -4,3 +4,4 @@ bat
 node_modules
 .editorconfig
 nvim/lazy-lock.json
+nvim/rocks.toml

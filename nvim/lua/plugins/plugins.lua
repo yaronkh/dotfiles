@@ -1,4 +1,11 @@
 return {
+    -- "lumen-oss/rocks-lazy.nvim",
+    {
+        "vhyrro/luarocks.nvim",
+        priority = 10000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
+        config = true,
+        lazy = false,
+    },
     {
         'nvim-treesitter/nvim-treesitter',
         lazy = false,
@@ -126,7 +133,7 @@ return {
     },
     -- gisignes, show git changes in sign column and able to show git information inline
     'lewis6991/gitsigns.nvim',
-    'nvim-treesitter/playground',
+    -- 'nvim-treesitter/playground',
     'nvim-tree/nvim-web-devicons',
     { 'nvim-mini/mini.nvim',                      version = '*' },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'bash -c "cd ~/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim && CC=gcc make > ~/.makeit"' },

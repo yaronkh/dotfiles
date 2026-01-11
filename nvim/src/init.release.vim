@@ -534,7 +534,7 @@ augroup my_tmux
     autocmd VimResized * : call UpdateAirlineFileneames()
     vnoremap <silent><Leader>y "yy <Bar> :call CopyToX11Clipboard()<CR>
     nnoremap z= :call FzfSpell()<CR>
-    inoremap <Leader>li :LinuxCodingStyle<cr>
+    nnoremap <Leader>li :LinuxCodingStyle<cr>
     nnoremap <C-d> :call InsertDate()<cr>
     nnoremap <F1> :call OpenVimTmuxTerm()<CR>
     nnoremap <F2> :call OpenVimBufTmuxTerm()<CR>
