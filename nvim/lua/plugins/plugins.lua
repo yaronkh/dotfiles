@@ -89,7 +89,7 @@ return {
     --  for example, run functions asynchrounously, periodic call and more
     'xolox/vim-misc',
     --  plugin for resizing window, Pres C-E and start playing
-    'simeji/winresizer',
+    -- 'simeji/winresizer',
     -- A Vim plugin which shows a git diff in the sign column
     'airblade/vim-gitgutter',
     -- vim osc52 support (copy/paste)

@@ -515,7 +515,7 @@ augroup my_tmux
     noremap <silent> <Leader>bx :q<CR>
     noremap <silent> <Leader>bc :cclose<CR>
     "noremap <silent> <Leader>z :tab split<CR>
-    noremap <Leader>w :WinResizerStartResize<CR>
+    "noremap <Leader>w :WinResizerStartResize<CR>
     noremap <Leader>?? :Commands<CR>SplitVAndSwap()<cr>
     noremap <Leader>h :History<CR>
     noremap <Leader>% :call SplitVAndSwap()<cr>
