@@ -36,7 +36,7 @@ vim.keymap.set('v', ',g',
 vim.keymap.set('n', ',c', '<cmd>lua require("telescope.builtin").live_grep({ glob_pattern = "!{spec,test}"})<CR>', { desc = "Live Grep Code"})
 vim.keymap.set('n', ',b', builtin.buffers, { desc = "Find Buffers"})
 vim.keymap.set('n', '<leader><enter>', builtin.buffers, { desc = "Find Buffers"})
-vim.keymap.set('n', ',<enter>', builtin.buffers, { desc = "Find Buffers"})
+vim.keymap.set('n', '\\<enter>', builtin.buffers, { desc = "Find Buffers"})
 vim.keymap.set('n', ',h', builtin.help_tags, { desc = "Find Help Tags"})
 vim.keymap.set('n', ',s', builtin.lsp_document_symbols, { desc = "Find Symbols"})
 vim.keymap.set('n', ',v', builtin.lsp_dynamic_workspace_symbols, { desc = "Symbols from all included"})
