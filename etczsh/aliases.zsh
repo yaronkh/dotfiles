@@ -23,3 +23,5 @@ alias h='hostname'
 alias gfh='git_func_hist'
 
 alias lzg='lazygit'
+
+alias sl='bat -pl syslog'
