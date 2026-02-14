@@ -61,8 +61,6 @@
     ~/.fonts/source-code-pro: source-code-pro
 
     #colorgcc
-    ~/dotfiles/build/bin/gcc: ~/dotfiles/utils/colorgcc.pl
-    ~/dotfiles/build/bin/cc: ~/dotfiles/utils/colorgcc.pl
     ~/dotfiles/build/bin/make: ~/dotfiles/utils/colorgcc.pl
     ~/.colorgccrc: ~/dotfiles/etc_clang/colorgccrc.txt
 
@@ -105,5 +103,6 @@
   - [ install_me/install_glab.sh, install glab ]
   - [ npm install -g @openai/codex@latest, install openai codex cli]
   - [ install_me/install_fastfetch.sh, install fastfetch]
-  links:
-    - ~/dotfiles/build/bin/fastfetch: ~/dotfiles/build/bin/fastfetch-linux-amd64/usr/bin/fastfetch
+- link:
+    build/bin/fastfetch:
+      path: build/bin/fastfetch-linux-amd64/usr/bin/fastfetch
