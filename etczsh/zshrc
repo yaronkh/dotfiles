@@ -345,4 +345,4 @@ function st_space() {
 export OPENAI_API_KEY=op://Private/open_ai_api_key/password
 export PATH="~/node_modules/.bin:$PATH"
 
-~/dotfiles/build/bin/fastfetch
+[ -L ~/dotfiles/build/bin/fastfetch ] && ~/dotfiles/build/bin/fastfetch

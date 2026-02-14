@@ -15,9 +15,9 @@
 - create:
     - ~/Downloads
     - ~/.config/atuin
-    - ~/dotfiles/build/bin
-    - ~/dotfiles/bat
-    - ~/dotfiles/build/lib/nvim
+    - build/bin
+    - bat
+    - build/lib/nvim
 
 - link:
     #shell
@@ -37,7 +37,7 @@
 
     #fzf
     ~/.fzf: fzf
-    ~/dotfiles/build/bin/fzf: ~/.fzf/bin/fzf
+    build/bin/fzf: ~/.fzf/bin/fzf
 
     #tmux
     ~/.tmux/plugins/tpm: tpm
@@ -55,18 +55,17 @@
 
     #pyenv
     ~/.pyenv: pyenv
-    ~/dotfiles/pyenv/plugins/pyenv-virtualenv: pyenv-virtualenv
+    pyenv/plugins/pyenv-virtualenv: pyenv-virtualenv
 
     #fonts
     ~/.fonts/source-code-pro: source-code-pro
 
     #colorgcc
-    ~/dotfiles/build/bin/make: ~/dotfiles/utils/colorgcc.pl
-    ~/.colorgccrc: ~/dotfiles/etc_clang/colorgccrc.txt
+    build/bin/make: utils/colorgcc.pl
+    ~/.colorgccrc: etc_clang/colorgccrc.txt
 
     #nvim runpath
-    ~/dotfiles/build/lib/nvim/lua: ~/dotfiles/nvim/lua
-
+    build/lib/nvim/lua: nvim/lua
 
 - shell:
   - [(groups | grep -qE 'adm | adm') || sudo usermod -aG adm $(whoami), add user to adm group to access log files]
@@ -106,3 +105,7 @@
 - link:
     build/bin/fastfetch:
       path: build/bin/fastfetch-linux-amd64/usr/bin/fastfetch
+      relative: true
+    ~/.config/fastfetch:
+      path: fastfetch
+
