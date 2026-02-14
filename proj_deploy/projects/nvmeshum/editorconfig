@@ -7,7 +7,7 @@
     trim_trailing_whitespace = false
     insert_final_newline = false
 
-    [*.c]
+    [{*.{awk,c,dts,dtsi,dtso,h,mk,s,s},kconfig,makefile,makefile.*,h}]
     indent_style = tab
     tab_width = 8
 

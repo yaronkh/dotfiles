@@ -103,3 +103,7 @@
   - [ install_me/install_lazydocker.sh, install lazydocker]
   - [ install_me/install_speedtest.sh, install speedtest ]
   - [ install_me/install_glab.sh, install glab ]
+  - [ npm install -g @openai/codex@latest, install openai codex cli]
+  - [ install_me/install_fastfetch.sh, install fastfetch]
+  links:
+    - ~/dotfiles/build/bin/fastfetch: ~/dotfiles/build/bin/fastfetch-linux-amd64/usr/bin/fastfetch

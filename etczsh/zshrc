@@ -189,7 +189,7 @@ function hl {
 }
 
 #I took robbyrussell prompt and change it a bit (showing the last two components of the path)
-PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%2~%{$reset_color%}"
+PROMPT="$(hostname) %(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%2~%{$reset_color%}"
 PROMPT+=' $(git_prompt_info)'
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
@@ -315,3 +315,34 @@ function update_custom_plugins() {
                 fi
         done
 }
+
+function st_space() {
+        git show --unified=0 --format= HEAD | awk '
+        /^diff --git/           { file=""; next }
+        /^+++ b\//              { file=substr($2,3); next }
+        /^@@ / {
+                # extract starting line for new file: +<start>[,<len>]
+                match($0, /@@ .* \+([0-9]+)(,[0-9]+)? @@/, m);
+                if (m[1] != "") ln = m[1] + 0;
+                        next
+                }
+        # added lines (ignore +++ b/ header)
+        /^+/ && !/^\+\+\+/ {
+                # check for two leading spaces after the '+'
+                if (substr($0,2,2) == "  ") {
+                        # file:line:content
+                        print file ":" ln ":" substr($0,2);
+                }
+        ln++;
+        next
+}
+# context lines (none with --unified=0, but keep for safety)
+/^ / { ln++ }
+'
+}
+
+#set openai token
+export OPENAI_API_KEY=op://Private/open_ai_api_key/password
+export PATH="~/node_modules/.bin:$PATH"
+
+~/dotfiles/build/bin/fastfetch
