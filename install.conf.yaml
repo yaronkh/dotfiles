@@ -80,6 +80,8 @@
   - [\. "$HOME/dotfiles/nvm/nvm.sh" && nvm install 22, install nodejs]
   - [install_me/install_tmux2.sh, installing tmux]
   - [install_me/install_neovim2.sh, install neovim]
+  - [ curl https://mise.run/zsh | sh, install mise zsh plugin manager]
+  - [ mise use -g carapace@latest, install carapace zsh plugin]
   - [ curl https://sh.rustup.rs -sSf > /tmp/rustup.sh && sh /tmp/rustup.sh -y, install rust]
   - [./install_bat.sh, install bat]
   - [ ~/.cargo/bin/cargo install --locked --root ~/dotfiles/build git-delta, install git-delta]

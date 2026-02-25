@@ -346,3 +346,11 @@ export OPENAI_API_KEY=op://Private/open_ai_api_key/password
 export PATH="~/node_modules/.bin:$PATH"
 
 [ -L ~/dotfiles/build/bin/fastfetch ] && ~/dotfiles/build/bin/fastfetch
+
+eval "$(/home/ykahanovitch/.local/bin/mise activate zsh)" # added by https://mise.run/zsh
+
+export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+source <(carapace _carapace)
+zstyle ':completion:*:git:*' group-order 'main commands' 'alias commands' 'external commands'
+

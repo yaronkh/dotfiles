@@ -1,0 +1,8 @@
+sonar.projectKey=NBUSW_NVMesh_NVMesh_nvmesh-csi-driver
+sonar.qualitygate.wait=true
+sonar.host.url=https://sonar.nvidia.com/
+
+sonar.sources=.
+sonar.coverage.exclusions=**/*README*
+sonar.exclusions=test/**,**/Tests/**
+sonar.test.inclusions=test/**
