@@ -53,7 +53,7 @@ pycodestyle==2.14.0
 pydantic==2.12.5
 pydantic_core==2.41.5
 pyflakes==3.4.0
-Pygments==2.19.2
+Pygments==2.20.0
 pylint==4.0.4
 pynvim==0.6.0
 PySocks==1.7.1
