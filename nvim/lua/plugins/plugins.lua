@@ -1,5 +1,6 @@
 return {
     -- "lumen-oss/rocks-lazy.nvim",
+    { "coder/claudecode.nvim", config = true},
     {
         "vhyrro/luarocks.nvim",
         priority = 10000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
@@ -14,6 +15,7 @@ return {
 
     -- Example: Adding another plugin from GitHub
     'tpope/vim-fugitive',
+    { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
     -- You can also include configuration options in a table format:
     {

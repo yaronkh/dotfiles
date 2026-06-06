@@ -46,12 +46,13 @@ both_rpm() {
 }
 
 generate_compile_commands() {
-    set_var "IM_CLIENT" "norpm" "bear -o clnt/compile_commands.json"
+    set_var "IM_CLIENT" "norpm" ""
 }
 
 setup
 ####################################################################
+both_rpm
 #compile_client
-generate_compile_commands
+#generate_compile_commands
 ###################################################################
 

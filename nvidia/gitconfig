@@ -73,6 +73,6 @@
 #  gpgsign = true
 
 [oh-my-zsh]
-	git-commit-alias = 41c5b9677afaf239268197546cfc8e003a073c97
+	git-commit-alias = 5ef67beadbe371d7f4ed3a7456240e0fd46608ce
 [coderabbit]
 	machineId = cli/3eb39019126845ceb367fca6799835f7

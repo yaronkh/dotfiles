@@ -437,3 +437,9 @@ clangd_setup.setup("no")
 
 require("gruvbox_init")
 
+ vim.api.nvim_create_user_command('LspRestart', function(opts)
+    for _, c in ipairs(vim.lsp.get_clients({ name = opts.args ~= '' and opts.args or nil })) do
+      vim.lsp.stop_client(c.id)
+    end
+    vim.defer_fn(function() vim.cmd('edit') end, 100)
+  end, { nargs = '?' })

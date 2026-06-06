@@ -418,11 +418,11 @@ function! SaveSess()
     endif
 endfunction
 
-function! EraseTralingWs()
-    let save_pos = getpos(".")
-    '[,']s/\s\+$//e
-    call setpos('.', save_pos)
-endfunction
+"function! EraseTralingWs()
+"    let save_pos = getpos(".")
+"    '[,']s/\s\+$//e
+"    call setpos('.', save_pos)
+"endfunction
 
 function! InsertDate()
     r!date

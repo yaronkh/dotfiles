@@ -21,5 +21,5 @@ nvim() (
   fi
 
   [ -n "$ZSH_VERSION" ] && exec command nvim "$@"
-  exec $(which nvim) "$@"
+  exec command nvim --listen /tmp/nvim.sock "$@"
 )

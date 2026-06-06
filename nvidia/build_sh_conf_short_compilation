@@ -1,0 +1,16 @@
+#!/bin/bash
+
+setup() {
+    REMOTE_DIR=$PWD
+    SERVERS=( localhost )
+    RUN_LOCAL="true"
+    CREATE_PYTHON_TOOLS_EXEC=no
+    PARALLEL=true
+    REPO_RPMS=false
+    REPO_SYMS=false
+    REPO_MODS=false
+    REMOTE_SERVERS="localhost:IM_BOTH=yes"
+}
+
+setup
+
