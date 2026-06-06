@@ -5,3 +5,7 @@ node_modules
 .editorconfig
 nvim/lazy-lock.json
 nvim/rocks.toml
+
+# never commit real Claude secrets (canonical file lives at ~/.config/claude/secrets.env)
+claude/secrets.env
+claude/**/secrets.env

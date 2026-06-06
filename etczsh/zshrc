@@ -108,6 +108,11 @@ export JIRA_URL=https://jirasw.nvidia.com/
 export JIRA_NAME=ykahanovitch
 export JIRA_RAPID_BOARD=true
 
+# Claude Code secrets (local, untracked). Exported here so `claude` and its
+# npx MCP subprocesses inherit them; settings.json references them via ${VAR}.
+# Template: ~/dotfiles/claude/secrets.env.example
+[ -f "$HOME/.config/claude/secrets.env" ] && source "$HOME/.config/claude/secrets.env"
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/

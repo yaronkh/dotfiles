@@ -1,0 +1,103 @@
+{
+  "env": {
+    "JIRA_URL": "https://jirasw.nvidia.com",
+    "JIRA_PERSONAL_TOKEN": "${JIRA_PERSONAL_TOKEN}"
+  },
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Read",
+      "Write",
+      "Bash(pwd)",
+      "Bash(git:*)",
+      "Bash(coderabbit:*)",
+      "Bash(cr:*)",
+      "Glob",
+      "Grep",
+      "Agent",
+      "Skill",
+      "WebFetch",
+      "WebSearch",
+      "TaskCreate",
+      "TaskUpdate",
+      "TaskGet",
+      "TaskList",
+      "TaskOutput",
+      "TaskStop",
+      "NotebookEdit",
+      "EnterPlanMode",
+      "ExitPlanMode",
+      "EnterWorktree",
+      "ExitWorktree",
+      "AskUserQuestion",
+      "CronCreate",
+      "CronDelete",
+      "CronList",
+      "Bash(nvim --server *)",
+      "Bash(nvr:*)",
+      "ToolSearch",
+      "mcp__plugin_slack_slack__authenticate",
+      "mcp__plugin_figma_figma__authenticate",
+      "mcp__plugin_sonatype-guide_sonatype-guide__getComponentVersion",
+      "mcp__plugin_sonatype-guide_sonatype-guide__getLatestComponentVersion",
+      "mcp__plugin_sonatype-guide_sonatype-guide__getRecommendedComponentVersions",
+      "Edit(/run/**)"
+    ],
+    "ask": [
+      "Edit"
+    ]
+  },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true,
+    "coderabbit@claude-plugins-official": true,
+    "superpowers@superpowers-dev": true
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-dev": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers"
+      }
+    }
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "filesystem": {
+      "allowWrite": [
+        "/var/run/myapp",
+        "/tmp",
+        "/home/ykahanovitch/.cache/uv",
+        "/home/ykahanovitch/.local/share/uv"
+      ]
+    },
+    "allowAllUnixSockets": true
+  },
+  "effortLevel": "medium",
+  "mcpServers": {
+    "jira": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-atlassian"
+      ],
+      "env": {
+        "ATLASSIAN_URL": "https://jirasw.nvidia.com",
+        "ATLASSIAN_EMAIL": "ykahanovitch@nvidia.com",
+        "ATLASSIAN_API_TOKEN": "${ATLASSIAN_API_TOKEN}"
+      }
+    },
+    "jenkins": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@ashwinighuge/jenkins-mcp-server"
+      ],
+      "env": {
+        "JENKINS_URL": "https://jirasw.nvidia.com/",
+        "JENKINS_USER": "ykahanovitch",
+        "JENKINS_API_TOKEN": "${JENKINS_API_TOKEN}"
+      }
+    }
+  }
+}

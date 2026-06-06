@@ -19,6 +19,11 @@
     - bat
     - build/lib/nvim
 
+# claude secrets dir: created (0700) before setup_claude_secrets.sh runs
+- create:
+    ~/.config/claude:
+      mode: 0700
+
 - link:
     #shell
     ~/.bashrc: nvidia/bashrc
@@ -67,6 +72,13 @@
     #nvim runpath
     build/lib/nvim/lua: nvim/lua
 
+    #claude code (selective: secrets/runtime state in ~/.claude stay local)
+    ~/.claude/settings.json: claude/settings.json
+    ~/.claude/commands: claude/commands
+    ~/.claude/scripts: claude/scripts
+    # ~/.claude/agents: claude/agents       # uncomment when populated
+    # ~/.claude/CLAUDE.md: claude/CLAUDE.md  # uncomment when populated
+
 - shell:
   - [(groups | grep -qE 'adm | adm') || sudo usermod -aG adm $(whoami), add user to adm group to access log files]
   - [install_me/install_ubuntu_packages.sh, verify that all prereq installed (on error run this command as root) ]
@@ -102,6 +114,10 @@
   - [ install_me/install_speedtest.sh, install speedtest ]
   - [ install_me/install_glab.sh, install glab ]
   - [ npm install -g @openai/codex@latest, install openai codex cli]
+  - [ install_me/install_gh.sh, install github cli (used by claude code)]
+  - [ install_me/install_chrome.sh, install google chrome (for /management_open command)]
+  - [ install_me/install_claude.sh, install claude code + plugins]
+  - [ install_me/setup_claude_secrets.sh, seed local claude secrets file (fill in real tokens after)]
   - [ install_me/install_fastfetch.sh, install fastfetch]
 - link:
     build/bin/fastfetch:
