@@ -1,7 +1,8 @@
 {
   "env": {
+    "NVIM_SOCK": "/run/user/1776661057/nvim.27038.0",
     "JIRA_URL": "https://jirasw.nvidia.com",
-    "JIRA_PERSONAL_TOKEN": "${JIRA_PERSONAL_TOKEN}"
+    "JIRA_PERSONAL_TOKEN": "CkNXvusD3oyqvARER6DyeCoLHmp80Ysib2VRM2"
   },
   "permissions": {
     "allow": [
@@ -50,7 +51,8 @@
   "enabledPlugins": {
     "clangd-lsp@claude-plugins-official": true,
     "coderabbit@claude-plugins-official": true,
-    "superpowers@superpowers-dev": true
+    "superpowers@superpowers-dev": true,
+    "playwright@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "superpowers-dev": {
@@ -75,8 +77,12 @@
   },
   "effortLevel": "medium",
   "mcpServers": {
+    "playwright": {
+      "command": "/home/ykahanovitch/.config/nvm/versions/node/v22.22.0/bin/npx",
+      "args": ["@playwright/mcp@latest"]
+    },
     "jira": {
-      "command": "npx",
+      "command": "/home/ykahanovitch/.config/nvm/versions/node/v22.22.0/bin/npx",
       "args": [
         "-y",
         "mcp-atlassian"
@@ -84,20 +90,15 @@
       "env": {
         "ATLASSIAN_URL": "https://jirasw.nvidia.com",
         "ATLASSIAN_EMAIL": "ykahanovitch@nvidia.com",
-        "ATLASSIAN_API_TOKEN": "${ATLASSIAN_API_TOKEN}"
+        "ATLASSIAN_API_TOKEN": " op://Private/jira token for claude at nvidia/credential"
       }
     },
-    "jenkins": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@ashwinighuge/jenkins-mcp-server"
-      ],
-      "env": {
-        "JENKINS_URL": "https://jirasw.nvidia.com/",
-        "JENKINS_USER": "ykahanovitch",
-        "JENKINS_API_TOKEN": "${JENKINS_API_TOKEN}"
-      }
+    "MaaS-Slack": {
+      "type": "http",
+      "url": "https://maas.prd.astra.nvidia.com/maas/slack/mcp"
     }
+  },
+  "experimental": {
+    "agentTeams": true
   }
 }
