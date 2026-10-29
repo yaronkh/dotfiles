@@ -27,3 +27,9 @@ alias lzg='lazygit'
 alias sl='grcat conf.log'
 
 alias c='nvm >/dev/null && command codex'
+
+alias sshi='ssh -o identitiesOnly=yes root@'
+
+alias scpi='scp -o identitiesOnly=yes'
+
+alias gb_new="git for-each-ref --sort=-committerdate --count=20 --format='%(committerdate:short) %(refname:short)' refs/heads/ | bat -pl syslog"
